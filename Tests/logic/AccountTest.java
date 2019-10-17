@@ -17,6 +17,11 @@ public class AccountTest {
         account = new Account(1,1000);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void constructAccount_with_illegal_balance_value() {
+        Account a = new Account(100,-100);
+    }
+
     @Test
     public void test_getBalance() {
         int balance = 1000;
