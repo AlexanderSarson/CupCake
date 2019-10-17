@@ -9,6 +9,7 @@ public abstract class BaseEntity {
 
     protected long id;
 
+
     public BaseEntity(){
     }
 
