@@ -62,6 +62,8 @@
   - Forward to invoice.jsp
 !!!
 
+
+>>>>>>> Added frontend documentation
 !!! hint Pages 
 
 * index / landing / home
@@ -75,9 +77,6 @@
 * ShopPremade
 * ShopCustom
 * 
-
-!!!
-
 
 !!! hint LogicFacade
 ```java
@@ -93,5 +92,3 @@
   
 ```
 !!!
-
-
