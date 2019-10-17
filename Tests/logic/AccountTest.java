@@ -29,4 +29,23 @@ public class AccountTest {
         account.setBalance(balance);
         assertEquals(balance,account.getBalance());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_setBalance_negative_value() {
+        int balance = -2000;
+        account.setBalance(balance);
+    }
+
+    @Test
+    public void test_reduceBalance() {
+        int reduction = 10000;
+        account.reduceBalance(reduction);
+        assertEquals(0, account.getBalance());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_reduceBalance_with_negative_reduction(){
+        int reduction = -1000;
+        account.reduceBalance(reduction);
+    }
 }

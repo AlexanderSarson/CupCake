@@ -12,7 +12,7 @@ public class User extends BaseEntity{
     private Account account;
 
     /**
-     * The basic constructor of the user.
+     * The basic constructor of the user, where a id is available
      * @param id The id of the user.
      * @param name The full name of the user.
      * @param mail The e-mail address of the user.
@@ -20,7 +20,21 @@ public class User extends BaseEntity{
      * @param account The account object of the user, {@link logic.Account}
      */
     public User(long id, String name, String mail, Role role, Account account) {
-        super(id);
+        super.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.role = role;
+        this.account = account;
+    }
+
+    /**
+     * The basic constructor of the user, where a id is not available
+     * @param name The full name of the user.
+     * @param mail The e-mail address of the user.
+     * @param role The role of the user, {@link logic.Role}
+     * @param account The account object of the user, {@link logic.Account}
+     */
+    public User(String name, String mail, Role role, Account account) {
         this.name = name;
         this.mail = mail;
         this.role = role;
