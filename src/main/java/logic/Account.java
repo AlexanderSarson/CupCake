@@ -30,7 +30,8 @@ public class Account extends BaseEntity{
     public Account(long id, int balance) throws IllegalArgumentException{
         super.id = id;
         if(balance < 0) throw new IllegalArgumentException("Balance must be a positive value");
-        this.balance = balance;
+        else
+            this.balance = balance;
     }
 
     /**

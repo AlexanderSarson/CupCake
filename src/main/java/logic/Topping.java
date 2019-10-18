@@ -14,7 +14,8 @@ public class Topping extends BaseEntity{
     private int price;
     private String name;
 
-    public Topping(int price, String name) {
+    public Topping(int price, String name) throws IllegalArgumentException{
+
         this.price = price;
         this.name = name;
     }
@@ -40,7 +41,7 @@ public class Topping extends BaseEntity{
      * This method gets the price of the particular topping
      * @return the price of the particular topping
      */
-    public long getPrice() {
+    public int getPrice() {
         return price;
     }
 

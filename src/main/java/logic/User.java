@@ -100,4 +100,6 @@ public class User extends BaseEntity{
      * @param account The new account of the user.
      */
     public void setAccount(Account account) {this.account = account;}
+
+
 }

@@ -15,9 +15,11 @@ public class Bottom extends BaseEntity{
     private int price;
     private String name;
 
-    public Bottom (int price, String name ){
+    public Bottom (int price, String name ) throws IllegalArgumentException{
         this.price=price;
-        this.name=name;
+        if (price < 0) throw new IllegalArgumentException("Price must be a positive value");
+        else
+            this.name=name;
     }
 
     /**
@@ -32,8 +34,11 @@ public class Bottom extends BaseEntity{
      * This method sets the price of the bottom project
      * @param price
      */
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(int price) throws IllegalArgumentException{
+        if(price<0)
+            throw new IllegalArgumentException("Price must be a positive value");
+        else
+            this.price = price;
     }
 
     /**
