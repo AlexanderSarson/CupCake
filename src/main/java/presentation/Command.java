@@ -1,13 +1,14 @@
 package presentation;
 
 import java.util.HashMap;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.LogicFacade;
 
 /**
- * The purpose of Command is to carry out an action 
- * It keeps a list of html actions mapped to related commands
+ * The purpose of Command is to carry out an action It keeps a list of html
+ * actions mapped to related commands
  *
  * Pattern: Command
  *
@@ -15,12 +16,15 @@ import logic.LogicFacade;
  */
 public  class Command {
 
-    private  HashMap<String, Command> commands;
+    private HashMap<String, Command> commands;
 
-    private  void initCommands() {
+    private void initCommands() {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
-        commands.put( "register", new RegisterCommand() );
+        commands.put("register", new RegisterCommand());
+        commands.put("AddToCart", new AddToCartCommand());
+        commands.put("SubmitOrder", new SubmitOrderCommand());
+        commands.put("register", new RegisterCommand());
     }
 
     public Command from(HttpServletRequest request) {
@@ -31,11 +35,19 @@ public  class Command {
         return commands.getOrDefault(commandName, new UnknownCommand());
     }
 
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception{ //TODO make custom exception
-        return "";
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception { //TODO make custom exception
     }
-    
-    public LogicFacade getLogicFacade(){
+
+    public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/" + page + ".jsp");
+            rd.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public LogicFacade getLogicFacade() {
         return new LogicFacade();
     }
 }

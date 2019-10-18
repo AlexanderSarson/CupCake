@@ -7,25 +7,25 @@ package presentation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import logic.Bottom;
 import logic.LogicFacade;
-import logic.User;
+import logic.ShoppingCart;
+import logic.Topping;
 
 /**
  *
  * @author Alexander
  */
-public class LoginCommand extends Command{
+public class AddToCartCommand extends Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        Topping top = (Topping) request.getAttribute("topping");
+        Bottom bot = (Bottom) request.getAttribute("topping");
+        ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
         LogicFacade logicFacade = getLogicFacade();
-        User user = logicFacade.login(email, password);
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-        String page = "index";
+        logicFacade.addToShoppingCart(bot, top, cart);
+        String page = request.getContextPath().replaceAll(".jsp", "");
         forwardToPage(request, response, page);
     }
 }
