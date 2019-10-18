@@ -2,9 +2,13 @@ package persistence;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import logic.Account;
 import logic.Cupcake;
+import logic.Role;
 import logic.User;
 
 /**
@@ -12,19 +16,13 @@ import logic.User;
  * @author rando
  */
 public class StorageFacade {
-
     private final SQLConnection con = new SQLConnection();
     private PreparedStatement ps;
 
-    public User getAllUsers() {
-        String sql = "SELECT * FROM Users";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            con.selectQuery(ps);
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    private UserMapper userMapper = new UserMapper(con);
+
+    public ArrayList<User> getAllUsers() {
+        return userMapper.getAllUser();
     }
 
     public Cupcake getAllProducts() {
@@ -50,8 +48,12 @@ public class StorageFacade {
         return null;
     }
 
-    public boolean createUser(String name, String role) {
-
+    public void createUser(User user, Account account, String password) {
+        try {
+            userMapper.createUser(user,account,password);
+        } catch (UserCreationException e) {
+            // New exception? or keep throwing
+        }
     }
 
     public boolean updateUser(String name, String role, int id) {

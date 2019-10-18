@@ -19,7 +19,7 @@ public class User extends BaseEntity{
      * @param role The role of the user, {@link logic.Role}
      * @param account The account object of the user, {@link logic.Account}
      */
-    public User(long id, String name, String mail, Role role, Account account) {
+    public User(int id, String name, String mail, Role role, Account account) {
         super.id = id;
         this.name = name;
         this.mail = mail;
@@ -45,13 +45,13 @@ public class User extends BaseEntity{
      * Returns the id of the given user.
      * @return long-valued id of the user.
      */
-    public long getID() { return id;}
+    public int getID() { return id;}
 
     /**
      * Sets an id for the given user.
      * @param id The new id of the user.
      */
-    public void setID(long id) { this.id = id; }
+    public void setID(int id) { this.id = id; }
 
     /**
      * Gets the name of the user.

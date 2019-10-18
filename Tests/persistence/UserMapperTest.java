@@ -1,5 +1,6 @@
 package persistence;
 
+import logic.Account;
 import logic.Role;
 import logic.User;
 import net.bytebuddy.dynamic.scaffold.MethodRegistry;
@@ -65,5 +66,32 @@ public class UserMapperTest {
         assertEquals(1,user.getAccount().getId());
         assertEquals(1000,user.getAccount().getBalance());
         assertEquals(2, users.size());
+    }
+
+    @Test(expected = UserCreationException.class)
+    public void test_createUser_already_exists() throws SQLException, UserCreationException {
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+
+        mapper.createUser(user,acc,"test");
+    }
+
+    @Test(expected = UserCreationException.class)
+    public void test_createUser() throws SQLException, UserCreationException {
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(false).thenReturn(true);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+
+        mapper.createUser(user,acc,"test");
     }
 }
