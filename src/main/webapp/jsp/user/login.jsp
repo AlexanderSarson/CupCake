@@ -38,7 +38,7 @@
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: lock"></span>
-											<input class="uk-input uk-form-large" id="password" type="password" name="password" placeholder="Password" required>
+											<input class="uk-input uk-form-large" id="password" type="password" name="password" minlength="8" placeholder="Password" required>
 										</div>
 									</div>
 									<div class="uk-margin">
