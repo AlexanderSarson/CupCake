@@ -32,13 +32,13 @@
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: mail"></span>
-											<input class="uk-input uk-form-large" id="loginEmail" type="text" name="email">
+											<input class="uk-input uk-form-large" id="loginEmail" type="text" name="email" required>
 										</div>
 									</div>
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: lock"></span>
-											<input class="uk-input uk-form-large" id="loginPassword" type="password" name="password">
+											<input class="uk-input uk-form-large" id="loginPassword" type="password" name="password" required>
 										</div>
 									</div>
 									<div class="uk-margin">
