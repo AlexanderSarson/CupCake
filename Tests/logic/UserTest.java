@@ -27,7 +27,7 @@ public class UserTest {
 
     @Test
     public void test_setID() {
-        long id = 100;
+        int id = 100;
         user.setID(id);
         assertEquals(id,user.getID());
     }

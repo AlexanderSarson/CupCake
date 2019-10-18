@@ -43,17 +43,73 @@ public class UserMapper {
         return users;
     }
 
-    public boolean createUser(String name, String role) {
-        String sql = "INSERT INTO USERS(user_name, user_role) VALUES (?, ?)";
+    public void createUser(User user, Account account, String password) throws UserCreationException {
+        String sql = "select * from logins where login_mail = ?";
         try {
-            PreparedStatement ps;
-            ps = connection.getConnection().prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, role);
-            return connection.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setString(1,user.getMail());
+            ResultSet rs = connection.selectQuery(ps);
+            if(rs.next()) {
+                // If we already have a user with the given mail address.
+                throw new UserCreationException("User mail already exists in database");
+            } else {
+                // Begin transaction.
+                connection.getConnection().setAutoCommit(false);
+                try {
+                    // Insert into Users
+                    String userPrepare = "INSERT INTO Users(user_name,user_role) values(?,?)";
+                    PreparedStatement userPS = connection.getConnection().prepareStatement(userPrepare);
+                    userPS.setString(1, user.getName());
+                    userPS.setString(2, user.getRole().name());
+                    if(connection.executeQuery(userPS)) {
+                        throw new SQLException("Could not insert into users");
+                    }
+                    else {
+                        user.setID(lastID());
+                    }
+                    // Insert into Logins
+                    String loginPrepare = "INSERT INTO Logins(user_id, login_mail, login_password, login_salt) values (?,?,?,?)";
+                    PreparedStatement loginPS = connection.getConnection().prepareStatement(loginPrepare);
+                    loginPS.setInt(1,user.getID());
+                    loginPS.setString(2,user.getMail());
+                    loginPS.setString(3, password);
+                    loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
+                    if(connection.executeQuery(loginPS)) {
+                        throw new SQLException("Could not insert into login");
+                    }
+
+                    // Insert into Accounts
+                    String accountPrepare = "INSERT INTO Accounts(user_id,user_balance) values (?,?)";
+                    PreparedStatement accPS = connection.getConnection().prepareStatement(accountPrepare);
+                    accPS.setInt(1,user.getID());
+                    accPS.setInt(2,account.getBalance());
+                    if(connection.executeQuery(accPS)) {
+                        throw new SQLException("Could not insert into account");
+                    } else {
+                        account.setId(lastID());
+                    }
+                    // Commit all transactions
+                    connection.getConnection().commit();
+                } catch (SQLException ex) {
+                    // If anything goes wrong - rollback.
+                    connection.getConnection().rollback();
+                    throw new UserCreationException("User creation failed");
+                }
+                finally {
+                    // What ever happens set auto commit back to true.
+                    connection.getConnection().setAutoCommit(true);
+                }
+            }
+        } catch (SQLException e) {
+            throw new UserCreationException("User creation failed");
         }
-        return false;
+    }
+
+    private int lastID() throws SQLException {
+        PreparedStatement userIdPS = connection.getConnection().prepareStatement("select last_insert_id() as id");
+        ResultSet rs = connection.selectQuery(userIdPS);
+        rs.next();
+        return rs.getInt("id");
     }
 
 }

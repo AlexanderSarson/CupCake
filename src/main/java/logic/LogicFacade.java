@@ -10,6 +10,7 @@ import logic.ShoppingCart;
 import logic.Topping;
 import logic.User;
 import logic.Order;
+import persistence.StorageFacade;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 public class LogicFacade {
+    private StorageFacade storageFacade = new StorageFacade();
 
     public LogicFacade(){
 
@@ -57,6 +59,12 @@ public class LogicFacade {
 
     public void addFunds(User user, int amountToDeposit) throws IllegalArgumentException{
         if(amountToDeposit < 0) throw new IllegalArgumentException ("The amount must be a positive number");
+    }
+
+    public void createUser(String name, String mail, String password, Role role, int balance) {
+        Account account = new Account(-1,balance);
+        User user = new User(name,mail,role,account);
+        storageFacade.createUser(user,account,password);
     }
 
     public void updateUser(User user){
