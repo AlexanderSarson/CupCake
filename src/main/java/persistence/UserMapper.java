@@ -43,6 +43,14 @@ public class UserMapper {
         return users;
     }
 
+    public void deleteUser(long id){
+        String sql = "DELETE from Users WHERE id = ?";
+        try{
+            PreparedStatement ps = c
+        }
+    }
+
+
     public boolean createUser(String name, String role) {
         String sql = "INSERT INTO USERS(user_name, user_role) VALUES (?, ?)";
         try {
