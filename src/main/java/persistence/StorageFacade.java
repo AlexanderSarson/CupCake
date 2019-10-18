@@ -27,7 +27,7 @@ public class StorageFacade {
         return null;
     }
 
-    public Cupcake getAllProducts() {
+    public Cupcake getAllCupcakes() {
         String sql = "SELECT * FROM Cupcakes";
         try {
             ps = con.getConnection().prepareStatement(sql);
@@ -149,7 +149,7 @@ public class StorageFacade {
         //Update Cupcakes Topping id + Alle Bottom id
         //Update Cupcakes Bottom id + Alle Topping id
         return false;
-        
+
     }
 
     private String[] topOrBot(String validation) {
