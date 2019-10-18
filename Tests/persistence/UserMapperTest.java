@@ -41,18 +41,6 @@ public class UserMapperTest {
     public void setup() throws Exception {
     }
 
-    private static int i = 0;
-    public boolean mockNext() {
-        if(i == 0){
-            i++;
-            return true;
-        }
-        else {
-            i++;
-            return false;
-        }
-    }
-
     @Test
     public void test_getAllUsers() throws SQLException {
         // First and second time next() is called, it returns true, then it returns false.

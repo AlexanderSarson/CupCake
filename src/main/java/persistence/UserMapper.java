@@ -43,4 +43,17 @@ public class UserMapper {
         return users;
     }
 
+    public boolean createUser(String name, String role) {
+        String sql = "INSERT INTO USERS(user_name, user_role) VALUES (?, ?)";
+        try {
+            PreparedStatement ps;
+            ps = connection.getConnection().prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, role);
+            return connection.executeQuery(ps); //If sucsess <-True
+        } catch (SQLException ex) {
+        }
+        return false;
+    }
+
 }

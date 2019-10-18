@@ -51,16 +51,7 @@ public class StorageFacade {
     }
 
     public boolean createUser(String name, String role) {
-        String sql = "INSERT INTO USERS(user_name, user_role) VALUES (?, ?)";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, role);
-            return con.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+
     }
 
     public boolean updateUser(String name, String role, int id) {
