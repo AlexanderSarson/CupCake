@@ -7,6 +7,11 @@ public class Cupcake extends BaseEntity {
     private Bottom bottom;
     private Topping topping;
 
+    public Cupcake (Bottom bottom, Topping topping){
+        this.bottom=bottom;
+        this.topping=topping;
+    }
+
     public Cupcake(long id, Bottom bottom, Topping topping){
         this.bottom=bottom;
         this.topping=topping;
