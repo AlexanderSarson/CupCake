@@ -1,13 +1,12 @@
 package persistence;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,18 +17,23 @@ import java.util.logging.Logger;
 public class SQLConnection {
 
     private Connection connection;
-    private String jdbcURL = "jdbc:mysql://localhost:3306/CupCake?serverTimezone=UTC";
-    private String dbUser = "root";
-    private String dbPassword = "ngk99zag";
+    private PreparedStatement statement;
+    private final static String SERVERTIME = "serverTimezone=UTC";
 
     public SQLConnection() {
-        try {
+        try(FileInputStream fileInput = new FileInputStream("db.properties")) {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(SQLConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Properties properties = new Properties();
+            properties.load(fileInput);
+            String fileURL = properties.getProperty("url");
+            fileURL += "?"+SERVERTIME;
+            String fileUSER = properties.getProperty("user");
+            String filePASSWORD = properties.getProperty("password");
+            connection = DriverManager.getConnection(fileURL, fileUSER, filePASSWORD);
+            statement = connection.prepareStatement(fileURL);
+        } catch (IOException | ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
         }
-
     }
 
     public ResultSet selectQuery(PreparedStatement query) throws SQLException {
