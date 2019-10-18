@@ -62,9 +62,6 @@
   - Forward to invoice.jsp
 !!!
 
-
-
-
 !!! hint Pages 
 
 * index / landing / home
@@ -80,3 +77,21 @@
 * 
 
 !!!
+
+
+!!! hint LogicFacade
+```java
+  User login(Email, Password);
+  User newUser(String name, String email, String password);
+  ShoppingCart getShoppingCart();
+  List<Cupcake> getPremadeCupcakes();
+  void addToShoppingCart(Topping topping, Bottom bottom, ShoppingCart shoppingCart);
+  Order submitOrder(User user, ShoppingCart shoppingCart);
+  List<Order> getOrdersForUser(User user);
+  addFunds(User user, int amountToDeposit);
+  updateUser(User user);
+  
+```
+!!!
+
+
