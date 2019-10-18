@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logic.Cupcake;
+import logic.User;
 
 /**
  *
@@ -25,7 +27,7 @@ public class StorageFacade {
         return null;
     }
 
-    public Products getAllProducts() {
+    public Cupcake getAllProducts() {
         String sql = "SELECT * FROM Cupcakes";
         try {
             ps = con.getConnection().prepareStatement(sql);
@@ -36,7 +38,7 @@ public class StorageFacade {
         return null;
     }
 
-    public Products getProduct(int id) {
+    public Cupcake getProduct(int id) {
         String sql = "SELECT * FROM Cupcakes WHERE cupcake_id = ?";
         try {
             ps = con.getConnection().prepareStatement(sql);
