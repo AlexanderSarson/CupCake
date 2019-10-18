@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-	<title>Title</title>
+	<title>Login</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
 	<script src="${pageContext.request.contextPath}/js/script.js"></script>
@@ -27,18 +27,18 @@
 							<div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
 								<h3 class="uk-card-title uk-text-center">Welcome back!</h3>
 
-								<form name="loginForm" action="" method="post" onsubmit="return validateLogin()">
+								<form name="loginForm" action="#" method="post" onsubmit="event.preventDefault(); validateLogin();">
 									<input type="hidden" name="command" value="login">
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: mail"></span>
-											<input class="uk-input uk-form-large" id="loginEmail" type="text" name="email" required>
+											<input class="uk-input uk-form-large" id="email" type="email" name="email" placeholder="Email" required>
 										</div>
 									</div>
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: lock"></span>
-											<input class="uk-input uk-form-large" id="loginPassword" type="password" name="password" required>
+											<input class="uk-input uk-form-large" id="password" type="password" name="password" placeholder="Password" required>
 										</div>
 									</div>
 									<div class="uk-margin">
