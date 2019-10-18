@@ -35,20 +35,9 @@ public class SQLConnection {
         }
     }
 
-    public ArrayList<HashMap<String, String>> selectQuery(PreparedStatement query) {
-        ArrayList<HashMap<String, String>> result = new ArrayList<>();
+    public ResultSet selectQuery(PreparedStatement query) {
         try {
-            ResultSet rs = query.executeQuery();
-            ResultSetMetaData rsdm = rs.getMetaData();
-            while (rs.next()) {
-                HashMap<String, String> column = new HashMap<>();
-                for (int i = 1; i <= rsdm.getColumnCount(); i++) {
-                    String name = rsdm.getColumnLabel(i).toLowerCase();
-                    column.put(name, rs.getString(name));
-                }
-                result.add(column);
-            }
-            return result;
+            return query.executeQuery();
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
