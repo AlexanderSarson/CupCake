@@ -18,6 +18,11 @@ public class Cupcake extends BaseEntity {
 
     }
 
+    public int getPrice(){
+        int price = bottom.getPrice()+topping.getPrice();
+        return price;
+    }
+
     public Bottom getBottom() {
         return bottom;
     }

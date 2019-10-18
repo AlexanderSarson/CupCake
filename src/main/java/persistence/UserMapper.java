@@ -59,9 +59,13 @@ public class UserMapper {
 
 
     public void deleteUser(long id){
-        String sql = "DELETE from Users WHERE id = ?";
+        String sql = "DELETE from Users WHERE user_id = ?";
         try{
-            PreparedStatement ps = 
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setLong(1,id);
+            ps.executeUpdate();
+        } catch (SQLException ex){
+
         }
     }
 
