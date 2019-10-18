@@ -17,13 +17,13 @@ function validateAccountCreation() {
     var name = document.forms["createAccountForm"]["name"];
     var email = document.forms["createAccountForm"]["email"];
     var pass = document.forms["createAccountForm"]["password"];
-    var repeatPass = document.forms["createAccountForm"]["repeatPassword"];
+    var confirmPass = document.forms["createAccountForm"]["confirmPassword"];
     var errorContainer = document.getElementById("errorMessage");
 
     name.classList.remove("uk-form-danger");
     email.classList.remove("uk-form-danger");
     pass.classList.remove("uk-form-danger");
-    repeatPass.classList.remove("uk-form-danger");
+    confirmPass.classList.remove("uk-form-danger");
 
     // Validates that name is not empty
     if(name.value === "") {
@@ -63,22 +63,22 @@ function validateAccountCreation() {
     // Validates that password is at least 8 characters long
     if (pass.value.length < 8) {
         pass.classList.add("uk-form-danger");
-        repeatPass.classList.add("uk-form-danger");
+        confirmPass.classList.add("uk-form-danger");
         errorContainer.innerHTML = "Password has to be at least 8 characters long";
         return false;
     }
 
-    // Validates that repeat password is not empty
-    if(repeatPass.value === "") {
-        repeatPass.classList.add("uk-form-danger");
+    // Validates that confirm password is not empty
+    if(confirmPass.value === "") {
+        confirmPass.classList.add("uk-form-danger");
         errorContainer.innerHTML = "Please repeat the password";
         return false;
     }
 
-    // Validates that password and repeated password matches
-    if (pass.value !== repeatPass.value) {
+    // Validates that password and confirm password matches
+    if (pass.value !== confirmPass.value) {
         pass.classList.add("uk-form-danger");
-        repeatPass.classList.add("uk-form-danger");
+        confirmPass.classList.add("uk-form-danger");
         errorContainer.innerHTML = "Passwords does not match";
         return false;
     }
