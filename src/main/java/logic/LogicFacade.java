@@ -13,6 +13,11 @@ import logic.Order;
 
 import java.util.List;
 
+/**
+ * @author Oscar
+ * version 1.0
+ */
+
 
 public class LogicFacade {
 
