@@ -17,10 +17,10 @@ import org.mockito.Spy;
  * @author Alexander
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RegisterCommandTest {
+public class LoginCommandTest {
 
     @Spy
-    private RegisterCommand spyRegisterCommand;
+    private LoginCommand spyLoginCommand;
 
     @Mock
     private HttpServletRequest mockRequest;
@@ -38,16 +38,15 @@ public class RegisterCommandTest {
     private LogicFacade mockLogicFacade;
     
     @Test
-    public void testRegisterCommandExecute() throws Exception {
-        when(mockRequest.getParameter("name")).thenReturn("Joe");
+    public void testLoginCommandExecute() throws Exception {
         when(mockRequest.getParameter("email")).thenReturn("Joe@email.dk");
         when(mockRequest.getParameter("password")).thenReturn("password123");
         when(mockRequest.getSession()).thenReturn(mockSession);
-        when(spyRegisterCommand.getLogicFacade()).thenReturn(mockLogicFacade);
+        when(spyLoginCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
-        spyRegisterCommand.execute(mockRequest, mockResponse);
-        verify(spyRegisterCommand).forwardToPage(mockRequest, mockResponse, "index");
-        verify(mockLogicFacade).newUser("Joe", "Joe@email.dk", "password123");
+        spyLoginCommand.execute(mockRequest, mockResponse);
+        verify(spyLoginCommand).forwardToPage(mockRequest, mockResponse, "index");
+        verify(mockLogicFacade).login("Joe@email.dk", "password123");
         verify(mockSession).setAttribute(anyString(),any() );
     }
 

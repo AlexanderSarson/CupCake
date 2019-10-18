@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  *
  * @author Alexander
  */
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class FrontControllerTest {
     
