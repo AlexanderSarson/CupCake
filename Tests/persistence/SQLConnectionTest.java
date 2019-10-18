@@ -2,8 +2,6 @@ package persistence;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,15 +22,9 @@ import org.junit.Test;
  */
 public class SQLConnectionTest {
 
-    ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
-    private final static String user = "root";
-    private final static String password = "ngk99zag";
-    private final static String IP = "127.0.0.1";
-    private final static String PORT = "3306";
-    private final static String DATABASE = "CupCake";
-    private final static String serverTime = "serverTimezone=UTC";
-    private final static String url = "jdbc:mysql://" + IP + ":" + PORT + "/" + DATABASE + "?" + serverTime;
-    SQLConnection sqlcon;
+    private ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
+
+    private SQLConnection sqlcon = new SQLConnection();
 
     public ArrayList<String> scanFromFile(String filename) {
         ArrayList<String> lines = new ArrayList();
@@ -50,13 +42,11 @@ public class SQLConnectionTest {
 
     @Before
     public void setUp() {
-        try (
-                Connection conn = DriverManager.getConnection(url, user, password);
-                Statement stmt = conn.createStatement()) {
+        try {
+            Statement stmt = sqlcon.getConnection().createStatement();
             for (String sqlStatement : DBsetUp) {
                 stmt.executeUpdate(sqlStatement);
             }
-            sqlcon = new SQLConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
