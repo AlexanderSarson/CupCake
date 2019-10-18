@@ -12,15 +12,15 @@
     <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/uikit.min.css" />
-    <script src="js/uikit.min.js"></script>
-    <script src="js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
+    <script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
 
 </head>
 
 <body>
-    <%@ include file="jsp/nav.jsp" %>
+    <%@ include file="/jsp/nav.jsp" %>
 
     <div class="uk-container">
         <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
@@ -46,6 +46,33 @@
                     </td>
                 </tr>
             </c:forEach>
+
+            <%-- TODO Placeholders --%>
+            <tr>
+                <td>Topping</td>
+                <td>Bottom</td>
+                <td>$5</td>
+                <td class="uk-table-middle">
+                    <a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
+                        <span uk-icon="plus-circle" class="uk-icon"></span>
+                        <span>Add to Cart</span>
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Topping</td>
+                <td>Bottom</td>
+                <td>$5</td>
+                <td class="uk-table-middle">
+                    <a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
+                        <span uk-icon="plus-circle" class="uk-icon"></span>
+                        <span>Add to Cart</span>
+                    </a>
+                </td>
+            </tr>
+
+            <%-- Placeholders end --%>
             </tbody>
         </table>
     </div>
