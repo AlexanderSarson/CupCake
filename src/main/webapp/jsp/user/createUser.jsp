@@ -52,7 +52,11 @@
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: lock"></span>
+<<<<<<< HEAD
 										<input class="uk-input uk-form-large" id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm Password*">
+=======
+										<input class="uk-input uk-form-large" id="confirmPassword" type="password" name="conformPassword" placeholder="Confirm Password*">
+>>>>>>> Refac
 									</div>
 								</div>
 								<div class="uk-margin">
