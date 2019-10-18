@@ -11,10 +11,10 @@
 
 <head>
 	<title></title>
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/uikit.min.css"/>
-	<script src="js/uikit.min.js"></script>
-	<script src="js/uikit-icons.min.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css"/>
+	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
 
 </head>
 
@@ -25,7 +25,10 @@
 		<div class="nav-overlay uk-navbar-left">
 			<a class="uk-navbar-item uk-logo" href="home">Cupcake</a>
 			<ul class="uk-navbar-nav">
-				<li class="uk-active"><a href="home">Home</a></li>
+				<li class="uk-active"><a href="#">Home</a></li>
+				<li class="uk-active"><a href="#">About us</a></li>
+				<li class="uk-active"><a href="#">Shop</a></li>
+				<li class="uk-active"><a href="3">Contact</a></li>
 			</ul>
 		</div>
 
@@ -42,6 +45,7 @@
 									<li><a href="#">Logout</a></li>
 								</c:when>
 								<c:otherwise>
+									<%-- TODO Login Form--%>
 									<li><a href="#">No User</a></li>
 								</c:otherwise>
 							</c:choose>
