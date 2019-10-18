@@ -15,8 +15,9 @@ public class Topping extends BaseEntity{
     private String name;
 
     public Topping(int price, String name) throws IllegalArgumentException{
-
-        this.price = price;
+        if(price<0)throw new IllegalArgumentException("Price must be a positive number");
+        else
+            this.price = price;
         this.name = name;
     }
 
@@ -49,7 +50,10 @@ public class Topping extends BaseEntity{
      * This method sets the price of the topping project
      * @param price
      */
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(int price) throws IllegalArgumentException {
+        if(price<0)
+            throw new IllegalArgumentException("Price must be a positive value");
+        else
+            this.price = price;
     }
 }

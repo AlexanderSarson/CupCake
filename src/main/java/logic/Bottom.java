@@ -16,9 +16,9 @@ public class Bottom extends BaseEntity{
     private String name;
 
     public Bottom (int price, String name ) throws IllegalArgumentException{
-        this.price=price;
-        if (price < 0) throw new IllegalArgumentException("Price must be a positive value");
+        if (price < 0) throw new IllegalArgumentException("Price must be a positive number");
         else
+            this.price=price;
             this.name=name;
     }
 
