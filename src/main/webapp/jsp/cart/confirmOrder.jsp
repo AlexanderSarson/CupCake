@@ -21,7 +21,6 @@
 
 			<div class="uk-card-body">
 				<c:set var="orderTotal" value="0"/>
-
 				<c:forEach items="${sessionScope.order.getOrderItems()}" var="item">
 					<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }"/>
 
@@ -59,6 +58,77 @@
 						</div>
 					</div>
 				</c:forEach>
+
+			<%-- TODO Placeholders --%>
+				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+					<div>
+						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+							<div>image</div>
+							<div>
+								<a class="uk-link-heading" href="#">Vanilla</a>
+								<div>
+									<a class="uk-link-heading uk-text-muted uk-text-small" href="#">Chocolate topping</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="uk-child-width-1-4 uk-text-center" uk-grid>
+							<div>
+								<div>$20</div>
+							</div>
+							<div>
+								<div>1</div>
+							</div>
+							<div>
+								<div> $20 </div>
+							</div>
+							<div>
+								<div>
+									<a href="${pageContext.request.contextPath}/checkout?&action=deleteItem&id=${item.getBook().getId()}">
+										<span uk-icon="minus-circle" class="uk-icon"></span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+					<div>
+						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+							<div>image</div>
+							<div>
+								<a class="uk-link-heading" href="#">Chocolate</a>
+								<div>
+									<a class="uk-link-heading uk-text-muted uk-text-small" href="#">Vanilla topping</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="uk-child-width-1-4 uk-text-center" uk-grid>
+							<div>
+								<div>$20</div>
+							</div>
+							<div>
+								<div>1</div>
+							</div>
+							<div>
+								<div> $20 </div>
+							</div>
+							<div>
+								<div>
+									<a href="${pageContext.request.contextPath}/checkout?&action=deleteItem&id=${item.getBook().getId()}">
+										<span uk-icon="minus-circle" class="uk-icon"></span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<%-- Placeholders end--%>
+
 			</div>
 			<div class="uk-card-footer">
 				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
@@ -80,7 +150,7 @@
 								<div></div>
 							</div>
 							<div>
-								<div>$${orderTotal}</div>
+								<div>$40</div>
 							</div>
 							<div>
 								<div>
