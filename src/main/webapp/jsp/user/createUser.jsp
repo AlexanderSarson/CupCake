@@ -52,7 +52,7 @@
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: lock"></span>
-										<input class="uk-input uk-form-large" id="repeatPassword" type="password" name="repeatPassword" placeholder="Repeat Password*">
+										<input class="uk-input uk-form-large" id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm Password*">
 									</div>
 								</div>
 								<div class="uk-margin">
