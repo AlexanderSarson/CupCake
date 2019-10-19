@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentation;
 
 import javax.servlet.RequestDispatcher;
@@ -10,23 +5,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  *
  * @author Alexander
  */
-@Ignore
+
 @RunWith(MockitoJUnitRunner.class)
 public class FrontControllerTest {
     
-    @InjectMocks
-    private FrontController injectFrontController;
-    
+    @Spy
+    private FrontController spyFrontController;
     @Mock
     private HttpServletRequest mockRequest;
 
@@ -34,10 +30,10 @@ public class FrontControllerTest {
     private HttpServletResponse mockResponse;
     
     @Mock
-    private Command mockCommand;
+   private Command mockCommand;
     
     @Mock
-    private RequestDispatcher mockRequestDIspatcher;
+    private RequestDispatcher mockRequestDispatcher;
       
 
     /**
@@ -45,32 +41,9 @@ public class FrontControllerTest {
      */
     @Test
     public void testProcessRequest() throws Exception {
-        System.out.println("processRequest");
-        HttpServletRequest request = null;
-        HttpServletResponse response = null;
-        FrontController instance = new FrontController();
-        instance.processRequest(request, response);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        when(spyFrontController.getCommand()).thenReturn(mockCommand);
+        when(mockCommand.from(mockRequest)).thenReturn(mockCommand);
+        spyFrontController.processRequest(mockRequest,mockResponse);
+        verify(mockCommand).execute(mockRequest,mockResponse);
     }
-
-    /**
-     * Test of getCommand method, of class FrontController.
-     */
-    @Test
-    public void testGetCommand() {
-        System.out.println("getCommand");
-        FrontController instance = new FrontController();
-        Command expResult = null;
-        Command result = instance.getCommand();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-
-
-
-
-    
 }
