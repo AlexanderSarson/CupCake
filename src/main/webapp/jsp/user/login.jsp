@@ -11,10 +11,10 @@
 	<title>Login</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
-	<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/validationScript.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/validationScript.js"></script>
 </head>
 <body>
 	<%@include file="/jsp/nav.jsp"%>

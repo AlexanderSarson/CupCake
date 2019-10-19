@@ -8,7 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-	<title></title>
+	<title>Confirm Order</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css"/>
+	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
 </head>
 <body>
 	<%@include file="/jsp/nav.jsp"%>
