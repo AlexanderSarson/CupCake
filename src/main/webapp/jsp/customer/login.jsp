@@ -9,32 +9,36 @@
 <html>
 <head>
 	<title>Title</title>
-	<link rel="stylesheet" href="/css/style.css">
-	<link rel="stylesheet" href="/css/uikit.min.css" />
-	<script src="/js/uikit.min.js"></script>
-	<script src="/js/uikit-icons.min.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
+	<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </head>
 <body>
 	<%@include file="/jsp/nav.jsp"%>
 
-		<div class="uk-section uk-section-muted uk-flex uk-animation-fade" uk-height-viewport>
+		<div class="uk-section uk-flex uk-animation-fade" uk-height-viewport>
 			<div class="uk-width-1-1">
 				<div class="uk-container">
 					<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
 						<div class="uk-width-1-1@m">
 							<div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
 								<h3 class="uk-card-title uk-text-center">Welcome back!</h3>
-								<form action="login" method="post">
+
+								<form name="loginForm" action="" method="post" onsubmit="return validateLogin()">
+									<input type="hidden" name="command" value="login">
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: mail"></span>
-											<input class="uk-input uk-form-large" type="text" name="email">
+											<input class="uk-input uk-form-large" id="loginEmail" type="text" name="email" required>
 										</div>
 									</div>
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
 											<span class="uk-form-icon" uk-icon="icon: lock"></span>
-											<input class="uk-input uk-form-large" type="password" name="password">
+											<input class="uk-input uk-form-large" id="loginPassword" type="password" name="password" required>
 										</div>
 									</div>
 									<div class="uk-margin">
@@ -42,13 +46,14 @@
 									</div>
 									<div class="uk-text-small uk-text-center">
 										<c:if test="${requestScope.error != null}">
-											<c:out value="${requestScope.error}"/>
+											<h4><c:out value="${requestScope.error}"/></h4>
 										</c:if>
 									</div>
 									<div class="uk-text-small uk-text-center uk-margin-small-top">
 										Not registered? <a href="#">Create an account</a>
 									</div>
 								</form>
+
 							</div>
 						</div>
 					</div>
