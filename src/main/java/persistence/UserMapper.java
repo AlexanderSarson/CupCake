@@ -59,15 +59,56 @@ public class UserMapper {
 
 
 
-    public void deleteUser(long id){
-        String sql = "DELETE from Users WHERE user_id = ?";
-        try{
+    public void deleteUser(long id) throws IllegalArgumentException {
+        String sql = "select * from Users WHERE user_id = ?";
+        try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ps.setLong(1,id);
-            ps.executeUpdate();
-        } catch (SQLException ex){
+            ps.setLong(1, id);
+            ResultSet rs = connection.selectQuery(ps);
+            if (!rs.next()) {
+                throw new IllegalArgumentException("User doesn't exist in database");
+            } else {
+                connection.getConnection().setAutoCommit(false);
+                try {
+                    //Delete from logins
+                    String deleteLogin = "DELETE * from logins WHERE user_id = ?";
+                    PreparedStatement loginPS = connection.getConnection().prepareStatement(deleteLogin);
+                    loginPS.setLong(1, id);
+                    //Need an explanation on the below if statement
+                    if (connection.executeQuery(loginPS)) {
+                        throw new SQLException("User login could not be deleted");
 
-        }
+                    }
+                    //Delete from accounts
+                    String deleteAccount = "DELETE * from accounts where user_id = ?";
+                    PreparedStatement accountPS = connection.getConnection().prepareStatement(deleteAccount);
+                    accountPS.setLong(1, id);
+                    if (connection.executeQuery(accountPS)) {
+                        throw new SQLException("User account could not be deleted");
+                    }
+                    //Delete from users
+                    String deleteUser = "DELETE * from users WHERE user_ID = ?";
+                    PreparedStatement userPS = connection.getConnection().prepareStatement(deleteUser);
+                    userPS.setLong(1, id);
+                    if (connection.executeQuery(userPS)) {
+                        throw new SQLException("User could not be deleted");
+                    }
+                    //Commit all transactions
+                    connection.getConnection().commit();
+                } catch (SQLException ex) {
+                    connection.getConnection().rollback();
+                    //What exception has to be thrown??
+                    throw new IllegalArgumentException("User could not be deleted");
+                } finally {
+                    connection.getConnection().setAutoCommit(true);
+                }
+            }
+
+        }catch (SQLException e){
+                //Again, what exception do we throw?
+            throw new IllegalArgumentException("User could not be deleted");
+
+            }
     }
 
 
