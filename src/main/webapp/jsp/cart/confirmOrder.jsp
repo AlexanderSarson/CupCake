@@ -53,7 +53,7 @@
 								</div>
 								<div>
 									<div>
-										<a href="${pageContext.request.contextPath}/checkout?&action=deleteItem&id=${item.getBook().getId()}">
+										<a href="${pageContext.request.contextPath}/FrontController?&command=removeFromCart&topping=${item.getTopping}&bottom=${item.getBottom}">
 											<span uk-icon="minus-circle" class="uk-icon"></span>
 										</a>
 									</div>

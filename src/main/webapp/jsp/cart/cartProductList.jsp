@@ -39,7 +39,7 @@
 				<div>$${lineItem.getPrice()}</div>
 				<div class="uk-width-auto">
 					<div style="width: 20px;">
-						<a href="${pageContext.request.contextPath}/cart?&action=remove&id=${lineItem.getCupcake().getId()}">
+						<a href="${pageContext.request.contextPath}/FrontController?&command=removeFromCart&topping=${lineItem.getTopping}&bottom=${lineItem.getBottom}">
 							<span uk-icon="minus-circle" class="uk-icon"></span>
 						</a>
 					</div>
