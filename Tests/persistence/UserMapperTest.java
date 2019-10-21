@@ -3,7 +3,6 @@ package persistence;
 import logic.Account;
 import logic.Role;
 import logic.User;
-import net.bytebuddy.dynamic.scaffold.MethodRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
