@@ -55,4 +55,16 @@ public class SQLConnection {
     public Connection getConnection() {
         return connection;
     }
+
+    /**
+     * Returns the last created ID.
+     * @return The id of the last created entry.
+     * @throws SQLException If anything goes wrong when trying to get the last created ID.
+     */
+    public int lastID() throws SQLException {
+        PreparedStatement userIdPS = this.getConnection().prepareStatement("select last_insert_id() as id");
+        ResultSet rs = this.selectQuery(userIdPS);
+        rs.next();
+        return rs.getInt("id");
+    }
 }

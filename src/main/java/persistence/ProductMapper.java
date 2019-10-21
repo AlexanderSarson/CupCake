@@ -62,7 +62,30 @@ public class ProductMapper {
 
 
     public void createTop(Topping top) {
-        
+        String sql = "SELECT * FROM Toppings where topping_name = ?";
+        try {
+            PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+            statement.setString(1,top.getName());
+            ResultSet rs = connection.selectQuery(statement);
+            if(rs.next()){
+                // There should not be a topping with the same name.
+            }
+            else {
+                sql = "INSERT INTO Toppings (topping_name, topping_price) VALUES (?,?)";
+                statement = connection.getConnection().prepareStatement(sql);
+                statement.setString(1,top.getName());
+                statement.setInt(2, top.getPrice());
+                if(connection.executeQuery(statement)) {
+                    int id = connection.lastID();
+                    top.setId(id);
+                }
+                else {
+                    // We could not create the top.
+                }
+            }
+        } catch (SQLException e) {
+
+        }
     }
 
 
