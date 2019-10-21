@@ -51,14 +51,14 @@ public class RemoveFromCartTest {
     @Test
     public void testRemoveFromCartCommandExecute() throws Exception {
         when(mockRequest.getAttribute("topping")).thenReturn(mockTopping);
-        when(mockRequest.getAttribute("bottom")).thenReturn(mockTopping);
+        when(mockRequest.getAttribute("bottom")).thenReturn(mockBottom);
         when(mockRequest.getAttribute("shoppingcart")).thenReturn(mockShoppingCart);
         when(mockRequest.getContextPath()).thenReturn("showCart.jsp");
         when(spyRemoveFromCartCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyRemoveFromCartCommand.execute(mockRequest, mockResponse);
         verify(spyRemoveFromCartCommand).forwardToPage(mockRequest, mockResponse, "showCart");
-        verify(mockLogicFacade).removeFromShoppingCart(mockBottom, mockTopping, mockShoppingCart);
+        verify(mockLogicFacade).removeFromShoppingcart(mockTopping, mockBottom, mockShoppingCart);
 
     }
 }
