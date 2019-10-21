@@ -15,23 +15,24 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css"/>
 	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
-
 </head>
 
 <body>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <nav class="uk-navbar-container uk-sticky">
 	<div class="uk-container uk-navbar">
 		<div class="nav-overlay uk-navbar-left">
-			<a class="uk-navbar-item uk-logo" href="home">Cupcake</a>
+			<a class="uk-navbar-item uk-logo" href="${contextPath}/FrontController?&command=redirect&target=index">Cupcake</a>
 			<ul class="uk-navbar-nav">
 				<li class="uk-active">
-					<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=index">Home</a>
+					<a href="${contextPath}/FrontController?&command=redirect&target=index">Home</a>
 				</li>
 				<li>
 					<a href="#">About us</a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=shop">Shop</a>
+					<a href="${contextPath}/FrontController?&command=redirect&target=shop">Shop</a>
 				</li>
 				<li>
 					<a href="#">Contact</a>
@@ -48,76 +49,32 @@
 							<c:choose>
 								<c:when test="${sessionScope.user != null}">
 									<li>
-										<form id="customerPageButton" action="FrontController" method="get">
-											<input name="command" value="redirect" type="hidden">
-											<input name="target" value="user/showUser.jsp" type="hidden">
-											<button class="uk-button uk-button-default uk-button-small" type="submit">Customer Page</button>
-										</form>
+										<a href="${contextPath}/FrontController?&command=redirect&target=showUser">My Page</a>
 									</li>
 									<li class="uk-nav-divider"></li>
 									<li>
-										<form id="logoutButton" action="FrontController" method="get">
-											<input name="command" value="logout" type="hidden">
-											<button class="uk-button uk-button-default uk-button-small" type="submit">Logout</button>
-										</form>
+										<a href="${contextPath}/FrontController?&command=logout">Logout</a>
 									</li>
 								</c:when>
+
 								<c:otherwise>
-									<form name="loginForm" action="FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
-										<input type="hidden" name="command" value="login">
-										<div class="uk-margin">
-											<div class="uk-inline uk-width-1-1">
-												<span class="uk-form-icon" uk-icon="icon: mail"></span>
-												<input class="uk-input uk-form-large" id="email" type="email" name="email" placeholder="Email" required>
-											</div>
-										</div>
-										<div class="uk-margin">
-											<div class="uk-inline uk-width-1-1">
-												<span class="uk-form-icon" uk-icon="icon: lock"></span>
-												<input class="uk-input uk-form-large" id="password" type="password" name="password" minlength="8" placeholder="Password" required>
-											</div>
-										</div>
-										<div class="uk-margin">
-											<button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Login</button>
-										</div>
-										<div class="uk-text-small uk-text-center">
-											<c:if test="${requestScope.error != null}">
-												<h4><c:out value="${requestScope.error}"/></h4>
-											</c:if>
-										</div>
-										<div class="uk-text-small uk-text-center uk-margin-small-top">
-											Not registered? <a href="#">Create an account</a>
-										</div>
-									</form>
+									<%@include file="user/loginForm.jsp"%>
 								</c:otherwise>
 							</c:choose>
 						</ul>
 					</div>
 				</li>
 				<li>
-					<a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
-				</li>
-				<li>
 					<a href="#offcanvas-usage" uk-toggle>
 						<span uk-icon="cart" class="uk-icon"></span>
-						<c:set var="booksInCart" value="0"/>
+						<c:set var="productsInCart" value="0"/>
 						<c:if test="${sessionScope.cart != null}">
-							<c:set var="booksInCart" value="${sessionScope.cart.size()}"/>
+							<c:set var="productsInCart" value="${sessionScope.cart.size()}"/>
 						</c:if>
-						<span class="uk-badge"> <c:out value="${booksInCart}"/> </span>
+						<span class="uk-badge"> <c:out value="${productsInCart}"/> </span>
 					</a>
 				</li>
 			</ul>
-		</div>
-
-		<div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
-			<div class="uk-navbar-item uk-width-expand">
-				<form class="uk-search uk-search-navbar uk-width-1-1" action="search" method="get">
-					<input class="uk-search-input" name="search" type="search" placeholder="Search..." autofocus>
-				</form>
-			</div>
-			<a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade"
-			   href="#"></a>
 		</div>
 
 		<div id="offcanvas-usage" uk-offcanvas="overlay: true; flip: true">
@@ -128,9 +85,11 @@
 				<h3>Cart</h3>
 
 				<c:choose>
+
 					<c:when test="${sessionScope.cart == null || sessionScope.cart.isEmpty()}">
 						<h4>Your shopping cart is empty. Start shopping!</h4>
 					</c:when>
+
 					<c:when test="${sessionScope.cart != null}">
 						<table class="uk-table uk-table-middle uk-table-striped uk-table-hover ">
 							<thead>
@@ -156,10 +115,12 @@
 						</table>
 
 						<div class="uk-button-group">
-							<a href="cart" uk-icon="cart" class="uk-button uk-button-default"> View Cart </a>
-							<a href="#" uk-icon="cart" class="uk-button uk-button-primary"> Checkout </a>
+							<a href="${contextPath}/FrontController?&command=redirect&target=showCart" uk-icon="cart" class="uk-button uk-button-default"> View Cart </a>
+							<a href="${contextPath}/FrontController?&command=redirect&target=confirmOrder" uk-icon="cart" class="uk-button uk-button-primary"> Checkout </a>
 						</div>
+
 					</c:when>
+
 				</c:choose>
 
 			</div>
