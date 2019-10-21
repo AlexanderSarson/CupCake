@@ -11,14 +11,13 @@
 	<title>Create User</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
-	<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/validationScript.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/validationScript.js"></script>
 </head>
 <body>
 	<%@include file="/jsp/nav.jsp"%>
-
 
 	<div class="uk-section uk-flex uk-animation-fade" uk-height-viewport>
 		<div class="uk-width-1-1">
@@ -30,7 +29,7 @@
 							<h3 class="uk-card-title uk-text-center">Create Account</h3>
 
 							<form name="createAccountForm" action="#" method="post" onsubmit="event.preventDefault(); validateAccountCreation();">
-								<input type="hidden" name="command" value="login">
+								<input type="hidden" name="command" value="createUser">
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: user"></span>
