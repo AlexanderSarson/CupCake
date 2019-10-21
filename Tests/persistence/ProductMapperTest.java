@@ -11,23 +11,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import logic.Role;
+import java.util.ArrayList;
 import logic.Topping;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import javax.inject.Inject;
+import logic.Cupcake;
 
 import static org.junit.Assert.assertEquals;
+import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  *
  * @author rando, Benjamin
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProductMapperTest {
     @InjectMocks
     private ProductMapper productMapper;
@@ -38,13 +41,36 @@ public class ProductMapperTest {
     @Mock
     private SQLConnection sqlConnection;
     @Mock
-    Connection connection;
+    private Connection connection;
 
     @Test
     public void test_getAllProducts() throws SQLException, ProductException{
         //First and 2'nd time next() is called, it returns true, the third time false
-        when(resSet.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
+        when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(resSet.getInt("topping_id")).thenReturn(1);
+        when(resSet.getInt("topping_price")).thenReturn(5);
+        when(resSet.getString("topping_name")).thenReturn("testTopName");
+        when(resSet.getString("topping_picture")).thenReturn("testTopPic");
+        when(resSet.getInt("bottom_id")).thenReturn(1);
+        when(resSet.getInt("bottom_price")).thenReturn(5);
+        when(resSet.getString("bottom_name")).thenReturn("testBotName");
+        when(resSet.getString("bottom_picture")).thenReturn("testBotPic");
         
+        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        
+        ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
+        Cupcake cupcake = cupcakes.get(0);
+        assertEquals(1, cupcake.getBottom().getId());
+        assertEquals(1, cupcake.getTopping().getId());
+        assertEquals(10, cupcake.getPrice());
+        assertEquals("testTopName", cupcake.getTopping().getName());
+        assertEquals("testBotName", cupcake.getBottom().getName());
+        //assertEquals("testTopPic", cupcake.getTopping().getPicture());
+        //assertEquals("testBotPic", cupcake.getBottom().getPicture());
+        assertEquals(5, cupcake.getBottom().getPrice());
+        assertEquals(5, cupcake.getTopping().getPrice());
     }
 
     @Test
