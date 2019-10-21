@@ -20,7 +20,7 @@ public class StorageFacade {
 
     private UserMapper userMapper = new UserMapper(con);
 
-    public ArrayList<User> getAllUsers() {
+    public ArrayList<User> getAllUsers() throws UserException {
         return userMapper.getAllUser();
     }
 
