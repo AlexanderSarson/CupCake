@@ -28,8 +28,9 @@
 
 							<h3 class="uk-card-title uk-text-center">Create Account</h3>
 
-							<form name="createAccountForm" action="#" method="post" onsubmit="event.preventDefault(); validateAccountCreation();">
-								<input type="hidden" name="command" value="createUser">
+							<form name="createAccountForm" action="FrontController" method="post" onsubmit="event.preventDefault(); validateAccountCreation();">
+								<input type="hidden" name="command" value="register">
+
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -39,7 +40,7 @@
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: mail"></span>
-										<input class="uk-input uk-form-large" id="email" type="text" name="text" placeholder="Email*">
+										<input class="uk-input uk-form-large" id="email" type="text" name="email" placeholder="Email*">
 									</div>
 								</div>
 								<div class="uk-margin">
@@ -55,7 +56,7 @@
 									</div>
 								</div>
 								<div class="uk-margin">
-									<button id="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Create account</button>
+									<button id="submitBtn" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Create account</button>
 								</div>
 								<div class="uk-text-small uk-text-center">
 									<p id="errorMessage" style="color: #DC143C"></p>

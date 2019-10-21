@@ -43,7 +43,7 @@
 		<div class="nav-overlay uk-navbar-right">
 			<ul class="uk-navbar-nav">
 				<li>
-					<a uk-icon="user"></a>
+					<a uk-icon="user" id="userNav"></a>
 					<div uk-dropdown>
 						<ul class="uk-nav uk-dropdown-nav">
 							<c:choose>
