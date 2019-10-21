@@ -59,8 +59,9 @@ public class UserMapper {
     /**
      * Gets all registered users.
      * @return A list of all Users, as user objects.
+     * @throws UserException if an error occurs when fetching all users.
      */
-    public ArrayList<User> getAllUser() {
+    public ArrayList<User> getAllUser() throws UserException {
         ArrayList<User> users = new ArrayList<>();
         String sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
         try {
@@ -71,8 +72,7 @@ public class UserMapper {
                 users.add(user);
             }
         } catch (SQLException e) {
-            // TODO(Benjamin): Make sure that we are handling these types of exceptions, perhaps throw a custom type exception.
-            e.printStackTrace();
+            throw new UserException("Error fetching users");
         }
         return users;
     }
