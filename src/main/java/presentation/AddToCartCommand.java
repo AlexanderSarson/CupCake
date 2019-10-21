@@ -5,12 +5,13 @@
  */
 package presentation;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import logic.Bottom;
 import logic.LogicFacade;
 import logic.ShoppingCart;
 import logic.Topping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -21,7 +22,7 @@ public class AddToCartCommand extends Command{
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Topping top = (Topping) request.getAttribute("topping");
-        Bottom bot = (Bottom) request.getAttribute("topping");
+        Bottom bot = (Bottom) request.getAttribute("bottom");
         ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
         LogicFacade logicFacade = getLogicFacade();
         logicFacade.addToShoppingCart(bot, top, cart);
