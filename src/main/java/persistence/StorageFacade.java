@@ -21,7 +21,7 @@ public class StorageFacade {
     private UserMapper userMapper = new UserMapper(con);
     private ProductMapper productMapper = new ProductMapper(con);
 
-    public ArrayList<User> getAllUsers() {
+    public ArrayList<User> getAllUsers() throws UserException {
         return userMapper.getAllUser();
     }
 
@@ -30,15 +30,7 @@ public class StorageFacade {
     }
 
     public Cupcake getProduct(int id) {
-        String sql = "SELECT * FROM Cupcakes WHERE cupcake_id = ?";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
-            con.selectQuery(ps);
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        return productMapper.getProductFromID(id);
     }
 
     public void createUser(User user, Account account, String password) {

@@ -6,18 +6,15 @@
 
 package persistence;
 
-import java.sql.SQLException;
-import org.junit.Test;
-
 /**
  *
  * @author rando
  */
 
-public class ProductMapperTest {
+public class ProductException extends Exception {
 
-    @Test
-    public void test_getAllProducts() throws SQLException, ProductException{
-        
+    public ProductException(String s) {
+        super(s);
     }
+
 }

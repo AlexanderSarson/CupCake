@@ -40,7 +40,7 @@ public class UserMapperTest {
     }
 
     @Test
-    public void test_getAllUsers() throws SQLException {
+    public void test_getAllUsers() throws SQLException, UserException {
         // First and second time next() is called, it returns true, then it returns false.
         when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resSet.getInt("user_id")).thenReturn(1);
