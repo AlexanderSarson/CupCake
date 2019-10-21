@@ -4,7 +4,6 @@ import logic.BaseEntity;
 import logic.Bottom;
 import logic.Cupcake;
 import logic.LineItem;
-import logic.LogicFacade;
 import logic.Role;
 import logic.ShoppingCart;
 import logic.Topping;
