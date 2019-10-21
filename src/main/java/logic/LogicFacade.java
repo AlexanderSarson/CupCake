@@ -29,7 +29,6 @@ public class LogicFacade {
 
     public User login(String email, String password){
         return null;
-
     }
 
     public User newUser(String name, String email, String password){

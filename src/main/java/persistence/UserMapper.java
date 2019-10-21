@@ -10,19 +10,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ * The purpose of the class is to map user objects to dabase information, and database information back to User Objects.
+ * The holds all CRUD operations regarding Users.
  * @author Oscar, Benjamin
  * version 1.0
  */
-
 public class UserMapper {
     private SQLConnection connection;
     public UserMapper(SQLConnection connection) {
         this.connection = connection;
     }
 
-    public User login(String mail, String password) {
+    /**
+     * Validates the users, is a registered user, using mail and password.
+     * @param mail The mail of the user
+     * @param password The password for the user.
+     * @return If the user is able to login, the user object is returned. Returns null if the information is associated with a user.
+     * @throws UserException if a user could not be found, or if there was an error when validating the user.
+     */
+    public User login(String mail, String password) throws UserException {
         User user = null;
-
         String sql = "select user_id from logins where login_mail = ? and where login_password = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
@@ -41,12 +48,20 @@ public class UserMapper {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new UserException("Error validating user");
         }
-        return user;
+        if(user == null)
+            throw new UserException("User could not be validated");
+        else
+            return user;
     }
 
-    public ArrayList<User> getAllUser() {
+    /**
+     * Gets all registered users.
+     * @return A list of all Users, as user objects.
+     * @throws UserException if an error occurs when fetching all users.
+     */
+    public ArrayList<User> getAllUser() throws UserException {
         ArrayList<User> users = new ArrayList<>();
         String sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
         try {
@@ -57,21 +72,24 @@ public class UserMapper {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new UserException("Error fetching users");
         }
         return users;
     }
 
-
-
-    public void deleteUser(long id) throws IllegalArgumentException {
+    /**
+     * Deletes a given user from the database.
+     * @param id The ID of the user, to be deleted.
+     * @throws IllegalArgumentException If the user does not exist in the database.
+     */
+    public void deleteUser(long id) throws UserException {
         String sql = "select * from Users WHERE user_id = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
             ps.setLong(1, id);
             ResultSet rs = connection.selectQuery(ps);
             if (!rs.next()) {
-                throw new IllegalArgumentException("User doesn't exist in database");
+                throw new UserException("User doesn't exist in database");
             } else {
                 connection.getConnection().setAutoCommit(false);
                 try {
@@ -79,8 +97,7 @@ public class UserMapper {
                     String deleteLogin = "DELETE * from logins WHERE user_id = ?";
                     PreparedStatement loginPS = connection.getConnection().prepareStatement(deleteLogin);
                     loginPS.setLong(1, id);
-                    //Need an explanation on the below if statement
-                    if (connection.executeQuery(loginPS)) {
+                    if (!connection.executeQuery(loginPS)) {
                         throw new SQLException("User login could not be deleted");
 
                     }
@@ -88,36 +105,38 @@ public class UserMapper {
                     String deleteAccount = "DELETE * from accounts where user_id = ?";
                     PreparedStatement accountPS = connection.getConnection().prepareStatement(deleteAccount);
                     accountPS.setLong(1, id);
-                    if (connection.executeQuery(accountPS)) {
+                    if (!connection.executeQuery(accountPS)) {
                         throw new SQLException("User account could not be deleted");
                     }
                     //Delete from users
                     String deleteUser = "DELETE * from users WHERE user_ID = ?";
                     PreparedStatement userPS = connection.getConnection().prepareStatement(deleteUser);
                     userPS.setLong(1, id);
-                    if (connection.executeQuery(userPS)) {
+                    if (!connection.executeQuery(userPS)) {
                         throw new SQLException("User could not be deleted");
                     }
                     //Commit all transactions
                     connection.getConnection().commit();
                 } catch (SQLException ex) {
                     connection.getConnection().rollback();
-                    //What exception has to be thrown??
-                    throw new IllegalArgumentException("User could not be deleted");
+                    throw new UserException("User could not be deleted");
                 } finally {
                     connection.getConnection().setAutoCommit(true);
                 }
             }
-
         }catch (SQLException e){
-                //Again, what exception do we throw?
-            throw new IllegalArgumentException("User could not be deleted");
-
-            }
+            throw new UserException("User could not be deleted");
+        }
     }
 
-
-    public void createUser(User user, Account account, String password) throws UserCreationException {
+    /**
+     * Creates a user, using transactions such that if anything goes wrong nothing is committed.
+     * @param user The user to be created.
+     * @param account The account associated with the given user.
+     * @param password The password associated with the user & account.
+     * @throws UserException If anything goes wrong during creation, a UserException will be thrown.
+     */
+    public void createUser(User user, Account account, String password) throws UserException {
         String sql = "select * from logins where login_mail = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
@@ -125,7 +144,7 @@ public class UserMapper {
             ResultSet rs = connection.selectQuery(ps);
             if(rs.next()) {
                 // If we already have a user with the given mail address.
-                throw new UserCreationException("User mail already exists in database");
+                throw new UserException("User mail already exists in database");
             } else {
                 // Begin transaction.
                 connection.getConnection().setAutoCommit(false);
@@ -135,7 +154,7 @@ public class UserMapper {
                     PreparedStatement userPS = connection.getConnection().prepareStatement(userPrepare);
                     userPS.setString(1, user.getName());
                     userPS.setString(2, user.getRole().name());
-                    if(connection.executeQuery(userPS)) {
+                    if(!connection.executeQuery(userPS)) {
                         throw new SQLException("Could not insert into users");
                     }
                     else {
@@ -148,7 +167,7 @@ public class UserMapper {
                     loginPS.setString(2,user.getMail());
                     loginPS.setString(3, password);
                     loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
-                    if(connection.executeQuery(loginPS)) {
+                    if(!connection.executeQuery(loginPS)) {
                         throw new SQLException("Could not insert into login");
                     }
 
@@ -157,7 +176,7 @@ public class UserMapper {
                     PreparedStatement accPS = connection.getConnection().prepareStatement(accountPrepare);
                     accPS.setInt(1,user.getID());
                     accPS.setInt(2,account.getBalance());
-                    if(connection.executeQuery(accPS)) {
+                    if(!connection.executeQuery(accPS)) {
                         throw new SQLException("Could not insert into account");
                     } else {
                         account.setId(lastID());
@@ -167,7 +186,7 @@ public class UserMapper {
                 } catch (SQLException ex) {
                     // If anything goes wrong - rollback.
                     connection.getConnection().rollback();
-                    throw new UserCreationException("User creation failed");
+                    throw new UserException("User creation failed");
                 }
                 finally {
                     // What ever happens set auto commit back to true.
@@ -175,10 +194,15 @@ public class UserMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new UserCreationException("User creation failed");
+            throw new UserException("User creation failed");
         }
     }
 
+    /**
+     * Returns the last created ID.
+     * @return The id of the last created entry.
+     * @throws SQLException If anything goes wrong when trying to get the last created ID.
+     */
     private int lastID() throws SQLException {
         PreparedStatement userIdPS = connection.getConnection().prepareStatement("select last_insert_id() as id");
         ResultSet rs = connection.selectQuery(userIdPS);
@@ -186,6 +210,12 @@ public class UserMapper {
         return rs.getInt("id");
     }
 
+    /**
+     * Generates a user from a ResultSet
+     * @param rs The ResultSet containing the user
+     * @return A User object if the user could be parsed.
+     * @throws SQLException If anything goes wrong when trying to parse a user object.
+     */
     private User findUserFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("user_id");
         String name = rs.getString("user_name");
@@ -196,7 +226,5 @@ public class UserMapper {
 
         Account acc = new Account(account_id,account_balance);
         return new User(id,name,mail,role,acc);
-
     }
-
 }
