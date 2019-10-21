@@ -27,7 +27,7 @@
 							<div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
 								<h3 class="uk-card-title uk-text-center">Welcome back!</h3>
 
-								<form name="loginForm" action="" method="post" onsubmit="event.preventDefault(); validateLogin();">
+								<form name="loginForm" action="FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
 									<input type="hidden" name="command" value="login">
 									<div class="uk-margin">
 										<div class="uk-inline uk-width-1-1">
@@ -53,7 +53,6 @@
 										Not registered? <a href="#">Create an account</a>
 									</div>
 								</form>
-
 							</div>
 						</div>
 					</div>

@@ -1,12 +1,12 @@
 package presentation;
 
-import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * The purpose of FrontController is to handle all request for the web site It
@@ -18,12 +18,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Alexander
  */
-@WebServlet(name = "FrontController", urlPatterns = {"/*"})
+@WebServlet(name = "FrontController", urlPatterns = {"/FrontController"})
 public class FrontController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher rd;
+        System.out.println("Hello");
         try {
             Command cmd = getCommand();
             cmd = cmd.from(request);
