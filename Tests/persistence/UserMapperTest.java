@@ -40,6 +40,7 @@ public class UserMapperTest {
     }
 
     @Test
+
     public void test_getAllUsers() throws SQLException, UserException {
         // First and second time next() is called, it returns true, then it returns false.
         when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
@@ -90,5 +91,73 @@ public class UserMapperTest {
         when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
 
         mapper.createUser(user,acc,"test");
+    }
+
+    @Test (expected = UserException.class)
+    public void test_delete_user_when_delete_logins_fails() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(false);
+
+        mapper.deleteUser(user);
+    }
+    @Test (expected = UserException.class)
+    public void test_delete_user_when_delete_accounts_fails() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+
+        mapper.deleteUser(user);
+    }
+
+    @Test (expected = UserException.class)
+    public void test_delete_user_when_delete_user_fails() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true).thenReturn(false);
+
+        mapper.deleteUser(user);
+    }
+
+    @Test (expected = UserException.class)
+    public void test_delete_user_when_user_does_not_exist() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+
+        mapper.deleteUser(user);
+    }
+
+    @Test
+    public void test_delete_user() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true).thenReturn(true);
+
+        mapper.deleteUser(user);
     }
 }

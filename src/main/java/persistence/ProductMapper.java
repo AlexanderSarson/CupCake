@@ -25,20 +25,32 @@ public class ProductMapper {
         this.connection = connection;
     }
 
-    public ArrayList<Cupcake> getAllProducts() {
+    public ArrayList<Cupcake> getAllProducts() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "SELECT * FROM bottoms, toppings";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
             ResultSet rs = connection.selectQuery(ps);
             while(rs.next()){
-                Cupcake cupcake = findCupcakeFromResultSet(rs);
-                cupcakes.add(cupcake);
+                cupcakes.add(findCupcakeFromResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ProductException("Error when fetching all Cupcakes");
         }
         return cupcakes;
+    }
+    
+    public Cupcake getProductFromID(int id) throws ProductException {
+        String sql = "SELECT * FROM Cupcakes WHERE cupcake_id = ?";
+        Cupcake cupcake = null;
+        try {
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+            cupcake = findCupcakeFromResultSet(connection.selectQuery(ps));
+        } catch (SQLException e) {
+            throw new ProductException("Error when fetching Cupcake");
+        }
+        return cupcake;
     }
 
     private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {

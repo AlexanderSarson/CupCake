@@ -79,14 +79,14 @@ public class UserMapper {
 
     /**
      * Deletes a given user from the database.
-     * @param id The ID of the user, to be deleted.
+     * @param user The user to be deleted.
      * @throws IllegalArgumentException If the user does not exist in the database.
      */
-    public void deleteUser(long id) throws UserException {
+    public void deleteUser(User user) throws UserException {
         String sql = "select * from Users WHERE user_id = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ps.setLong(1, id);
+            ps.setLong(1, user.getID());
             ResultSet rs = connection.selectQuery(ps);
             if (!rs.next()) {
                 throw new UserException("User doesn't exist in database");
@@ -96,7 +96,7 @@ public class UserMapper {
                     //Delete from logins
                     String deleteLogin = "DELETE * from logins WHERE user_id = ?";
                     PreparedStatement loginPS = connection.getConnection().prepareStatement(deleteLogin);
-                    loginPS.setLong(1, id);
+                    loginPS.setLong(1, user.getID());
                     if (!connection.executeQuery(loginPS)) {
                         throw new SQLException("User login could not be deleted");
 
@@ -104,14 +104,14 @@ public class UserMapper {
                     //Delete from accounts
                     String deleteAccount = "DELETE * from accounts where user_id = ?";
                     PreparedStatement accountPS = connection.getConnection().prepareStatement(deleteAccount);
-                    accountPS.setLong(1, id);
+                    accountPS.setLong(1, user.getID());
                     if (!connection.executeQuery(accountPS)) {
                         throw new SQLException("User account could not be deleted");
                     }
                     //Delete from users
                     String deleteUser = "DELETE * from users WHERE user_ID = ?";
                     PreparedStatement userPS = connection.getConnection().prepareStatement(deleteUser);
-                    userPS.setLong(1, id);
+                    userPS.setLong(1, user.getID());
                     if (!connection.executeQuery(userPS)) {
                         throw new SQLException("User could not be deleted");
                     }

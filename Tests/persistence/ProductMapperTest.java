@@ -41,7 +41,10 @@ public class ProductMapperTest {
     Connection connection;
 
     @Test
-    public void test_getAllProducts() throws SQLException{
+    public void test_getAllProducts() throws SQLException, ProductException{
+        //First and 2'nd time next() is called, it returns true, the third time false
+        when(resSet.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
+        
     }
 
     @Test
