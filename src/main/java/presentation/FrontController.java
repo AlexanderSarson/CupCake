@@ -24,7 +24,6 @@ public class FrontController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher rd;
-        System.out.println("Hello");
         try {
             Command cmd = getCommand();
             cmd = cmd.from(request);

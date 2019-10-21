@@ -1,10 +1,11 @@
 package presentation;
 
-import java.util.HashMap;
+import logic.LogicFacade;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import logic.LogicFacade;
+import java.util.HashMap;
 
 /**
  * The purpose of Command is to carry out an action It keeps a list of html
@@ -25,6 +26,7 @@ public  class Command {
         commands.put("AddToCart", new AddToCartCommand());
         commands.put("SubmitOrder", new SubmitOrderCommand());
         commands.put("register", new RegisterCommand());
+        commands.put("removeFromCart", new RemoveFromCartCommand());
     }
 
     public Command from(HttpServletRequest request) {
