@@ -58,7 +58,7 @@ public class SubmitOrderCommandTest {
         when(mockLogicFacade.submitOrder(mockUser, mockShoppingCart)).thenReturn(mockOrder);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spySubmitOrderCommand.execute(mockRequest, mockResponse);
-        verify(spySubmitOrderCommand).forwardToPage(mockRequest, mockResponse, "invoice");
+        verify(spySubmitOrderCommand).forwardToPage(mockRequest, mockResponse, "jsp/cart/invoice");
         verify(mockLogicFacade).submitOrder(mockUser,mockShoppingCart);
         verify(mockSession).setAttribute(anyString(),any() );
     }
