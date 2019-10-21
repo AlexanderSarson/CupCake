@@ -29,7 +29,7 @@ public class SubmitOrderCommand extends Command{
         Order order = logicFacade.submitOrder(user, cart);
         HttpSession session = request.getSession();
         session.setAttribute("order", order);
-        String page = "invoice";
+        String page = "jsp/cart/invoice";
         forwardToPage(request, response, page);
     }
 }
