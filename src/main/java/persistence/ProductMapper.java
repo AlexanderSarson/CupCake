@@ -15,7 +15,7 @@ import logic.Topping;
 
 /**
  *
- * @author rando
+ * @author rando, Benjamin
  */
 public class ProductMapper {
 
@@ -59,6 +59,26 @@ public class ProductMapper {
         //Completed Cupcake object return
         return new Cupcake(bot, top);
     }
+
+
+    public void createTop(Topping top) {
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
