@@ -25,12 +25,11 @@ public class UserMapper {
      * Validates the users, is a registered user, using mail and password.
      * @param mail The mail of the user
      * @param password The password for the user.
-     // TODO(Benjmain): Change the fact that we are returning a NULL value if we do not find a user, instead use an exception!
      * @return If the user is able to login, the user object is returned. Returns null if the information is associated with a user.
+     * @throws UserException if a user could not be found, or if there was an error when validating the user.
      */
-    public User login(String mail, String password) {
+    public User login(String mail, String password) throws UserException {
         User user = null;
-
         String sql = "select user_id from logins where login_mail = ? and where login_password = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
@@ -49,10 +48,12 @@ public class UserMapper {
             }
 
         }catch (SQLException e){
-            // TODO(Benjamin): Make sure that we are handling these types of exceptions, perhaps throw a custom type exception.
-            e.printStackTrace();
+            throw new UserException("Error validating user");
         }
-        return user;
+        if(user == null)
+            throw new UserException("User could not be validated");
+        else
+            return user;
     }
 
     /**
