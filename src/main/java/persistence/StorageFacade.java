@@ -20,20 +20,14 @@ public class StorageFacade {
     private PreparedStatement ps;
 
     private UserMapper userMapper = new UserMapper(con);
+    private ProductMapper productMapper = new ProductMapper(con);
 
     public ArrayList<User> getAllUsers() {
         return userMapper.getAllUser();
     }
 
-    public Cupcake getAllProducts() {
-        String sql = "SELECT * FROM Cupcakes";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            con.selectQuery(ps);
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    public ArrayList<Cupcake> getAllProducts() {
+        return productMapper.getAllProducts();
     }
 
     public Cupcake getProduct(int id) {
