@@ -55,7 +55,7 @@
 									</div>
 								</div>
 								<div class="uk-margin">
-									<button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Create account</button>
+									<button id="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Create account</button>
 								</div>
 								<div class="uk-text-small uk-text-center">
 									<p id="errorMessage" style="color: #DC143C"></p>
