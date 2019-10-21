@@ -83,19 +83,19 @@ FOREIGN KEY (bottom_id)
 -- INSERT USERS
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'userRoleTest'); 
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'userRoleTest2'); 
-SELECT * FROM Users;
+
 
 -- INSERT LOGINS
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
-SELECT * FROM Logins;
+
 
 -- INSERT ACCOUNTS
 INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20.5);
-SELECT * FROM Accounts;
+
 
 -- INSERT ORDERS (Date format YYYY-MM-DD)
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');
-SELECT * FROM Orders;
+
 
 -- INSERT TOPPINGS
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Chocolate', 5.0, 'PictureStringHere');
@@ -108,7 +108,7 @@ INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Ora
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Lemon', 8.0, 'PictureStringHere');
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Blue cheese', 9.0, 'PictureStringHere');
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Stinky Socks', 10.0, 'PictureStringHere');
-SELECT * FROM Toppings;
+
 
 -- INSERT BOTTOMS
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Chocolate', 5.0, 'PictureStringHere');
@@ -116,7 +116,7 @@ INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Vanilla
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Nutmeg', 5.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Pistacio', 6.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Almond', 7.0, 'PictureStringHere');
-SELECT * FROM Bottoms;
+
 
 -- INSERT CUPCAKES
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (1, 1);
@@ -169,14 +169,13 @@ INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 2);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 3);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 4);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 5);
-SELECT * FROM Cupcakes;
+
 
 -- INSERT LINEITEMS
 INSERT INTO LineItems (cupcake_id, order_id, lineitem_qty) VALUES (48, 1, 5);
-SELECT * FROM LineItems;
+
 
 -- INSERT PREMADECUPCAKES
-
 
 
 

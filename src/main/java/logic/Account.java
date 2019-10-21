@@ -17,7 +17,7 @@ public class Account extends BaseEntity{
      * Constructor of an Account, without an initial balance
      * @param id The id of the account.
      */
-    public Account(long id) {
+    public Account(int id) {
         super.id = id;
     }
 
@@ -27,7 +27,7 @@ public class Account extends BaseEntity{
      * @param balance The balance of the account.
      * @throws IllegalArgumentException if the balance is a negative value.
      */
-    public Account(long id, int balance) throws IllegalArgumentException{
+    public Account(int id, int balance) throws IllegalArgumentException{
         super.id = id;
         if(balance < 0) throw new IllegalArgumentException("Balance must be a positive value");
         else
