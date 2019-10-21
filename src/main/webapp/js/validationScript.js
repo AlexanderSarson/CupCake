@@ -6,7 +6,7 @@
  * @returns {boolean} false if validation fails.
  */
 function validateLogin() {
-    var email = document.forms["loginForm"]["email"];
+    var email = document.forms["loginForm"]["loginEmail"];
     var errorContainer = document.getElementById("errorMessage");
 
     /** Validates that email includes @ or . */
@@ -17,7 +17,7 @@ function validateLogin() {
         return false;
     }
 
-    document.forms['loginForm'].submit();
+    document.forms["loginForm"].submit();
 }
 
 /**
@@ -89,7 +89,7 @@ function validateAccountCreation() {
     if(confirmPass.value === "") {
         confirmPass.classList.add("uk-form-danger");
         confirmPass.focus();
-        errorContainer.innerHTML = "Please repeat the password";
+        errorContainer.innerHTML = "Please confirm the password";
         return false;
     }
 
@@ -98,11 +98,11 @@ function validateAccountCreation() {
         pass.classList.add("uk-form-danger");
         pass.focus();
         confirmPass.classList.add("uk-form-danger");
-        errorContainer.innerHTML = "Passwords does not match";
+        errorContainer.innerHTML = "Passwords do not not match";
         return false;
     }
 
-    document.forms['createAccountForm'].submit();
+    document.forms["createAccountForm"].submit();
 }
 
 function validateAccountEdit() {
