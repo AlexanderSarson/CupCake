@@ -25,11 +25,11 @@ public class StorageFacade {
         return userMapper.getAllUser();
     }
 
-    public ArrayList<Cupcake> getAllProducts() {
+    public ArrayList<Cupcake> getAllProducts() throws ProductException {
         return productMapper.getAllProducts();
     }
 
-    public Cupcake getProduct(int id) {
+    public Cupcake getProduct(int id) throws ProductException {
         return productMapper.getProductFromID(id);
     }
 
@@ -111,23 +111,7 @@ public class StorageFacade {
     }
 
     public boolean deleteProduct(int id, String validation) {
-        String[] topOrBot = topOrBot(validation);
-        String table = topOrBot[0]; //Toppings/Bottoms
-        String row = topOrBot[1]; //topping/bottom
-        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
-            return con.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-//TODO(Tobias): Update All Cupcakes?
-        //Update Cupcakes Topping id + Alle Bottom id
-        //Update Cupcakes Bottom id + Alle Topping id
-        return false;
-        
+        return productMapper.deleteProductFromID(id);
     }
 
     private String[] topOrBot(String validation) {

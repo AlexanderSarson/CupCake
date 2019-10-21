@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import logic.Bottom;
 import logic.Cupcake;
 import logic.Topping;
@@ -52,6 +54,26 @@ public class ProductMapper {
         }
         return cupcake;
     }
+    
+    public boolean deleteProductFromID(int id) throws ProductException{
+        String[] topOrBot = topOrBot(validation);
+        String table = topOrBot[0]; //Toppings/Bottoms
+        String row = topOrBot[1]; //topping/bottom
+        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
+        try {
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+            return connection.executeQuery(ps); //If sucsess <-True
+        } catch (SQLException e) {
+            throw new ProductException("Error when fetching Cupcake");
+        }
+
+//TODO(Tobias): Update All Cupcakes?
+        //Update Cupcakes Topping id + Alle Bottom id
+        //Update Cupcakes Bottom id + Alle Topping id
+        return false;
+        
+    }
 
     private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {
         //Cupcake Topping object creation
@@ -76,17 +98,6 @@ public class ProductMapper {
     public void createTop(Topping top) {
         
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
