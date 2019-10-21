@@ -10,7 +10,7 @@ package logic;
  * Topping has the attributes id, price, name.
  */
 
-public class Topping extends BaseEntity{
+public class Topping extends BaseEntity implements IProduct{
     private int price;
     private String name;
 
