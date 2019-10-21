@@ -27,20 +27,21 @@ public class UserMapperTest {
     private UserMapper mapper;
 
     @Mock
-    PreparedStatement ps;
+    private PreparedStatement ps;
     @Mock
-    ResultSet resSet;
+    private ResultSet resSet;
     @Mock
-    SQLConnection connection;
+    private SQLConnection connection;
     @Mock
-    Connection sqlConnection;
+    private Connection sqlConnection;
 
     @Before
     public void setup() throws Exception {
     }
 
     @Test
-    public void test_getAllUsers() throws UserException, SQLException {
+
+    public void test_getAllUsers() throws SQLException, UserException {
         // First and second time next() is called, it returns true, then it returns false.
         when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resSet.getInt("user_id")).thenReturn(1);
