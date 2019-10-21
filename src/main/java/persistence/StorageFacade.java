@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import logic.Account;
 import logic.Cupcake;
-import logic.Role;
 import logic.User;
 
 /**
@@ -51,7 +50,7 @@ public class StorageFacade {
     public void createUser(User user, Account account, String password) {
         try {
             userMapper.createUser(user,account,password);
-        } catch (UserCreationException e) {
+        } catch (UserException e) {
             // New exception? or keep throwing
         }
     }
