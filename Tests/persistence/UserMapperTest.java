@@ -3,13 +3,11 @@ package persistence;
 import logic.Account;
 import logic.Role;
 import logic.User;
-import net.bytebuddy.dynamic.scaffold.MethodRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.Connection;
@@ -17,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,8 +65,8 @@ public class UserMapperTest {
         assertEquals(2, users.size());
     }
 
-    @Test(expected = UserCreationException.class)
-    public void test_createUser_already_exists() throws SQLException, UserCreationException {
+    @Test(expected = UserException.class)
+    public void test_createUser_already_exists() throws SQLException, UserException {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
@@ -81,8 +78,8 @@ public class UserMapperTest {
         mapper.createUser(user,acc,"test");
     }
 
-    @Test(expected = UserCreationException.class)
-    public void test_createUser() throws SQLException, UserCreationException {
+    @Test(expected = UserException.class)
+    public void test_createUser() throws SQLException, UserException {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(false).thenReturn(true);
