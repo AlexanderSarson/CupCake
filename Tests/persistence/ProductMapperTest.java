@@ -11,13 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import logic.Role;
+import logic.Bottom;
 import logic.Topping;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import javax.inject.Inject;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
  * @author rando, Benjamin
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProductMapperTest {
     @InjectMocks
     private ProductMapper productMapper;
@@ -36,30 +37,52 @@ public class ProductMapperTest {
     @Mock
     private PreparedStatement statement;
     @Mock
-    private SQLConnection sqlConnection;
+    private SQLConnection connection;
     @Mock
-    Connection connection;
+    Connection sqlConnection;
 
     @Test
-    public void test_getAllProducts() throws SQLException, ProductException{
+    public void test_getAllProducts() throws SQLException, ProductException {
         //First and 2'nd time next() is called, it returns true, the third time false
-        when(resSet.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
+        //when(resSet.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
         
     }
 
     @Test
-    public void test_createTopping() throws SQLException {
+    public void test_createProduct() throws SQLException, ProductException {
         Topping top = new Topping(5,"Chocolate");
         when(resSet.next()).thenReturn(false).thenReturn(true).thenReturn(false);
-        when(resSet.getInt("id")).thenReturn(100);
+        when(connection.lastID()).thenReturn(100);
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(connection.executeQuery(statement)).thenReturn(true);
+        when(connection.selectQuery(statement)).thenReturn(resSet);
 
-        when(sqlConnection.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
-
-        productMapper.createTop(top);
+        productMapper.createProduct(top);
 
         assertEquals(100,top.getId());
+    }
+
+    @Test(expected = ProductException.class)
+    public void test_createProduct_with_connection_error() throws SQLException, ProductException {
+        Topping top = new Topping(5,"Chocolate");
+        when(resSet.next()).thenReturn(false).thenReturn(true).thenReturn(false);
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(connection.executeQuery(statement)).thenReturn(false);
+        when(connection.selectQuery(statement)).thenReturn(resSet);
+        productMapper.createProduct(top);
+    }
+
+    @Test(expected = ProductException.class)
+    public void test_createProduct_with_existing_topping() throws SQLException, ProductException {
+        Bottom top = new Bottom(5,"Chocolate");
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(connection.selectQuery(statement)).thenReturn(resSet);
+
+        productMapper.createProduct(top);
     }
 
 }
