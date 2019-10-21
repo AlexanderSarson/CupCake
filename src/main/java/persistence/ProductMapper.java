@@ -85,7 +85,7 @@ public class ProductMapper {
      */
     public void createProduct(IProduct product) throws ProductException {
         String table ="", c1 = "",c2 = "";
-        checkProductType(product,table,c1,c2);
+        checkProductType(product,table,c1, c2);
 
         String sql = "SELECT * FROM "+table+" where "+c1+" = ?";
         try {
@@ -96,7 +96,7 @@ public class ProductMapper {
                 throw new ProductException("Product already exists");
             }
             else {
-                sql = "INSERT INTO Toppings ("+c1+", "+c2+") VALUES (?,?)";
+                sql = "INSERT INTO "+table+" ("+c1+", "+c2+") VALUES (?,?)";
                 statement = connection.getConnection().prepareStatement(sql);
                 statement.setString(1,product.getName());
                 statement.setInt(2, product.getPrice());
@@ -111,6 +111,37 @@ public class ProductMapper {
         } catch (SQLException e) {
             throw new ProductException("Connection failed");
         }
+    }
+
+    public void updateProduct(IProduct product) throws ProductException{
+        String table = "", c1 = "", c2 = "";
+        checkProductType(product, table, c1,c2);
+
+        String sql = "SELECT * FROM "+table+" where "+c1+" = ?";
+        try{
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setString(1,product.getName());
+            ResultSet rs = connection.selectQuery(ps);
+            if(!rs.next()){
+                throw new ProductException("Product doesn't exist in database");
+
+            }
+            else{
+                sql = "UPDATE +"+table+" SET "+c1+"= ?, "+c2+" = ? WHERE product_id = ?";
+                ps = connection.getConnection().prepareStatement(sql);
+                ps.setString(1,product.getName());
+                ps.setInt(2,product.getPrice());
+                ps.setInt(3,product.getId());
+                if(!connection.executeQuery(ps)){
+                    throw new SQLException("Product could not be updated");
+                }
+
+            }
+        }catch(SQLException e){
+            throw new ProductException("Product could not be updsted");
+        }
+
+
     }
 }
 
