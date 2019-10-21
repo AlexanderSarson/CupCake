@@ -20,36 +20,77 @@
 
 <body>
 <nav class="uk-navbar-container uk-sticky">
-
 	<div class="uk-container uk-navbar">
 		<div class="nav-overlay uk-navbar-left">
 			<a class="uk-navbar-item uk-logo" href="home">Cupcake</a>
 			<ul class="uk-navbar-nav">
-				<li class="uk-active"><a href="#">Home</a></li>
-				<li class="uk-active"><a href="#">About us</a></li>
-				<li class="uk-active"><a href="#">Shop</a></li>
-				<li class="uk-active"><a href="3">Contact</a></li>
+				<li class="uk-active">
+					<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=index">Home</a>
+				</li>
+				<li>
+					<a href="#">About us</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=shop">Shop</a>
+				</li>
+				<li>
+					<a href="#">Contact</a>
+				</li>
 			</ul>
 		</div>
 
 		<div class="nav-overlay uk-navbar-right">
 			<ul class="uk-navbar-nav">
 				<li>
-					<a href="viewCustomer" uk-icon="user"></a>
+					<a uk-icon="user"></a>
 					<div uk-dropdown>
 						<ul class="uk-nav uk-dropdown-nav">
 							<c:choose>
 								<c:when test="${sessionScope.user != null}">
-									<li><a href="#">Customer Page</a></li>
+									<li>
+										<form id="customerPageButton" action="FrontController" method="get">
+											<input name="command" value="redirect" type="hidden">
+											<input name="target" value="user/showUser.jsp" type="hidden">
+											<button class="uk-button uk-button-default uk-button-small" type="submit">Customer Page</button>
+										</form>
+									</li>
 									<li class="uk-nav-divider"></li>
-									<li><a href="#">Logout</a></li>
+									<li>
+										<form id="logoutButton" action="FrontController" method="get">
+											<input name="command" value="logout" type="hidden">
+											<button class="uk-button uk-button-default uk-button-small" type="submit">Logout</button>
+										</form>
+									</li>
 								</c:when>
 								<c:otherwise>
-									<%-- TODO Login Form--%>
-									<li><a href="#">No User</a></li>
+									<form name="loginForm" action="FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
+										<input type="hidden" name="command" value="login">
+										<div class="uk-margin">
+											<div class="uk-inline uk-width-1-1">
+												<span class="uk-form-icon" uk-icon="icon: mail"></span>
+												<input class="uk-input uk-form-large" id="email" type="email" name="email" placeholder="Email" required>
+											</div>
+										</div>
+										<div class="uk-margin">
+											<div class="uk-inline uk-width-1-1">
+												<span class="uk-form-icon" uk-icon="icon: lock"></span>
+												<input class="uk-input uk-form-large" id="password" type="password" name="password" minlength="8" placeholder="Password" required>
+											</div>
+										</div>
+										<div class="uk-margin">
+											<button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Login</button>
+										</div>
+										<div class="uk-text-small uk-text-center">
+											<c:if test="${requestScope.error != null}">
+												<h4><c:out value="${requestScope.error}"/></h4>
+											</c:if>
+										</div>
+										<div class="uk-text-small uk-text-center uk-margin-small-top">
+											Not registered? <a href="#">Create an account</a>
+										</div>
+									</form>
 								</c:otherwise>
 							</c:choose>
-
 						</ul>
 					</div>
 				</li>

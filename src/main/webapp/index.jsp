@@ -21,44 +21,5 @@
 
 <body>
     <%@ include file="jsp/nav.jsp" %>
-
-    <div class="uk-container">
-        <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
-            <thead>
-            <tr>
-                <th>Topping</th>
-                <th>Bottom</th>
-                <th>Price</th>
-                <th>Order</th>
-            </tr>
-            </thead>
-            <tbody>
-				<tr class="uk-text-center">
-					<td>Vanilla</td>
-					<td>Chocolate</td>
-					<td>$5</td>
-					<td class="uk-table-middle">
-						<a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-							<span uk-icon="plus-circle" class="uk-icon"></span>
-							<span>Add to Cart</span>
-						</a>
-					</td>
-				</tr>
-				<c:forEach items="${applicationScope.premadeCupcakes}" var = "cupcake">
-					<tr>
-						<td>${cupcake.getTopping()}</td>
-						<td>${cupcake.getBottom()}</td>
-						<td>$${cupcake.getPrice()}</td>
-						<td class="uk-table-middle">
-							<a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-								<span uk-icon="plus-circle" class="uk-icon"></span>
-								<span>Add to Cart</span>
-							</a>
-						</td>
-					</tr>
-				</c:forEach>
-            </tbody>
-        </table>
-    </div>
 </body>
 </html>
