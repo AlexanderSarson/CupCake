@@ -27,13 +27,13 @@ public class UserMapperTest {
     private UserMapper mapper;
 
     @Mock
-    PreparedStatement ps;
+    private PreparedStatement ps;
     @Mock
-    ResultSet resSet;
+    private ResultSet resSet;
     @Mock
-    SQLConnection connection;
+    private SQLConnection connection;
     @Mock
-    Connection sqlConnection;
+    private Connection sqlConnection;
 
     @Before
     public void setup() throws Exception {
