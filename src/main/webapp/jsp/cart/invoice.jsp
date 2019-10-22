@@ -130,10 +130,6 @@
 			</div>
 			<%-- Placeholders end --%>
 
-
-
-
-
 		</div>
 		<div class="uk-card-footer">
 			<div class="uk-child-width-1-2 uk-text-center" uk-grid>
@@ -159,7 +155,7 @@
 						</div>
 						<div>
 							<div>
-								<a href="${pageContext.request.contextPath}/home"
+								<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=/index"
 								   class="uk-button uk-button-primary">Back
 								</a>
 							</div>

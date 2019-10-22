@@ -50,7 +50,7 @@
 								<div class="uk-width-1-2@m">Total</div>
 								<div class="uk-width-1-2@m"> $<c:out value="${orderTotal}"/> </div>
 								<div class="uk-width-expand@m">
-									<a href="${pageContext.request.contextPath}/checkout?&action=confirmOrder"
+									<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=confirmOrder"
 									   class="uk-button uk-button-primary uk-button-large uk-margin-medium-top">Checkout
 									</a>
 								</div>
