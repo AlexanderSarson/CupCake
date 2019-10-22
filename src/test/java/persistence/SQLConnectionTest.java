@@ -50,7 +50,7 @@ public class SQLConnectionTest {
             for (String sqlStatement : DBsetUp) {
                 stmt.executeUpdate(sqlStatement);
             }
-            sqlcon = new SQLConnection();
+            sqlcon = SQLConnection.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         }

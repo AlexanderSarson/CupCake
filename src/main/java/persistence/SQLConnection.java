@@ -15,12 +15,20 @@ import java.util.logging.Logger;
  * @author rando
  */
 public class SQLConnection {
+    private static SQLConnection sqlConnection = new SQLConnection();
+
     private Connection connection;
     private PreparedStatement statement;
     private final static String SERVERTIME = "serverTimezone=UTC";
-    
 
-    public SQLConnection() {
+    public static SQLConnection getInstance() {
+        if(sqlConnection == null) {
+            sqlConnection = new SQLConnection();
+        }
+        return sqlConnection;
+    }
+
+    private SQLConnection() {
         try(FileInputStream fileInput = new FileInputStream("db.properties")) {
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();

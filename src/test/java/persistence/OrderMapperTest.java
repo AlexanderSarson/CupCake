@@ -46,12 +46,12 @@ public class OrderMapperTest {
         when(resSet.getInt("bottom_id")).thenReturn(5);
         when(resSet.getString("bottom_name")).thenReturn("Chocolate");
         when(resSet.getInt("bottom_price")).thenReturn(10);
-        when(resSet.getString("bottom_picture")).thenReturn("chocolatePicture");
+        //when(resSet.getString("bottom_picture")).thenReturn("chocolatePicture");
         // Topping
         when(resSet.getInt("topping_id")).thenReturn(6);
         when(resSet.getString("topping_name")).thenReturn("BlueBerry");
         when(resSet.getInt("topping_price")).thenReturn(11);
-        when(resSet.getString("topping_picture")).thenReturn("blueBerryPicture");
+        //when(resSet.getString("topping_picture")).thenReturn("blueBerryPicture");
 
         when(connection.getConnection()).thenReturn(sqlConnection);
         when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);

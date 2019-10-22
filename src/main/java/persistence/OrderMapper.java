@@ -39,7 +39,6 @@ public class OrderMapper {
                 throw new OrderException("User does not have any orders");
             } else {
                 for(Order order : orders) {
-                    // Get all lineItems associated with a given order.
                     sql = "select " +
                             "Cupcakes.cupcake_id, LineItems.lineitem_qty, " +
                             "Toppings.topping_id, Toppings.topping_name, Toppings.topping_price, Toppings.topping_picture, " +
@@ -64,7 +63,7 @@ public class OrderMapper {
                         int bottomID = rs.getInt("bottom_id");
                         String bottomName = rs.getString("bottom_name");
                         int bottomPrice = rs.getInt("bottom_price");
-                        String bottomPicture = rs.getString("bottom_picture");
+                        //String bottomPicture = rs.getString("bottom_picture");
                         Bottom bottom = new Bottom(bottomPrice,bottomName);
                         bottom.setId(bottomID);
                         // Cupcake

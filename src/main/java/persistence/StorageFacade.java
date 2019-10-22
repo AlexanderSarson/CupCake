@@ -13,7 +13,7 @@ import logic.*;
  * @author rando
  */
 public class StorageFacade {
-    private final SQLConnection con = new SQLConnection();
+    private final SQLConnection con = SQLConnection.getInstance();
     private PreparedStatement ps;
     private UserMapper userMapper = new UserMapper(con);
     private ProductMapper productMapper = new ProductMapper(con);

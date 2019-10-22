@@ -1,5 +1,7 @@
 package logic;
 
+import persistence.OrderException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -19,8 +21,11 @@ public class Order extends BaseEntity {
         lineItems.add(item);
     }
 
-    public void removeLineItem(int index) {
-        lineItems.remove(index);
+    public void removeLineItem(int index) throws OrderException {
+        if(index >= lineItems.size() || index < 0)
+            throw new OrderException("Index out of bounds");
+        else
+            lineItems.remove(index);
     }
     public void removeLineItem(LineItem item) {
         lineItems.remove(item);
