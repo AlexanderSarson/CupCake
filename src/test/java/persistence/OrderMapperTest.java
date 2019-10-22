@@ -34,10 +34,6 @@ public class OrderMapperTest {
 
     @Test
     public void getAllOrders() throws SQLException {
-        // Res order
-        when(resSet.getInt("cupcake_id")).thenReturn(1);
-        when(resSet.getInt("user_id")).thenReturn(1);
-        when(resSet.getDate("order_date")).thenReturn(Date.valueOf("2019-04-02"));
     }
 
     @Test
