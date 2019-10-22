@@ -198,7 +198,8 @@ public class UserMapper {
         }
         return user;
     }
-    
+
+
     public void updateUser(User user) throws UserException, SQLException{
         String sql = "SELECT * from users WHERE user_id = ?";
         try {

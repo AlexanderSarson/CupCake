@@ -117,7 +117,7 @@ public class ProductMapper {
                 throw new ProductException("Product doesn't exist in database");
             }
             else{
-                sql = "UPDATE +"+table+" SET "+product_name+"= ?, "+product_price+" = ? WHERE "+product_id+" = ?";
+                sql = "UPDATE "+table+" SET "+product_name+"= ?, "+product_price+" = ? WHERE "+product_id+" = ?";
                 ps = connection.getConnection().prepareStatement(sql);
                 ps.setString(1,product.getName());
                 ps.setInt(2,product.getPrice());

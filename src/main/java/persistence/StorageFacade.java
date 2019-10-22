@@ -21,9 +21,6 @@ public class StorageFacade {
     private ToppingMapper toppingMapper = new ToppingMapper(con);
 
     // ------ PRODUCT ------
-    public ArrayList<User> getAllUsers() throws UserException {
-        return userMapper.getAllUser();
-    }
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         return productMapper.getAllProducts();
     }
@@ -32,6 +29,9 @@ public class StorageFacade {
     }
 
     // ------ USER ------
+    public ArrayList<User> getAllUsers() throws UserException {
+        return userMapper.getAllUser();
+    }
     public User createUser(User user, String password) throws UserException {
         return userMapper.createUser(user,user.getAccount(),password);
     }
