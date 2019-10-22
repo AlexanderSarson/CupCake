@@ -43,7 +43,7 @@
 		</c:if>
 	</div>
 	<div class="uk-text-small uk-text-center uk-margin-small-top">
-		Not registered? <a href="#">Create an account</a>
+		Not registered? <a id="registerLink" href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=jsp/user/createUser.jsp">Create an account</a>
 	</div>
 </form>
 

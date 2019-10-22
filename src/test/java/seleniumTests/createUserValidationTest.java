@@ -1,4 +1,4 @@
-package environmentTest;
+package seleniumTests;
 /*
 author madsbrandt
 */
