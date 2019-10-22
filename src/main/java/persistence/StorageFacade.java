@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import logic.Account;
-import logic.Cupcake;
-import logic.User;
+import logic.*;
 
 /**
  *
@@ -17,55 +15,66 @@ import logic.User;
 public class StorageFacade {
     private final SQLConnection con = new SQLConnection();
     private PreparedStatement ps;
-
     private UserMapper userMapper = new UserMapper(con);
     private ProductMapper productMapper = new ProductMapper(con);
+    private BottomMapper bottomMapper = new BottomMapper(con);
+    private ToppingMapper toppingMapper = new ToppingMapper(con);
 
-    public ArrayList<User> getAllUsers() throws UserException {
-        return userMapper.getAllUser();
-    }
-
+    // ------ PRODUCT ------
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         return productMapper.getAllProducts();
     }
-
     public Cupcake getProduct(int id) throws ProductException {
         return productMapper.getProductFromID(id);
     }
 
-    public void createUser(User user, Account account, String password) {
+    // ------ USER ------
+    public ArrayList<User> getAllUsers() throws UserException {
+        return userMapper.getAllUser();
+    }
+    public User createUser(User user, String password) throws UserException {
+        return userMapper.createUser(user,user.getAccount(),password);
+    }
+    public boolean updateUser(User user) throws UserException {
+        boolean res = false;
         try {
-            userMapper.createUser(user,account,password);
-        } catch (UserException e) {
-            // New exception? or keep throwing
+            userMapper.updateUser(user);
+            res = true;
+        } catch (SQLException e) {
+            throw new UserException(e.getMessage());
         }
+        return res;
+    }
+    public boolean deleteUser(User user) throws UserException {
+        userMapper.deleteUser(user);
+        return true;
+    }
+    public User validateUser(String email, String password) throws UserException {
+        return userMapper.login(email,password);
     }
 
-    public boolean updateUser(String name, String role, int id) {
-        String sql = "UPDATE USER SET user_name = ?, user_role = ? WHERE user_id = ?";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, role);
-            ps.setInt(3, id);
-            return con.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+    // ------ BOTTOM ------
+    public void createBottom(Bottom bottom) throws ProductException {
+        bottomMapper.createProduct(bottom);
+    }
+    public void updateBottom(Bottom bottom) throws ProductException {
+        bottomMapper.updateProduct(bottom);
+    }
+    public void deleteBottom(Bottom bottom) {
+        //bottomMapper.deleteProduct(bottom);
     }
 
-    public boolean deleteUser(int id) {
-        String sql = "DELETE FROM User WHERE user_id = ?";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
-            return con.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+    // ------ TOPPING ------
+    public void createTopping(Topping topping) throws ProductException {
+        toppingMapper.createProduct(topping);
     }
+    public void updateTopping(Topping topping) throws ProductException {
+        toppingMapper.updateProduct(topping);
+    }
+    public void deleteTopping(Topping topping) {
+        //toppingMapper.deleteProduct(topping);
+    }
+
 
     public boolean createProduct(String name, double price, String pic, String validation) {
         String[] topOrBot = topOrBot(validation);
@@ -87,7 +96,6 @@ public class StorageFacade {
         //Update Cupcakes Bottom id + Alle Topping id
         return false;
     }
-
     public boolean updateProduct(String name, double price, String pic, int id, String validation) {
         String[] topOrBot = topOrBot(validation);
         String table = topOrBot[0]; //Toppings/Bottoms
@@ -109,7 +117,6 @@ public class StorageFacade {
         //Update Cupcakes Bottom id + Alle Topping id
         return true; //If sucsess
     }
-
     public boolean deleteProduct(int id, String validation) {
         String[] topOrBot = topOrBot(validation);
         String table = topOrBot[0]; //Toppings/Bottoms
