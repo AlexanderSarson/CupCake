@@ -4,6 +4,7 @@ import logic.Bottom;
 import logic.Cupcake;
 import logic.Topping;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,7 @@ public class OrderMapperTest {
     private Connection sqlConnection;
 
     @Test
+    @Ignore
     public void getAllOrders() throws SQLException {
         // Res order
         when(resSet.getInt("cupcake_id")).thenReturn(1);
