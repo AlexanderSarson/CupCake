@@ -198,46 +198,7 @@ public class UserMapper {
         }
         return user;
     }
-
-    public void updateUser(User user) throws UserException, SQLException{
-        String sql = "SELECT * from users WHERE user_id = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ps.setLong(1, user.getID());
-            ResultSet rs = connection.selectQuery(ps);
-            if (!rs.next()) {
-                throw new UserException("User doesn't exist in database");
-            } else {
-                connection.getConnection().setAutoCommit(false);
-                try {
-                    //Delete update logins
-                    String updateMail = "UPDATE logins SET login_mail = ? WHERE user_id = ?";
-                    PreparedStatement loginsPS = connection.getConnection().prepareStatement(updateMail);
-                    loginsPS.setString(1, user.getMail());
-                    loginsPS.setLong(2, user.getID());
-                    if (!connection.executeQuery(loginsPS)) {
-                        throw new SQLException("Mail could not be updated");
-                    }
-                    String updateName = "UPDATE user SET user_name = ? WHERE user_id = ?";
-                    PreparedStatement userPS = connection.getConnection().prepareStatement(updateName);
-                    userPS.setString(1, user.getName());
-                    userPS.setLong(2, user.getID());
-                    if (!connection.executeQuery(userPS)) {
-                        throw new SQLException("User name could not be updated");
-                    }
-                    connection.getConnection().commit();
-                } catch (SQLException ex) {
-                    connection.getConnection().rollback();
-                    throw new UserException("User could not be updated");
-                } finally {
-                    connection.getConnection().setAutoCommit(true);
-                }
-            }
-        }catch (SQLException e){
-            throw new UserException("User could not be updated");
-        }
-    }
-
+    
     public void updateUser(User user) throws UserException, SQLException{
         String sql = "SELECT * from users WHERE user_id = ?";
         try {
