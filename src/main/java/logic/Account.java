@@ -14,14 +14,6 @@ public class Account extends BaseEntity{
     public Account() { }
 
     /**
-     * Constructor of an Account, without an initial balance
-     * @param id The id of the account.
-     */
-    public Account(int id) {
-        super.id = id;
-    }
-
-    /**
      * Constructor of an account, with an initial balance.
      * @param id The id of the account
      * @param balance The balance of the account.
@@ -29,9 +21,23 @@ public class Account extends BaseEntity{
      */
     public Account(int id, int balance) throws IllegalArgumentException{
         super.id = id;
-        if(balance < 0) throw new IllegalArgumentException("Balance must be a positive value");
-        else
+        if(validateBalance(balance)) {
             this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
+    }
+
+    public Account(int balance) {
+        if(validateBalance(balance)) {
+            this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
+    }
+
+    private boolean validateBalance(int balance) {
+        return balance >= 0;
     }
 
     /**
@@ -46,10 +52,11 @@ public class Account extends BaseEntity{
      * @throws IllegalArgumentException if the balance is a non-positive value.
      */
     public void setBalance(int balance) throws IllegalArgumentException{
-        if(balance < 0)
-            throw new IllegalArgumentException("Balance must not be below zero");
-        else
+        if(validateBalance(balance)) {
             this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
     }
 
     /**
