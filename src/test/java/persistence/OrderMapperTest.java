@@ -35,10 +35,9 @@ public class OrderMapperTest {
     private Connection sqlConnection;
 
     @Test
-    @Ignore
-    public void getAllOrders() throws SQLException {
+    public void getAllOrders() throws SQLException, OrderException {
         // Get the order.
-        when(resSet.next()).thenReturn(true).thenReturn(false);
+        when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false);
         when(resSet.getInt("order_id")).thenReturn(1);
         when(resSet.getDate("order_date")).thenReturn(Date.valueOf("2019-01-01"));
         // Get line items associated with the order.
@@ -59,12 +58,25 @@ public class OrderMapperTest {
         when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
         when(connection.selectQuery(ps)).thenReturn(resSet);
 
+        User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
+        ArrayList<Order> orders = orderMapper.getAllOrders(user);
+        Order order = orders.get(0);
+        assertEquals(1, orders.size());
+        assertEquals(1,order.getId());
+        assertEquals(2,order.getLineItem(0).getCupcake().getId());
+        assertEquals(5,order.getLineItem(0).getCupcake().getBottom().getId());
+        assertEquals(6,order.getLineItem(0).getCupcake().getTopping().getId());
+    }
+
+    @Test(expected = OrderException.class)
+    public void test_getAllOrders_with_no_orders() throws SQLException, OrderException {
+        when(resSet.next()).thenReturn(false);
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
 
         User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
         ArrayList<Order> orders = orderMapper.getAllOrders(user);
-
-        assertEquals(1, orders.size());
-
     }
 
     @Test

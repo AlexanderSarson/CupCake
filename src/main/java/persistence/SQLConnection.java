@@ -15,9 +15,12 @@ import java.util.logging.Logger;
  * @author rando
  */
 public class SQLConnection {
+    private final static SQLConnection sqlConnection:
+
     private Connection connection;
     private PreparedStatement statement;
     private final static String SERVERTIME = "serverTimezone=UTC";
+    
 
     public SQLConnection() {
         try(FileInputStream fileInput = new FileInputStream("db.properties")) {

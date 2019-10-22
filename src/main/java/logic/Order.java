@@ -1,5 +1,6 @@
 package logic;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,10 @@ import java.util.ArrayList;
  */
 public class Order extends BaseEntity {
     private ArrayList<LineItem> lineItems = new ArrayList<>();
-    public Order() {}
+    private LocalDate date;
+    public Order(LocalDate date) {
+        this.date = date;
+    }
 
     public void addLineItem(LineItem item) {
         lineItems.add(item);
