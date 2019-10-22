@@ -45,7 +45,7 @@ public class OrderMapper {
         //Insert into orders
         String orderPrepare = "INSERT INTO Orders (order_id,user_id,order_date) values(?,?,?)";
         PreparedStatement orderPS = connection.getConnection().prepareStatement(orderPrepare);
-        //Er ikke lige sikker på hvordan vi får fat i vores order ID ...
+        //Er ikke lige sikker på hvordan vi får fat i vores order ID eller hvordan lastID() skal bruges... :-(
         orderPS.setInt(1, order.getId());
         orderPS.setInt(2, user.getId());
         orderPS.setDate(3, Date.valueOf(LocalDate.now()));
