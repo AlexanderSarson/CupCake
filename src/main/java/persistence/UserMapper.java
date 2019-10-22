@@ -136,7 +136,7 @@ public class UserMapper {
      * @param password The password associated with the user & account.
      * @throws UserException If anything goes wrong during creation, a UserException will be thrown.
      */
-    public void createUser(User user, Account account, String password) throws UserException {
+    public User createUser(User user, Account account, String password) throws UserException {
         String sql = "select * from logins where login_mail = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
@@ -196,6 +196,7 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new UserException("User creation failed");
         }
+        return user;
     }
 
     public void updateUser(User user) throws UserException, SQLException{
