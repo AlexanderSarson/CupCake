@@ -21,11 +21,11 @@ public class AddToCartCommand extends Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Topping top = (Topping) request.getAttribute("topping");
-        Bottom bot = (Bottom) request.getAttribute("bottom");
+        Topping topping = (Topping) request.getAttribute("topping");
+        Bottom bottom = (Bottom) request.getAttribute("bottom");
         ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
         LogicFacade logicFacade = getLogicFacade();
-        logicFacade.addToShoppingCart(bot, top, cart);
+        logicFacade.addToShoppingCart(bottom, topping, cart);
         String page = request.getContextPath().replaceAll(".jsp", "");
         forwardToPage(request, response, page);
     }

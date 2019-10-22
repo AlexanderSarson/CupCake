@@ -3,10 +3,7 @@ package environmentTest;
 author madsbrandt
 */
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
-
+@Ignore
 public class createUserValidationTest {
 
     private static WebDriver driver;

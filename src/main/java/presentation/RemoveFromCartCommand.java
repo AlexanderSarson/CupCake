@@ -20,7 +20,7 @@ public class RemoveFromCartCommand extends Command {
         Bottom bottom = (Bottom) request.getAttribute("bottom");
         ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
         LogicFacade logicFacade = getLogicFacade();
-        logicFacade.removeFromShoppingcart(topping, bottom, cart);
+  //      logicFacade.removeFromShoppingcart(topping, bottom, cart);
         String page = request.getContextPath().replaceAll(".jsp", "");
         forwardToPage(request, response, page);
     }
