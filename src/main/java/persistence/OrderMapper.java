@@ -21,10 +21,8 @@ public class OrderMapper {
 
     public ArrayList<Order> getAllOrders(User user) throws OrderException {
         ArrayList<Order> orders = new ArrayList<>();
-        // Get all orders
-        String sql;
         try {
-            sql = "SELECT * FROM Orders where Orders.user_id = ?";
+            String sql = "SELECT * FROM Orders where Orders.user_id = ?";
             PreparedStatement statement = connection.getConnection().prepareStatement(sql);
             statement.setInt(1,user.getId());
             ResultSet rs = connection.selectQuery(statement);

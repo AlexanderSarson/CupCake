@@ -9,7 +9,6 @@ package logic;
  * The Topping class represents the topping in the Cupcake object
  * Topping has the attributes id, price, name.
  */
-
 public class Topping extends BaseEntity implements IProduct{
     private int price;
     private String name;
@@ -20,7 +19,6 @@ public class Topping extends BaseEntity implements IProduct{
      * @param name The name of the topping
      * @throws IllegalArgumentException If the price has a negative value.
      */
-
     public Topping(int price, String name) throws IllegalArgumentException{
         if(price<0)throw new IllegalArgumentException("Price must be a positive number");
         else
@@ -40,7 +38,6 @@ public class Topping extends BaseEntity implements IProduct{
      * Sets the name of the topping object
      * @param name The new name.
      */
-
     public void setName(String name) {
         this.name = name;
     }

@@ -7,7 +7,6 @@ import logic.Bottom;
  * @author Oscar
  * version 1.0
  */
-
 public class Cupcake extends BaseEntity {
 
     private Bottom bottom;
@@ -32,7 +31,6 @@ public class Cupcake extends BaseEntity {
     public Cupcake(long id, Bottom bottom, Topping topping){
         this.bottom=bottom;
         this.topping=topping;
-
     }
 
     /**

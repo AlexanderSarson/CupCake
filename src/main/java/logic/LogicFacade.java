@@ -23,7 +23,6 @@ import java.util.List;
  * version 1.0
  */
 
-
 public class LogicFacade {
     private StorageFacade storageFacade = new StorageFacade();
     public LogicFacade(){}
@@ -54,6 +53,7 @@ public class LogicFacade {
     public void deleteBottom(Bottom bottom) {
         storageFacade.deleteBottom(bottom);
     }
+
     // ------ TOPPING ------
     public Topping createTopping(String name, int price, String picturePath) throws ProductException {
         Topping topping = new Topping(price,name);
