@@ -52,7 +52,7 @@ public class AddToCartCommandTest {
         when(mockRequest.getAttribute("topping")).thenReturn(mockTopping);
         when(mockRequest.getAttribute("bottom")).thenReturn(mockBottom);
         when(mockRequest.getAttribute("shoppingcart")).thenReturn(mockShoppingCart);
-        when(mockRequest.getContextPath()).thenReturn("shop.jsp");
+        when(mockRequest.getContextPath()).thenReturn("mainShop.jsp");
         when(spyAddToCartCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyAddToCartCommand.execute(mockRequest, mockResponse);

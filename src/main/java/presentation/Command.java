@@ -23,9 +23,9 @@ public  class Command {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
         commands.put("register", new RegisterCommand());
-        commands.put("AddToCart", new AddToCartCommand());
-        commands.put("SubmitOrder", new SubmitOrderCommand());
-        commands.put("register", new RegisterCommand());
+        commands.put("addToCart", new AddToCartCommand());
+        commands.put("submitOrder", new SubmitOrderCommand());
+        commands.put("redirect", new RedirectCommand());
         commands.put("removeFromCart", new RemoveFromCartCommand());
     }
 
@@ -42,7 +42,7 @@ public  class Command {
 
     public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
         try {
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/" + page + ".jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("jsp/" + page + ".jsp");
             rd.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

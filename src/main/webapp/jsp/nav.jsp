@@ -23,16 +23,16 @@
 <nav class="uk-navbar-container uk-sticky">
 	<div class="uk-container uk-navbar">
 		<div class="nav-overlay uk-navbar-left">
-			<a class="uk-navbar-item uk-logo" href="${contextPath}/FrontController?&command=redirect&target=index">Cupcake</a>
+			<a class="uk-navbar-item uk-logo" href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Cupcake</a>
 			<ul class="uk-navbar-nav">
 				<li class="uk-active">
-					<a href="${contextPath}/FrontController?&command=redirect&target=index">Home</a>
+					<a href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Home</a>
 				</li>
 				<li>
 					<a href="#">About us</a>
 				</li>
 				<li>
-					<a href="${contextPath}/FrontController?&command=redirect&target=shop">Shop</a>
+					<a href="${contextPath}/FrontController?&command=redirect&target=jsp/shop/mainShop.jsp">Shop</a>
 				</li>
 				<li>
 					<a href="#">Contact</a>
@@ -49,7 +49,7 @@
 							<c:choose>
 								<c:when test="${sessionScope.user != null}">
 									<li>
-										<a href="${contextPath}/FrontController?&command=redirect&target=showUser">My Page</a>
+										<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My Page</a>
 									</li>
 									<li class="uk-nav-divider"></li>
 									<li>
@@ -115,8 +115,8 @@
 						</table>
 
 						<div class="uk-button-group">
-							<a href="${contextPath}/FrontController?&command=redirect&target=showCart" uk-icon="cart" class="uk-button uk-button-default"> View Cart </a>
-							<a href="${contextPath}/FrontController?&command=redirect&target=confirmOrder" uk-icon="cart" class="uk-button uk-button-primary"> Checkout </a>
+							<a href="${contextPath}/FrontController?&command=redirect&target=/cart/showCart" uk-icon="cart" class="uk-button uk-button-default"> View Cart </a>
+							<a href="${contextPath}/FrontController?&command=redirect&target=/cart/confirmOrder" uk-icon="cart" class="uk-button uk-button-primary"> Checkout </a>
 						</div>
 
 					</c:when>
