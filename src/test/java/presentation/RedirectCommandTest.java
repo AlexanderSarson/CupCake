@@ -30,15 +30,11 @@ public class RedirectCommandTest {
     @Mock
     private HttpServletResponse mockResponse;
 
-    @Mock
-    private RequestDispatcher mockRequestDispatcher;
-
     @Test
     public void testLoginCommandExecute() throws Exception {
         when(mockRequest.getParameter("target")).thenReturn("index.jsp");
-        when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyRedirectCommand.execute(mockRequest, mockResponse);
-        verify(spyRedirectCommand).forwardToPage(mockRequest, mockResponse, "index");
+        verify(mockResponse).sendRedirect("index.jsp");
     }
 
 }
