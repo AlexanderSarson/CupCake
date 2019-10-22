@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author Benjamin Paepke
+ * @version 1.0
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ToppingMapperTest {
