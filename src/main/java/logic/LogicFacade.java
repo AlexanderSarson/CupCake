@@ -1,5 +1,14 @@
 package logic;
-
+import logic.Account;
+import logic.BaseEntity;
+import logic.Bottom;
+import logic.Cupcake;
+import logic.LineItem;
+import logic.Role;
+import logic.ShoppingCart;
+import logic.Topping;
+import logic.User;
+import logic.Order;
 import persistence.StorageFacade;
 
 import java.util.List;
@@ -29,7 +38,7 @@ public class LogicFacade {
         return null;
     }
 
-    public List<Cupcake> getPremadeCupcakes(){
+    public List getPremadeCupcakes(){
         return null;
     }
 
@@ -60,6 +69,4 @@ public class LogicFacade {
         
     }
 
-    public void removeFromShoppingcart (Topping topping, Bottom bottom, ShoppingCart cart) {
-    }
 }
