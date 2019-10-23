@@ -199,8 +199,12 @@ public class UserMapper {
         return user;
     }
 
-
-    public void updateUser(User user) throws UserException, SQLException{
+    /**
+     * Updates a user and their corresponding account and login.
+     * @param user The user object to be updated with.
+     * @throws UserException If the user can't be found, or if something goes wrong in the update proces.
+     */
+    public void updateUser(User user) throws UserException{
         String sql = "SELECT * from users WHERE user_id = ?";
         try {
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
@@ -224,7 +228,7 @@ public class UserMapper {
                     userPS.setString(1, user.getName());
                     userPS.setLong(2, user.getID());
                     if (!connection.executeQuery(userPS)) {
-                        throw new SQLException("User name could not be updated");
+                        throw new UserException("User name could not be updated");
                     }
                     connection.getConnection().commit();
                 } catch (SQLException ex) {
@@ -239,6 +243,12 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Add a certain amount of funds to a user's account.
+     * @param user The user, to which the funds will be added
+     * @param amount The amount to be added.
+     * @throws UserException If the user cannot be found, or if the insertion of funds goes wrong.
+     */
     public void addFunds(User user, int amount) throws UserException {
         String sql = "SELECT user_balance FROM Accounts where user_id = ?";
         PreparedStatement statement = null;
