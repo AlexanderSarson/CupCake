@@ -95,29 +95,30 @@ class OrderMapper {
                 ResultSet rs = connection.selectQuery(ps);
                 //ID'et på cupcake skal gemmes
                 if (!rs.next()) {
-                    String cupcakePrepare = "INSERT INTO cupcake(cupcake_id,topping_id,bottom_id) values (?,?,?)";
+                    String cupcakePrepare = "INSERT INTO cupcake(topping_id,bottom_id) values (?,?)";
                     PreparedStatement cupcakePS = connection.getConnection().prepareStatement(cupcakePrepare);
-                    int nextID = connection.lastID();
-                    order.getLineItem(i).getCupcake().setId(nextID);
-                    cupcakePS.setLong(1, nextID);
-                    cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getTopping().getId());
-                    cupcakePS.setInt(3, order.getLineItem(i).getCupcake().getBottom().getId());
+                    cupcakePS.setInt(1, order.getLineItem(i).getCupcake().getTopping().getId());
+                    cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getBottom().getId());
                     if (!connection.executeQuery(cupcakePS)) {
                         throw new SQLException("Cupcake could not be created");
                     }
+                    int CupCakeID = connection.lastID();
+                    order.getLineItem(i).getCupcake().setId(CupCakeID);
                 }
             }
 
             //Insert into orders
-            String orderPrepare = "INSERT INTO Orders (order_id,user_id,order_date) values(?,?,?)";
+            String orderPrepare = "INSERT INTO Orders (user_id,order_date) values(?,?)";
             PreparedStatement orderPS = connection.getConnection().prepareStatement(orderPrepare);
             //Er ikke lige sikker på hvordan vi får fat i vores order ID eller hvordan lastID() skal bruges... :-(
-            orderPS.setInt(1, order.getId());
-            orderPS.setInt(2, user.getId());
-            orderPS.setDate(3, Date.valueOf(LocalDate.now()));
+            orderPS.setInt(1, user.getId());
+            orderPS.setDate(2, Date.valueOf(LocalDate.now()));
             if (!connection.executeQuery(orderPS)) {
                 throw new SQLException("Could not insert into orders");
             }
+            int OrderID = connection.lastID();
+            order.setId(OrderID);
+
             //Insert into lineitems
             String lineItemPrepare = "INSERT INTO LineItems (cupcake_id,order_id,lineitem_qty) values(?,?,?)";
             PreparedStatement lineItemPS = connection.getConnection().prepareStatement(lineItemPrepare);
