@@ -263,7 +263,7 @@ class UserMapper {
                 balance += amount;
 
                 sql = "UPDATE Accounts set user_balance = ? where user_id = ?";
-                connection.getConnection().prepareStatement(sql);
+                statement = connection.getConnection().prepareStatement(sql);
                 statement.setInt(1,balance);
                 statement.setInt(2,user.getId());
                 if(!connection.executeQuery(statement))
