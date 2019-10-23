@@ -44,13 +44,8 @@ public class SQLConnection {
         }
     }
 
-    public ResultSet selectQuery(PreparedStatement query) {
-        try {
-            return query.executeQuery();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
+    public ResultSet selectQuery(PreparedStatement query) throws SQLException {
+        return query.executeQuery();
     }
 
     public boolean executeQuery(PreparedStatement query) {
