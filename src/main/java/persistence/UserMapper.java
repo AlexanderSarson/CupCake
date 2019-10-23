@@ -239,6 +239,31 @@ public class UserMapper {
         }
     }
 
+    public void addFunds(User user, int amount) throws UserException {
+        String sql = "SELECT user_balance FROM Accounts where user_id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.getConnection().prepareStatement(sql);
+            statement.setInt(1,user.getId());
+            ResultSet rs = connection.selectQuery(statement);
+            if(!rs.next())
+                throw new UserException("Can't add funds, user was not found");
+            else {
+                int balance = rs.getInt("user_balance");
+                balance += amount;
+
+                sql = "UPDATE Accounts set user_balance = ? where user_id = ?";
+                connection.getConnection().prepareStatement(sql);
+                statement.setInt(1,balance);
+                statement.setInt(2,user.getId());
+                if(!connection.executeQuery(statement))
+                    throw new UserException("Could not update account balance");
+            }
+        } catch (SQLException e) {
+            throw new UserException("Connection error");
+        }
+    }
+
     /**
      * Generates a user from a ResultSet
      * @param rs The ResultSet containing the user

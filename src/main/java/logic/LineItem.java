@@ -51,6 +51,10 @@ public class LineItem extends BaseEntity {
         this.quantity = quantity;
     }
 
+    public void incrementQuantity() {
+        quantity++;
+    }
+
     /**
      * Gets the cupcake of a given lineitem
      * @return the cupcake

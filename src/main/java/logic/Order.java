@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class Order extends BaseEntity {
     private ArrayList<LineItem> lineItems = new ArrayList<>();
     private LocalDate date;
+
+    public Order() {};
     public Order(LocalDate date) {
         this.date = date;
     }
@@ -23,6 +25,35 @@ public class Order extends BaseEntity {
      */
     public void addLineItem(LineItem item) {
         lineItems.add(item);
+    }
+
+    /**
+     * Adds a cupcake to the order.
+     * @param cupcake The cupcake to be added.
+     */
+    public void addCupcakeToOrder(Cupcake cupcake) {
+        int index =  getCupcakeIndex(cupcake);
+        if(index >= 0) {
+            lineItems.get(index).incrementQuantity();
+        } else {
+            lineItems.add(new LineItem(cupcake,1));
+        }
+    }
+
+    /**
+     * Gets the index of the cupcake, if it exists in the order.
+     * @param cupcake The cupcake to be found
+     * @return 0 or positive value if the cupcake is present in the order, -1 if the cupcake is not present in the order.
+     */
+    private int getCupcakeIndex(Cupcake cupcake) {
+        for (LineItem item: lineItems) {
+            Cupcake c = item.getCupcake();
+            if(c.getBottom().getName().equals(cupcake.getBottom().getName()) &&
+                    c.getTopping().getName().equals(cupcake.getTopping().getName())) {
+                return lineItems.indexOf(c);
+            }
+        }
+        return -1;
     }
 
     /**
@@ -57,6 +88,10 @@ public class Order extends BaseEntity {
             return lineItems.get(index);
     }
 
+    public ArrayList<LineItem> getLineItems() {
+        return lineItems;
+    }
+
     /**
      * Gets the Total quantity of product in the order.
      * @return The total number of product in the order.
@@ -77,6 +112,9 @@ public class Order extends BaseEntity {
         return lineItems.size();
     }
 
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+
     /**
      * Validates the index, check if the index is within the bounds.
      * @param index The index to be checked.
@@ -85,5 +123,4 @@ public class Order extends BaseEntity {
     private boolean validateIndex(int index) {
         return (index < lineItems.size() && index >= 0);
     }
-
 }

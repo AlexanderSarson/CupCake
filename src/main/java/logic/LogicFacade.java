@@ -9,11 +9,10 @@ import logic.ShoppingCart;
 import logic.Topping;
 import logic.User;
 import logic.Order;
-import persistence.ProductException;
-import persistence.StorageFacade;
-import persistence.UserException;
-import persistence.UserMapper;
+import persistence.*;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,29 +69,25 @@ public class LogicFacade {
 
     // ------ ORDER ------
     public ShoppingCart getShoppingCart() {
-        // TODO(Benjamin): Implement me!
-        return null;
+        return new ShoppingCart();
     }
     public void addToShoppingCart(Bottom bottom, Topping topping, ShoppingCart shoppingCart){
-        // TODO(Benjamin): Complete me!
-        Cupcake cupcake = new Cupcake(bottom,topping);
+        shoppingCart.addCupcakeToOrder(new Cupcake(bottom,topping));
     }
-    public Order submitOrder(User user, ShoppingCart shoppingcart){
-        // TODO(Benjamin) Implement me!
-        return null;
+    public ShoppingCart submitOrder(User user, ShoppingCart shoppingcart) throws SQLException, OrderException {
+        if(shoppingcart.getDate() == null)
+            shoppingcart.setDate(LocalDate.now());
+        return (ShoppingCart)storageFacade.createOrder(shoppingcart, user);
+    }
+    public List<Order> getOrdersForUser(User user) throws OrderException {
+        return storageFacade.getAllOrders(user);
     }
 
     // ------ USER ------
     public User newUser(String name, String email, String password) throws UserException {
-        // TODO(Benjamin) All new users will be set to Customers, add another param for choosing?
         User user = new User(name,email,Role.CUSTOMER,new Account(0));
+        // TODO(Benjamin): Encrypt password!
         return storageFacade.createUser(user,password);
-    }
-    // TODO(Benjamin): Why is there a duplicate createUser (CreateUser and newUser???)
-    public void createUser(String name, String mail, String password, Role role, int balance) throws UserException {
-        Account account = new Account(balance);
-        User user = new User(name,mail,role,account);
-        storageFacade.createUser(user,password);
     }
     public void updateUser(User user) throws UserException {
         storageFacade.updateUser(user);
@@ -101,14 +96,14 @@ public class LogicFacade {
         // TODO(Benjamin) Insert Encryption for password here!
         return storageFacade.validateUser(email,password);
     }
+    public void addFunds(User user, int amountToDeposit) throws UserException {
+        if(amountToDeposit < 0)
+            throw new UserException("The amount must be a positive number");
+        else {
+            storageFacade.addFunds(user,amountToDeposit);
+        }
 
-    public void addFunds(User user, int amountToDeposit) throws IllegalArgumentException{
-        // TODO(Benjamin): Complete me!
-        if(amountToDeposit < 0) throw new IllegalArgumentException ("The amount must be a positive number");
     }
 
-    public List getOrdersForUser(User user){
-        // TODO(Benjamin): Implement me!
-        return null;
-    }
+
 }

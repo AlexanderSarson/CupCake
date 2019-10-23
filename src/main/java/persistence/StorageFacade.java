@@ -3,6 +3,7 @@ package persistence;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,8 @@ import logic.*;
 public class StorageFacade {
     private final SQLConnection con = SQLConnection.getInstance();
     private PreparedStatement ps;
+
+    private OrderMapper orderMapper = new OrderMapper(con);
     private UserMapper userMapper = new UserMapper(con);
     private ProductMapper productMapper = new ProductMapper(con);
     private BottomMapper bottomMapper = new BottomMapper(con);
@@ -35,6 +38,16 @@ public class StorageFacade {
     public User createUser(User user, String password) throws UserException {
         return userMapper.createUser(user,user.getAccount(),password);
     }
+    public void addFunds(User user, int amount) throws UserException {
+        userMapper.addFunds(user,amount);
+    }
+
+    // ------ ORDER ------
+    public List<Order> getAllOrders(User user) throws OrderException { return orderMapper.getAllOrders(user); }
+    public Order createOrder(Order order, User user) throws SQLException, OrderException { return orderMapper.createOrder(order, user); }
+    public void updateOrder(Order order) { orderMapper.updateOrder(order);}
+    public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
+
     public boolean updateUser(User user) throws UserException {
         boolean res = false;
         try {

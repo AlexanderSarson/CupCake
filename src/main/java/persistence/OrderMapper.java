@@ -2,6 +2,7 @@ package persistence;
 
 import logic.*;
 
+import javax.xml.transform.Result;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -139,7 +140,64 @@ public class OrderMapper {
         }
         return order;
     }
-    public void updateOrder(Order order) {}
-    public void deleteOrder(Order order) {}
+    public void updateOrder(Order order) {
 
+    }
+
+    /**
+     * Deletes a order stored persistently.
+     * @param order The order to be removed.
+     * @throws OrderException If anythings goes wrong with removing the order.
+     * @throws SQLException
+     */
+    public void deleteOrder(Order order) throws OrderException, SQLException {
+        try {
+            if(isOrderStored(order)) {
+                connection.getConnection().setAutoCommit(false);
+                String sql = "DELETE FROM LineItems where order_id = ?";
+                PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+                statement.setInt(1, order.getId());
+                if(connection.executeQuery(statement)) {
+                    sql = "DELETE FROM Orders where order_id = ?";
+                    statement = connection.getConnection().prepareStatement(sql);
+                    statement.setInt(1, order.getId());
+                    if(connection.executeQuery(statement)) {
+                        // IF we succeeded in both removing all the LineItems and the actual order, commit the changes.
+                        connection.getConnection().commit();
+                    } else {
+                        // If we succeeded in removing the LineItems but not the actual order, do a rollback.
+                        connection.getConnection().rollback();
+                    }
+                }
+                connection.getConnection().setAutoCommit(true);
+            }
+            else {
+                throw new OrderException("Order is not stored");
+            }
+        } catch (SQLException e) {
+            connection.getConnection().rollback();
+            throw new OrderException("Connection error");
+        } finally {
+            connection.getConnection().setAutoCommit(false);
+        }
+    }
+
+
+    /**
+     * Checks if a given order is stored in the database.
+     * @param order The order to be checked.
+     * @return TRUE if the order is currently stored, FALSE if the order is not currently stored.
+     * @throws SQLException If there is a connection error or MySQL syntax error.
+     */
+    private boolean isOrderStored(Order order) throws SQLException {
+        if(order.getId() == 0)
+            return false;
+        else {
+            String sql = "SELECT * From Orders where order_id = ?";
+            PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+            statement.setInt(1,order.getId());
+            ResultSet rs = connection.selectQuery(statement);
+            return rs.next();
+        }
+    }
 }
