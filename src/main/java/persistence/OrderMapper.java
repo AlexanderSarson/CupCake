@@ -86,6 +86,7 @@ public class OrderMapper {
     public Order createOrder(Order order, User user) throws SQLException, OrderException {
             //Burde man pakke nedenstående ind i en metode der tjekker om cupcake allerede findes i db?
         try {
+            connection.getConnection().setAutoCommit(false);
             String sql = "SELECT * from cupcakes WHERE cupcake id = ?";
             PreparedStatement ps = connection.getConnection().prepareStatement(sql);
             //Skal vi sætte autocommit til false inden for-loopet??
@@ -97,8 +98,8 @@ public class OrderMapper {
                     String cupcakePrepare = "INSERT INTO cupcake(cupcake_id,topping_id,bottom_id) values (?,?,?)";
                     PreparedStatement cupcakePS = connection.getConnection().prepareStatement(cupcakePrepare);
                     int nextID = connection.lastID();
-                    cupcakePS.setLong(1, nextID);
                     order.getLineItem(i).getCupcake().setId(nextID);
+                    cupcakePS.setLong(1, nextID);
                     cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getTopping().getId());
                     cupcakePS.setInt(3, order.getLineItem(i).getCupcake().getBottom().getId());
                     if (!connection.executeQuery(cupcakePS)) {
@@ -106,7 +107,7 @@ public class OrderMapper {
                     }
                 }
             }
-            connection.getConnection().setAutoCommit(false);
+
             //Insert into orders
             String orderPrepare = "INSERT INTO Orders (order_id,user_id,order_date) values(?,?,?)";
             PreparedStatement orderPS = connection.getConnection().prepareStatement(orderPrepare);
@@ -126,7 +127,7 @@ public class OrderMapper {
                 lineItemPS.setInt(2, order.getId());
                 lineItemPS.setInt(3, order.getLineItem(i).getQuantity());
                 if (!connection.executeQuery(lineItemPS)) {
-                    throw new SQLException("Coult not insert into lineitems");
+                    throw new SQLException("Could not insert into lineitems");
                 }
             }
             connection.getConnection().commit();
