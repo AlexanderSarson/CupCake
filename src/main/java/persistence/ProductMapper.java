@@ -127,7 +127,7 @@ public class ProductMapper {
                 }
             }
         }catch(SQLException e){
-            throw new ProductException("Product could not be updsted");
+            throw new ProductException("Product could not be updated");
         }
     }
 }
