@@ -10,8 +10,9 @@ import java.util.logging.Logger;
 import logic.*;
 
 /**
- *
+ * This class provides all necessary methods of the storage layer, to any that might have a use for them.
  * @author rando
+ * @author Benjamin Paepke
  */
 public class StorageFacade {
     private final SQLConnection con = SQLConnection.getInstance();

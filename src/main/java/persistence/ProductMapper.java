@@ -20,7 +20,7 @@ import logic.Topping;
  * @author rando
  * @authror Benjamin Paepke
  */
-public class ProductMapper {
+class ProductMapper {
     protected String table = "", product_id = "", product_name = "", product_price ="";
     private SQLConnection connection;
 

@@ -44,7 +44,7 @@ public class SubmitOrderCommandTest {
     private ShoppingCart mockShoppingCart;
     
     @Mock
-    private Order mockOrder;
+    private ShoppingCart mockOrder;
     
     @Mock
     private User mockUser;

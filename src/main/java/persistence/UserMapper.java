@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Oscar, Benjamin
  * version 1.0
  */
-public class UserMapper {
+class UserMapper {
     private SQLConnection connection;
     public UserMapper(SQLConnection connection) {
         this.connection = connection;

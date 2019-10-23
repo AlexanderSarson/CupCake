@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Benjamin Paepke
  * @version 1.0
  */
-public class OrderMapper {
+class OrderMapper {
     private SQLConnection connection;
     public OrderMapper(SQLConnection connection) {
         this.connection = connection;
