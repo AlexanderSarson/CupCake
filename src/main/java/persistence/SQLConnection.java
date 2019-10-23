@@ -26,7 +26,7 @@ public class SQLConnection implements IConectionPool {
     }
 
     private Connection createConnection() {
-        try (FileInputStream fileInput = new FileInputStream("C:\\Users\\rando\\Documents\\NetBeansProjects\\CupCake\\db.properties")) {
+        try (FileInputStream fileInput = new FileInputStream("db.properties")) {
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
             properties.load(fileInput);
