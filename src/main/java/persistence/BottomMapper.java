@@ -1,6 +1,6 @@
 package persistence;
 
-public class BottomMapper extends ProductMapper {
+class BottomMapper extends ProductMapper {
     public BottomMapper(SQLConnection connection) {
         super(connection);
         table = "Bottoms";

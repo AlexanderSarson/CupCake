@@ -56,7 +56,7 @@ public class OrderTest {
     }
 
     @Test
-    public void test_getLineItem() {
+    public void test_getLineItem() throws OrderException {
         assertEquals(item, order.getLineItem(0));
     }
 
