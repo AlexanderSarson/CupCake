@@ -15,7 +15,7 @@ import logic.*;
  * @author Benjamin Paepke
  */
 public class StorageFacade {
-    private final SQLConnection con = SQLConnection.getInstance();
+    private final SQLConnection con = new SQLConnection();
     private PreparedStatement ps;
 
     private OrderMapper orderMapper = new OrderMapper(con);
@@ -141,7 +141,7 @@ public class StorageFacade {
         //Update Cupcakes Topping id + Alle Bottom id
         //Update Cupcakes Bottom id + Alle Topping id
         return false;
-        
+
     }
 
     private String[] topOrBot(String validation) {
