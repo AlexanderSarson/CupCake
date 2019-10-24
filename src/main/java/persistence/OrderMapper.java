@@ -135,7 +135,7 @@ class OrderMapper {
         } catch (SQLException ex){
             connection.getConnection().rollback();
             //TODO (Oscar) Create OrderException
-            throw new SQLException("Order creation failed");
+            throw new OrderException("Order creation failed");
         }
         finally{
             connection.getConnection().setAutoCommit(true);

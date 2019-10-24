@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Benjamin Paepke
@@ -78,10 +78,70 @@ public class OrderMapperTest {
         ArrayList<Order> orders = orderMapper.getAllOrders(user);
     }
 
-    @Test
-    public void createOrder() {
-    }
+    @Test (expected = OrderException.class)
+    public void test_create_order_when_insert_order_fails() throws SQLException, OrderException {
+        Bottom bot = new Bottom (5,"Cherry");
+        Topping top = new Topping (5,"Coconut");
+        Cupcake cup = new Cupcake (bot,top);
+        Account acc = new Account(10000);
+        User user = new User(1,"Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        Order order = new Order();
+        LineItem lineItem = new LineItem(cup,5);
+        order.addLineItem(lineItem);
+        when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true);
 
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(false);
+
+        orderMapper.createOrder(order,user);
+        verify(connection,times(1)).executeQuery(any(PreparedStatement.class));
+
+    }
+    @Test (expected = OrderException.class)
+    public void test_create_order_when_insert_lineitem_fails() throws SQLException, OrderException {
+        Bottom bot = new Bottom (5,"Cherry");
+        Topping top = new Topping (5,"Coconut");
+        Cupcake cup = new Cupcake (bot,top);
+        Account acc = new Account(10000);
+        User user = new User(1,"Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        Order order = new Order();
+        LineItem lineItem = new LineItem(cup,5);
+        order.addLineItem(lineItem);
+        when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(true);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(any(PreparedStatement.class))).thenReturn(true).thenReturn(false);
+
+        orderMapper.createOrder(order,user);
+        verify(connection,times(2)).executeQuery(any(PreparedStatement.class));
+
+    }
+    @Test
+    public void test_create_order() throws SQLException, OrderException {
+        Bottom bot = new Bottom (5,"Cherry");
+        Topping top = new Topping (5,"Coconut");
+        Cupcake cup = new Cupcake (bot,top);
+        Account acc = new Account(10000);
+        User user = new User(1,"Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        Order order = new Order();
+        LineItem lineItem = new LineItem(cup,5);
+        order.addLineItem(lineItem);
+        when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(true);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(any(PreparedStatement.class))).thenReturn(true).thenReturn(true).thenReturn(true);
+
+        orderMapper.createOrder(order,user);
+        verify(connection,times(2)).executeQuery(any(PreparedStatement.class));
+
+
+    }
     @Test
     public void updateOrder() {
     }
