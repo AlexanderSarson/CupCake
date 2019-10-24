@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logic.Bottom;
 import logic.Cupcake;
+import logic.IProduct;
 import logic.Topping;
 
 /**
@@ -55,22 +56,24 @@ public class ProductMapper {
         return cupcake;
     }
     
-    public boolean deleteProductFromID(int id) throws ProductException{
-        String[] topOrBot = topOrBot(validation);
-        String table = topOrBot[0]; //Toppings/Bottoms
-        String row = topOrBot[1]; //topping/bottom
-        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
-            return connection.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException e) {
-            throw new ProductException("Error when fetching Cupcake");
-        }
-
-//TODO(Tobias): Update All Cupcakes?
-        //Update Cupcakes Topping id + Alle Bottom id
-        //Update Cupcakes Bottom id + Alle Topping id
+    public boolean deleteProductFromID(IProduct product, int id) throws ProductException{
+        
+        
+//        String[] topOrBot = topOrBot(validation);
+//        String table = topOrBot[0]; //Toppings/Bottoms
+//        String row = topOrBot[1]; //topping/bottom
+//        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
+//        try {
+//            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+//            ps.setInt(1, id);
+//            return connection.executeQuery(ps); //If sucsess <-True
+//        } catch (SQLException e) {
+//            throw new ProductException("Error when fetching Cupcake");
+//        }
+//
+////TODO(Tobias): Update All Cupcakes?
+//        //Update Cupcakes Topping id + Alle Bottom id
+//        //Update Cupcakes Bottom id + Alle Topping id
         return false;
         
     }
@@ -94,14 +97,44 @@ public class ProductMapper {
         return new Cupcake(bot, top);
     }
 
-
-    public void createTop(Topping top) {
-        
+    private void checkProductType(IProduct product, String table, String c1, String c2) {
+        if(product instanceof Topping) { table = "Toppings"; c1 = "topping_name"; c2 = "topping_price"; }
+        else if (product instanceof Bottom) { table = "Bottoms"; c1 = "bottom_name"; c2 = "bottom_price"; }
     }
 
-
-
-
+    /**
+     * Creates a product, either {@link logic.Bottom} or
+     * @param product The topping to be created.
+     * @throws ProductException If anything goes wrong in the creation of the topping.
+     */
+    public void createProduct(IProduct product) throws ProductException {
+        String table ="", c1 = "",c2 = "";
+        checkProductType(product,table,c1,c2);
+        String sql = "SELECT * FROM "+table+" where "+c1+" = ?";
+        try {
+            PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+            statement.setString(1,product.getName());
+            ResultSet rs = connection.selectQuery(statement);
+            if(rs.next()){
+                throw new ProductException("Product already exists");
+            }
+            else {
+                sql = "INSERT INTO Toppings ("+c1+", "+c2+") VALUES (?,?)";
+                statement = connection.getConnection().prepareStatement(sql);
+                statement.setString(1,product.getName());
+                statement.setInt(2, product.getPrice());
+                if(connection.executeQuery(statement)) {
+                    int id = connection.lastID();
+                    product.setId(id);
+                }
+                else {
+                    throw new ProductException("Could not create product");
+                }
+            }
+        } catch (SQLException e) {
+            throw new ProductException("Connection failed");
+        }
+    }
 
 }
 

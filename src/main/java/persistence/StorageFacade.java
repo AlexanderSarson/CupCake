@@ -111,7 +111,8 @@ public class StorageFacade {
     }
 
     public boolean deleteProduct(int id, String validation) {
-        return productMapper.deleteProductFromID(id);
+        //return productMapper.deleteProductFromID(id);
+        return false;
     }
 
     private String[] topOrBot(String validation) {

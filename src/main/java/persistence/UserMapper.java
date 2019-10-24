@@ -158,7 +158,7 @@ public class UserMapper {
                         throw new SQLException("Could not insert into users");
                     }
                     else {
-                        user.setID(lastID());
+                        user.setID(connection.lastID());
                     }
                     // Insert into Logins
                     String loginPrepare = "INSERT INTO Logins(user_id, login_mail, login_password, login_salt) values (?,?,?,?)";
@@ -179,7 +179,7 @@ public class UserMapper {
                     if(!connection.executeQuery(accPS)) {
                         throw new SQLException("Could not insert into account");
                     } else {
-                        account.setId(lastID());
+                        account.setId(connection.lastID());
                     }
                     // Commit all transactions
                     connection.getConnection().commit();
@@ -196,18 +196,6 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new UserException("User creation failed");
         }
-    }
-
-    /**
-     * Returns the last created ID.
-     * @return The id of the last created entry.
-     * @throws SQLException If anything goes wrong when trying to get the last created ID.
-     */
-    private int lastID() throws SQLException {
-        PreparedStatement userIdPS = connection.getConnection().prepareStatement("select last_insert_id() as id");
-        ResultSet rs = connection.selectQuery(userIdPS);
-        rs.next();
-        return rs.getInt("id");
     }
 
     /**

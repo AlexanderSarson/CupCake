@@ -11,7 +11,7 @@ package logic;
  *
  */
 
-public class Bottom extends BaseEntity{
+public class Bottom extends BaseEntity implements IProduct{
 
     private int price;
     private String name;
