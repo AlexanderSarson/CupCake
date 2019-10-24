@@ -1,14 +1,4 @@
 package logic;
-import logic.Account;
-import logic.BaseEntity;
-import logic.Bottom;
-import logic.Cupcake;
-import logic.LineItem;
-import logic.Role;
-import logic.ShoppingCart;
-import logic.Topping;
-import logic.User;
-import logic.Order;
 import persistence.*;
 
 import java.sql.SQLException;
@@ -49,6 +39,9 @@ public class LogicFacade {
         storageFacade.updateBottom(bottom);
         return bottom;
     }
+    public ArrayList<Bottom> getAllBottoms() throws ProductException {
+        return storageFacade.getAllBottoms();
+    }
     public void deleteBottom(Bottom bottom) {
         storageFacade.deleteBottom(bottom);
     }
@@ -62,6 +55,9 @@ public class LogicFacade {
     public Topping updateBottom(Topping topping) throws ProductException {
         storageFacade.updateTopping(topping);
         return topping;
+    }
+    public ArrayList<Topping> getAllToppings() throws ProductException {
+        return storageFacade.getAllToppings();
     }
     public void deleteTopping(Topping topping) {
         storageFacade.deleteTopping(topping);
