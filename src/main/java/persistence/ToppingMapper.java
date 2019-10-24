@@ -1,7 +1,5 @@
 package persistence;
 
-import logic.IProduct;
-
 public class ToppingMapper extends ProductMapper {
     public ToppingMapper(SQLConnection connection) {
         super(connection);

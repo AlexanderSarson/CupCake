@@ -1,5 +1,8 @@
 package persistence;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,8 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  *

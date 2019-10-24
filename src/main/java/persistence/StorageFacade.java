@@ -1,12 +1,15 @@
 package persistence;
 
+import logic.Bottom;
+import logic.Cupcake;
+import logic.Topping;
+import logic.User;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import logic.*;
 
 /**
  *
