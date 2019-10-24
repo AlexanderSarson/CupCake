@@ -17,11 +17,13 @@ import logic.IProduct;
 import logic.Topping;
 
 /**
- *
- * @author rando, Benjamin
+ * This class has the purpose of mapping Products from the database to jave objects. General data, such as Cupcakes and intances where all tables are being checked,
+ * can be collected through this class. Data regarding Bottoms or Toppings, make use of {@link logic.Bottom} and {@link logic.Topping}
+ * @author rando
+ * @authror Benjamin Paepke
  */
-public class ProductMapper {
-
+class ProductMapper {
+    protected String table = "", product_id = "", product_name = "", product_price ="";
     private SQLConnection connection;
 
     public ProductMapper(SQLConnection connection) {
@@ -97,20 +99,13 @@ public class ProductMapper {
         return new Cupcake(bot, top);
     }
 
-    private void checkProductType(IProduct product, String table, String c1, String c2) {
-        if(product instanceof Topping) { table = "Toppings"; c1 = "topping_name"; c2 = "topping_price"; }
-        else if (product instanceof Bottom) { table = "Bottoms"; c1 = "bottom_name"; c2 = "bottom_price"; }
-    }
-
     /**
-     * Creates a product, either {@link logic.Bottom} or
+     * Creates a product, either {@link logic.Bottom} or {@link logic.Topping}
      * @param product The topping to be created.
      * @throws ProductException If anything goes wrong in the creation of the topping.
      */
     public void createProduct(IProduct product) throws ProductException {
-        String table ="", c1 = "",c2 = "";
-        checkProductType(product,table,c1,c2);
-        String sql = "SELECT * FROM "+table+" where "+c1+" = ?";
+        String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
         try {
             PreparedStatement statement = connection.getConnection().prepareStatement(sql);
             statement.setString(1,product.getName());
@@ -119,7 +114,7 @@ public class ProductMapper {
                 throw new ProductException("Product already exists");
             }
             else {
-                sql = "INSERT INTO Toppings ("+c1+", "+c2+") VALUES (?,?)";
+                sql = "INSERT INTO "+table+" ("+product_name+", "+product_price+") VALUES (?,?)";
                 statement = connection.getConnection().prepareStatement(sql);
                 statement.setString(1,product.getName());
                 statement.setInt(2, product.getPrice());
@@ -136,6 +131,29 @@ public class ProductMapper {
         }
     }
 
+    public void updateProduct(IProduct product) throws ProductException{
+        String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
+        try{
+            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+            ps.setString(1,product.getName());
+            ResultSet rs = connection.selectQuery(ps);
+            if(!rs.next()){
+                throw new ProductException("Product doesn't exist in database");
+            }
+            else{
+                sql = "UPDATE "+table+" SET "+product_name+"= ?, "+product_price+" = ? WHERE "+product_id+" = ?";
+                ps = connection.getConnection().prepareStatement(sql);
+                ps.setString(1,product.getName());
+                ps.setInt(2,product.getPrice());
+                ps.setInt(3,product.getId());
+                if(!connection.executeQuery(ps)){
+                    throw new SQLException("Product could not be updated");
+                }
+            }
+        }catch(SQLException e){
+            throw new ProductException("Product could not be updated");
+        }
+    }
 }
 
 

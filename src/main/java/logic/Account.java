@@ -9,19 +9,6 @@ public class Account extends BaseEntity{
     private int balance;
 
     /**
-     * Base constructor, if we don't have id.
-     */
-    public Account() { }
-
-    /**
-     * Constructor of an Account, without an initial balance
-     * @param id The id of the account.
-     */
-    public Account(int id) {
-        super.id = id;
-    }
-
-    /**
      * Constructor of an account, with an initial balance.
      * @param id The id of the account
      * @param balance The balance of the account.
@@ -29,9 +16,32 @@ public class Account extends BaseEntity{
      */
     public Account(int id, int balance) throws IllegalArgumentException{
         super.id = id;
-        if(balance < 0) throw new IllegalArgumentException("Balance must be a positive value");
-        else
+        if(validateBalance(balance)) {
             this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
+    }
+
+    /**
+     * Constructor of an account when data is flowing towards backend, and id is not available.
+     * @param balance The balance of the user, must be a positive value.
+     */
+    public Account(int balance) {
+        if(validateBalance(balance)) {
+            this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
+    }
+
+    /**
+     * Simply checks whether or not the given balance is above or is zero
+     * @param balance The balance to be checked.
+     * @return TRUE if the balance is valid, FALSE if the balance is not valid.
+     */
+    private boolean validateBalance(int balance) {
+        return balance >= 0;
     }
 
     /**
@@ -46,10 +56,11 @@ public class Account extends BaseEntity{
      * @throws IllegalArgumentException if the balance is a non-positive value.
      */
     public void setBalance(int balance) throws IllegalArgumentException{
-        if(balance < 0)
-            throw new IllegalArgumentException("Balance must not be below zero");
-        else
+        if(validateBalance(balance)) {
             this.balance = balance;
+        }else {
+            throw new IllegalArgumentException("Balance must be a positive value");
+        }
     }
 
     /**

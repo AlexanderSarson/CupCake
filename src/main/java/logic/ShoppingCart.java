@@ -1,7 +1,11 @@
 package logic;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
-public class ShoppingCart extends ArrayList {
-
+public class ShoppingCart extends Order {
+    public ShoppingCart() {
+    }
+    public ShoppingCart(LocalDate date) {
+        super(date);
+    }
 }

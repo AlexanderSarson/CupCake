@@ -83,7 +83,7 @@ public class UserMapperTest {
     public void test_createUser() throws SQLException, UserException {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
-        when(resSet.next()).thenReturn(false).thenReturn(true);
+        when(resSet.next()).thenReturn(false);
 
         when(connection.getConnection()).thenReturn(sqlConnection);
         when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
@@ -159,5 +159,62 @@ public class UserMapperTest {
         when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true).thenReturn(true);
 
         mapper.deleteUser(user);
+    }
+
+    @Test (expected = UserException.class)
+    public void test_update_user_when_update_mail_fails() throws SQLException, UserException{
+    Account acc = new Account (10000);
+    User user = new User ("Peter Larsen", "peter@example.com", Role.CUSTOMER, acc);
+    when(resSet.next()).thenReturn(true).thenReturn(false);
+
+    when(connection.getConnection()).thenReturn(sqlConnection);
+    when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+    when(connection.selectQuery(ps)).thenReturn(resSet);
+    when(connection.executeQuery(ps)).thenReturn(false);
+
+    mapper.updateUser(user);
+    }
+
+    @Test (expected = UserException.class)
+    public void test_update_user_when_update_user_name_fails() throws SQLException, UserException{
+        Account acc = new Account (10000);
+        User user = new User ("Peter Larsen", "peter@example.com", Role.CUSTOMER, acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+
+        mapper.updateUser(user);
+    }
+
+    @Test (expected = UserException.class)
+    public void test_update_user_when_user_does_not_exist() throws SQLException, UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+
+        mapper.updateUser(user);
+
+    }
+
+    @Test
+    public void test_update_user() throws SQLException,UserException{
+        Account acc = new Account(10000);
+        User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
+        when(resSet.next()).thenReturn(true).thenReturn(false);
+
+        when(connection.getConnection()).thenReturn(sqlConnection);
+        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
+        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true);
+
+        mapper.updateUser(user);
+
     }
 }

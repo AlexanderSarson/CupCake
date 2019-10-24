@@ -9,6 +9,10 @@
 <html>
 <head>
 	<title>Shopping cart</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css"/>
+	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
 </head>
 	<body>
 		<%@ include file="/jsp/nav.jsp" %>
@@ -16,7 +20,9 @@
 		<div class="uk-container">
 			<div class="uk-text-center" uk-grid>
 				<div class="uk-width-2-3@m">
-					<%@include file="productList.jsp"%>
+
+					<%@include file="cartProductList.jsp"%>
+
 				</div>
 				<div class="uk-width-1-3@m">
 					<div class="uk-card uk-card-default">
@@ -27,6 +33,7 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="uk-card-body">
 							<div class="uk-grid-small uk-grid">
 								<div class="uk-width-1-2@m">Subtotal</div>
@@ -36,6 +43,7 @@
 								<div class="uk-width-1-2@m">Discount</div>
 								<div class="uk-width-1-2@m"> $0 </div>
 							</div>
+
 						</div>
 						<div class="uk-card-footer">
 							<div class="uk-grid-small uk-grid">

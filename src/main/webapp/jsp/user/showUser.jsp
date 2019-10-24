@@ -9,6 +9,7 @@
 	<title>Customer Details</title>
 </head>
 <body>
+
 	<%@ include file="/jsp/nav.jsp" %>
 
 	<div class="uk-container">
@@ -39,6 +40,20 @@
 									<td> $${order.getTotal()} </td>
 								</tr>
 							</c:forEach>
+
+							<%-- TODO Placeholders --%>
+							<tr>
+								<td> 123 </td>
+								<td> 01-01-2019 </td>
+								<td> $20 </td>
+							</tr>
+							<tr>
+								<td> 123 </td>
+								<td> 01-01-2019 </td>
+								<td> $20 </td>
+							</tr>
+							<%-- Placeholders end --%>
+
 							</tbody>
 						</table>
 					</div>
@@ -56,19 +71,15 @@
 					<div class="uk-card-body">
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m uk-text-bold uk-text-left">Customer Number:</div>
-							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getId()}"/> </div>
+							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getId()}"/> 123 </div>
 						</div>
 						<div class="uk-grid-small uk-grid">
-							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> First Name: </div>
-							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getFirstName()}"/> </div>
-						</div>
-						<div class="uk-grid-small uk-grid">
-							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Last Name: </div>
-							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getLastName()}"/> </div>
+							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Name: </div>
+							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getFirstName()}"/> John </div>
 						</div>
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Email: </div>
-							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getEmail()}"/> </div>
+							<div class="uk-width-1-2@m"> <c:out value="${sessionScope.user.getEmail()}"/> email@nowhere.com </div>
 						</div>
 					</div>
 					<div class="uk-card-footer">

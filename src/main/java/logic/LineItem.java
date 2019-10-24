@@ -5,7 +5,6 @@ package logic;
  * @author Oscar
  * version 1.0
  */
-
 public class LineItem extends BaseEntity {
 
     private int quantity;
@@ -52,6 +51,10 @@ public class LineItem extends BaseEntity {
         this.quantity = quantity;
     }
 
+    public void incrementQuantity() {
+        quantity++;
+    }
+
     /**
      * Gets the cupcake of a given lineitem
      * @return the cupcake
@@ -64,7 +67,6 @@ public class LineItem extends BaseEntity {
      * Sets the new cupcake of the lineitem
      * @param cupcake the new cupcake
      */
-
     public void setCupcake(Cupcake cupcake) {
         this.cupcake = cupcake;
     }
