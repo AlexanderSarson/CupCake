@@ -69,5 +69,26 @@ public class ProductMapperTest {
         assertEquals(5, cupcake.getBottom().getPrice());
         assertEquals(5, cupcake.getTopping().getPrice());
     }
+    
+    @Test
+    public void test_getProductFromID() throws SQLException, ProductException {
+        when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(resSet.getInt("topping_id")).thenReturn(1);
+        when(resSet.getInt("topping_price")).thenReturn(5);
+        when(resSet.getString("topping_name")).thenReturn("testTopName");
+        when(resSet.getString("topping_picture")).thenReturn("testTopPic");
+        when(resSet.getInt("bottom_id")).thenReturn(1);
+        when(resSet.getInt("bottom_price")).thenReturn(5);
+        when(resSet.getString("bottom_name")).thenReturn("testBotName");
+        when(resSet.getString("bottom_picture")).thenReturn("testBotPic");
+        
+        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        
+        Cupcake cupcake = productMapper.getProductFromID(1);
+        cupcake.setId(1);
+        assertEquals(1, cupcake.getId());
+    }
 
 }

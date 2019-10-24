@@ -125,23 +125,8 @@ public class StorageFacade {
         return true; //If sucsess
     }
     public boolean deleteProduct(int id, String validation) {
-        String[] topOrBot = topOrBot(validation);
-        String table = topOrBot[0]; //Toppings/Bottoms
-        String row = topOrBot[1]; //topping/bottom
-        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
-        try {
-            ps = con.getConnection().prepareStatement(sql);
-            ps.setInt(1, id);
-            return con.executeQuery(ps); //If sucsess <-True
-        } catch (SQLException ex) {
-            Logger.getLogger(StorageFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-//TODO(Tobias): Update All Cupcakes?
-        //Update Cupcakes Topping id + Alle Bottom id
-        //Update Cupcakes Bottom id + Alle Topping id
+        //return productMapper.deleteProductFromID(id);
         return false;
-        
     }
 
     private String[] topOrBot(String validation) {

@@ -94,7 +94,7 @@ class UserMapper {
                 connection.getConnection().setAutoCommit(false);
                 try {
                     //Delete from logins
-                    String deleteLogin = "DELETE * from logins WHERE user_id = ?";
+                    String deleteLogin = "DELETE from logins WHERE user_id = ?";
                     PreparedStatement loginPS = connection.getConnection().prepareStatement(deleteLogin);
                     loginPS.setLong(1, user.getID());
                     if (!connection.executeQuery(loginPS)) {
@@ -102,14 +102,14 @@ class UserMapper {
 
                     }
                     //Delete from accounts
-                    String deleteAccount = "DELETE * from accounts where user_id = ?";
+                    String deleteAccount = "DELETE from accounts where user_id = ?";
                     PreparedStatement accountPS = connection.getConnection().prepareStatement(deleteAccount);
                     accountPS.setLong(1, user.getID());
                     if (!connection.executeQuery(accountPS)) {
                         throw new SQLException("User account could not be deleted");
                     }
                     //Delete from users
-                    String deleteUser = "DELETE * from users WHERE user_ID = ?";
+                    String deleteUser = "DELETE from users WHERE user_ID = ?";
                     PreparedStatement userPS = connection.getConnection().prepareStatement(deleteUser);
                     userPS.setLong(1, user.getID());
                     if (!connection.executeQuery(userPS)) {

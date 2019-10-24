@@ -177,8 +177,3 @@ INSERT INTO LineItems (cupcake_id, order_id, lineitem_qty) VALUES (48, 1, 5);
 
 -- INSERT PREMADECUPCAKES
 
-
-
-
-
-

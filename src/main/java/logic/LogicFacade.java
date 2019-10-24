@@ -86,15 +86,13 @@ public class LogicFacade {
     // ------ USER ------
     public User newUser(String name, String email, String password) throws UserException {
         User user = new User(name,email,Role.CUSTOMER,new Account(0));
-        // TODO(Benjamin): Encrypt password!
-        return storageFacade.createUser(user,password);
+        return storageFacade.createUser(user,Encryption.encryptPsw(password));
     }
     public void updateUser(User user) throws UserException {
         storageFacade.updateUser(user);
     }
     public User login(String email, String password) throws UserException {
-        // TODO(Benjamin) Insert Encryption for password here!
-        return storageFacade.validateUser(email,password);
+        return storageFacade.validateUser(email,Encryption.encryptPsw(password));
     }
     public void addFunds(User user, int amountToDeposit) throws UserException {
         if(amountToDeposit < 0)

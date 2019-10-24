@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import logic.Bottom;
 import logic.Cupcake;
 import logic.IProduct;
@@ -55,6 +57,57 @@ class ProductMapper {
         }
         return cupcake;
     }
+    
+//    public boolean deleteProductFromID(IProduct product) throws ProductException{
+//        String sql = "SELECT * FROM cupcakes WHERE cupcake_id = ?";
+//        try{
+//            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+//            ps.setLong(1, product.getId());
+//            ResultSet rs = connection.selectQuery(ps);
+//            if(!rs.next()){
+//                throw new ProductException("User dosn't exist in database");
+//            } else {
+//                connection.getConnection().setAutoCommit(false);
+//                try{
+//                    //Delete from cupcakes
+//                    //SELECT * FROM cupcakes INNER JOIN toppings USING (topping_id) WHERE topping_id = 10;
+//                    String deleteCupcake = "DELETE FROM cupcakes WHERE cupcake_id = ?";
+//                    PreparedStatement cupcakePS = connection.getConnection().prepareStatement(deleteCupcake);
+//                    cupcakePS.setLong(1, product.getId());
+//                    if(!connection.executeQuery(cupcakePS)){
+//                        throw new SQLException("Product could not be deleted");
+//                    }
+//                    //Delete from topping/bottom
+//                    String deleteTopBot = "DELETE FROM " + ;
+//                    //Commit all transactions
+//                    connection.getConnection().commit();
+//                } catch (SQLException ex) {
+//                    connection.getConnection().rollback();
+//                    throw new ProductException("Product could not be deleted");
+//                } finally {
+//                    connection.getConnection().setAutoCommit(true);
+//                }
+//            }
+//        }catch (SQLException e){
+//            throw new ProductException("Product could not be deleted");
+//        }
+////        String[] topOrBot = topOrBot(validation);
+////        String table = topOrBot[0]; //Toppings/Bottoms
+////        String row = topOrBot[1]; //topping/bottom
+////        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
+////        try {
+////            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+////            ps.setInt(1, id);
+////            return connection.executeQuery(ps); //If sucsess <-True
+////        } catch (SQLException e) {
+////            throw new ProductException("Error when fetching Cupcake");
+////        }
+//////TODO(Tobias): Update All Cupcakes?
+////        //Update Cupcakes Topping id + Alle Bottom id
+////        //Update Cupcakes Bottom id + Alle Topping id
+//        return false;
+//        
+//    }
 
     private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {
         //Cupcake Topping object creation
