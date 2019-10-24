@@ -23,8 +23,15 @@ public class AddToCartCommand extends Command{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Topping top = (Topping) request.getAttribute("topping");
         Bottom bot = (Bottom) request.getAttribute("bottom");
-        ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
         LogicFacade logicFacade = getLogicFacade();
+
+        ShoppingCart cart;
+        if (request.getAttribute("shoppingCart") == null) {
+            cart = logicFacade.getShoppingCart();
+        } else {
+            cart = (ShoppingCart) request.getAttribute("shoppingCart");
+        }
+
         logicFacade.addToShoppingCart(bot, top, cart);
         String page = request.getContextPath().replaceAll(".jsp", "");
         forwardToPage(request, response, page);

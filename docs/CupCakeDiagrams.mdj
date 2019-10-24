@@ -13000,7 +13000,7 @@
 													"top": 431,
 													"width": 121.34814453125,
 													"height": 13,
-													"text": "ApplicationListener"
+													"text": "presentation.listeners.ApplicationListener"
 												},
 												{
 													"_type": "LabelView",
@@ -19740,7 +19740,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFt2J31iipMroI="
 									},
-									"name": "ApplicationListener",
+									"name": "presentation.listeners.ApplicationListener",
 									"ownedElements": [
 										{
 											"_type": "UMLAssociation",

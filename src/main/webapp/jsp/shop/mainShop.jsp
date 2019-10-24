@@ -25,56 +25,60 @@
     <div class="uk-container">
         <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
             <thead>
-            <tr>
-                <th>Topping</th>
-                <th>Bottom</th>
-                <th>Price</th>
-                <th>Order</th>
-            </tr>
+                <tr>
+                    <th>Topping</th>
+                    <th>Bottom</th>
+                    <th>Price</th>
+                    <th>Order</th>
+                </tr>
             </thead>
             <tbody>
-            <c:forEach items="${applicationScope.premadeCupcakes}" var = "cupcake">
+                <c:forEach items="${applicationScope.cupcakes}" var="cupcake">
+                    <tr>
+                        <td>${cupcake.getTopping()}</td>
+                        <td>${cupcake.getBottom()}</td>
+                        <td>$${cupcake.getPrice()}</td>
+                        <td class="uk-table-middle">
+                            <a class="uk-button uk-button-default"
+                                href="${pageContext.request.contextPath}/FrontController?&command=addToCart&topping=${cupcake.getTopping()}&bottom=${cupcake.getBottom()}">
+                                <span uk-icon="plus-circle" class="uk-icon"></span>
+                                <span>Add to Cart</span>
+                            </a>
+                        </td>
+                    </tr>
+                </c:forEach>
+
+                <%-- TODO Placeholders --%>
                 <tr>
-                    <td>${cupcake.getTopping()}</td>
-                    <td>${cupcake.getBottom()}</td>
-                    <td>$${cupcake.getPrice()}</td>
+                    <td>Topping</td>
+                    <td>Bottom</td>
+                    <td>$5</td>
                     <td class="uk-table-middle">
-                        <a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
+                        <a class="uk-button uk-button-default"
+                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
                             <span uk-icon="plus-circle" class="uk-icon"></span>
                             <span>Add to Cart</span>
                         </a>
                     </td>
                 </tr>
-            </c:forEach>
 
-            <%-- TODO Placeholders --%>
-            <tr>
-                <td>Topping</td>
-                <td>Bottom</td>
-                <td>$5</td>
-                <td class="uk-table-middle">
-                    <a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                        <span uk-icon="plus-circle" class="uk-icon"></span>
-                        <span>Add to Cart</span>
-                    </a>
-                </td>
-            </tr>
+                <tr>
+                    <td>Topping</td>
+                    <td>Bottom</td>
+                    <td>$5</td>
+                    <td class="uk-table-middle">
+                        <a class="uk-button uk-button-default"
+                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
+                            <span uk-icon="plus-circle" class="uk-icon"></span>
+                            <span>Add to Cart</span>
+                        </a>
+                    </td>
+                </tr>
 
-            <tr>
-                <td>Topping</td>
-                <td>Bottom</td>
-                <td>$5</td>
-                <td class="uk-table-middle">
-                    <a class="uk-button uk-button-default" href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                        <span uk-icon="plus-circle" class="uk-icon"></span>
-                        <span>Add to Cart</span>
-                    </a>
-                </td>
-            </tr>
-
-            <%-- Placeholders end --%>
+                <%-- Placeholders end --%>
             </tbody>
         </table>
     </div>
 </body>
+
 </html>
