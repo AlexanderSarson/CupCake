@@ -29,7 +29,7 @@ public class LogicFacade {
         return null;
     }
 
-    public List<Cupcake> getPremadeCupcakes(){
+    public List getPremadeCupcakes(){
         return null;
     }
 
@@ -60,6 +60,4 @@ public class LogicFacade {
         
     }
 
-    public void removeFromShoppingcart (Topping topping, Bottom bottom, ShoppingCart cart) {
-    }
 }
