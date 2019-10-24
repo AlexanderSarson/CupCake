@@ -1,8 +1,11 @@
 package persistence;
 
 class BottomMapper extends ProductMapper {
-    public BottomMapper(SQLConnection connection) {
-        super(connection);
+    public BottomMapper() {
+        setup();
+    }
+
+    private void setup() {
         table = "Bottoms";
         product_id = "bottom_id";
         product_name = "bottom_name";

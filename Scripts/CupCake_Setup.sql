@@ -21,7 +21,7 @@ FOREIGN KEY (user_id)
 CREATE TABLE Accounts(
 account_id INT AUTO_INCREMENT,
 user_id INT,
-user_balance FLOAT NOT NULL,
+user_balance int NOT NULL,
 PRIMARY KEY (account_id),
 FOREIGN KEY (user_id)
 	REFERENCES Users (user_id)
@@ -38,14 +38,14 @@ CREATE TABLE Toppings(
 topping_id INT AUTO_INCREMENT,
 topping_name VARCHAR(50) NOT NULL,
 topping_price FLOAT NOT NULL,
-topping_picture VARCHAR(100) NOT NULL,
+topping_picture VARCHAR(100),
 PRIMARY KEY (topping_id)
 );
 CREATE TABLE Bottoms(
 bottom_id INT AUTO_INCREMENT,
 bottom_name VARCHAR(50) NOT NULL,
 bottom_price FLOAT NOT NULL,
-bottom_picture VARCHAR(100) NOT NULL,
+bottom_picture VARCHAR(100),
 PRIMARY KEY (bottom_id)
 );
 CREATE TABLE Cupcakes(
@@ -81,25 +81,14 @@ FOREIGN KEY (bottom_id)
 
 
 -- INSERT USERS
-INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'userRoleTest'); 
-INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'userRoleTest2'); 
-
--- INSERT LOGINS
-INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
-
-
--- INSERT ACCOUNTS
-INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20.5);
-
-
--- INSERT ORDERS (Date format YYYY-MM-DD)
-INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');
+INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
+INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'CUSTOMER'); 
 
 -- INSERT LOGINS
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
 
 -- INSERT ACCOUNTS
-INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20.5);
+INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20);
 
 -- INSERT ORDERS (Date format YYYY-MM-DD)
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');

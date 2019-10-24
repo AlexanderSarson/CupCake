@@ -18,11 +18,12 @@ public class StorageFacade {
     private final SQLConnection con = new SQLConnection();
     private PreparedStatement ps;
 
-    private OrderMapper orderMapper = new OrderMapper(con);
-    private UserMapper userMapper = new UserMapper(con);
-    private ProductMapper productMapper = new ProductMapper(con);
-    private BottomMapper bottomMapper = new BottomMapper(con);
-    private ToppingMapper toppingMapper = new ToppingMapper(con);
+    private OrderMapper orderMapper = new OrderMapper();
+    private UserMapper userMapper = new UserMapper();
+    private ProductMapper productMapper = new ProductMapper();
+
+    private BottomMapper bottomMapper = new BottomMapper();
+    private ToppingMapper toppingMapper = new ToppingMapper();
 
     // ------ PRODUCT ------
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
@@ -143,7 +144,6 @@ public class StorageFacade {
         return false;
 
     }
-
     private String[] topOrBot(String validation) {
         String table = ""; //Toppings/Bottoms
         String row = ""; //topping/bottom
@@ -161,6 +161,3 @@ public class StorageFacade {
     }
 
 }
-
-
-//LAV Private metode der opdaterer alle cupcakes så de er up 2 date hele tiden.
