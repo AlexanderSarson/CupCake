@@ -142,9 +142,6 @@ class OrderMapper {
         }
         return order;
     }
-    public void updateOrder(Order order) {
-
-    }
 
     /**
      * Deletes a order stored persistently.
