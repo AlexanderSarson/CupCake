@@ -152,6 +152,13 @@ public class StorageFacadeTest {
         userMapper.addFunds(user,1000);
         assertEquals(exp, user.getAccount().getBalance());
     }
+    @Test (expected = IllegalArgumentException.class)
+    public void add_negative_amount_funds() throws UserException{
+        Account newAcc = new Account (1000);
+        User user = new User("PeterLarsen","PeterL@example.com",Role.CUSTOMER,newAcc);
+        user = userMapper.createUser(user,account,"Larsen1234");
+        userMapper.addFunds(user,-100);
+    }
 
     @Test
     public void createUser() throws UserException {
@@ -193,6 +200,12 @@ public class StorageFacadeTest {
         bottomMapper.createProduct(bottom);
         assertEquals(6, bottom.getId());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_bottom_with_negative_price() throws ProductException{
+        Bottom bottom = new Bottom(-5,"RichChocolate");
+        bottomMapper.createProduct(bottom);
+    }
     @Test
     public void updateBottom() throws ProductException {
         Bottom bottom = new Bottom(10,"WhiteChocolate");
@@ -205,6 +218,12 @@ public class StorageFacadeTest {
         bottom.setId(11);
         bottomMapper.updateProduct(bottom);
     }
+    @Test(expected = ProductException.class)
+    public void create_existing_bottom() throws ProductException{
+        Bottom bottom = new Bottom(1,"Chocolate");
+        bottomMapper.createProduct(bottom);
+    }
+
 
     // ----- TOPPING -----
     @Test
@@ -225,4 +244,23 @@ public class StorageFacadeTest {
         topping.setId(50);
         toppingMapper.updateProduct(topping);
     }
+    @Test(expected = IllegalArgumentException.class)
+        public void create_topping_with_negative_price() throws ProductException{
+        Topping top = new Topping (-1,"BlueFrosting");
+        toppingMapper.createProduct(top);
+        }
+    @Test(expected = ProductException.class)
+        public void create_existing_topping() throws ProductException{
+        Topping top = new Topping(1,"Chocolate");
+        toppingMapper.createProduct(top);
+    }
+
+    @Test
+    public void update_topping_with_existing_name() throws ProductException{
+        Topping top = new Topping (1,"Rockwool");
+        toppingMapper.createProduct(top);
+        top.setName("Chocolate");
+        toppingMapper.updateProduct(top);
+    }
+
 }

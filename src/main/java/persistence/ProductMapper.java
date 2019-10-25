@@ -51,7 +51,7 @@ public class ProductMapper {
      * @return the cupcake with the given id
      * @throws ProductException if anything goes wrong while trying to fetch cupcake
      */
-    public Cupcake getProductFromID(int id) throws ProductException {
+    public Cupcake getCupcakeFromID(int id) throws ProductException {
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id where cupcake_id = ?";
         Cupcake cupcake = null;
         try (Connection connection = dataSource.getConnection();
@@ -66,6 +66,26 @@ public class ProductMapper {
             throw new ProductException("Error when fetching Cupcake");
         }
         return cupcake;
+    }
+
+    //getProductFromID(int id) for både topping og bottom.
+
+    public IProduct getProductFromID (int id) throws ProductException, SQLException{
+        String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1,id);
+            ResultSet rs = statement.executeQuery();
+            if(!rs.next()){
+                throw new ProductException("Product with given ID doesn't exist");
+            } else{
+                int productID = rs.getInt(product_id);
+                String productName = rs.getString(product_name);
+                int productPrice = rs.getInt(product_price);
+                String ProductPic = rs.getString(4);
+            }
+        }
+        return null;
     }
 
     /**
