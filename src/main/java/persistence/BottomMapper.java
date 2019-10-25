@@ -10,6 +10,10 @@ class BottomMapper extends ProductMapper {
 
     private SQLConnection connection;
 
+    /**
+     * Constructor a a BottomMapper
+     * @param connection is the connection to the database
+     */
     public BottomMapper(SQLConnection connection) {
         super(connection);
         table = "Bottoms";
@@ -18,6 +22,11 @@ class BottomMapper extends ProductMapper {
         product_price = "bottom_price";
     }
 
+    /**
+     * Gets all Bottoms from the database
+     * @return an ArrayList of Bottoms
+     * @throws ProductException is anything goes wrong while fetching all bottoms from the database
+     */
     public ArrayList<Bottom> getAllBottoms() throws ProductException {
         ArrayList<Bottom> bottomList = new ArrayList<>();
         String sql = "SELECT * FROM bottoms";

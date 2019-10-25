@@ -11,6 +11,11 @@ class ToppingMapper extends ProductMapper {
 
     private SQLConnection connection;
 
+    /**
+     * Constructor of a ToppingMapper
+     * @param connection is the connection to the database
+     */
+
     public ToppingMapper(SQLConnection connection) {
         super(connection);
         table = "Toppings";
@@ -19,6 +24,11 @@ class ToppingMapper extends ProductMapper {
         product_price = "topping_price";
     }
 
+    /**
+     * Gets all Toppings from the database
+     * @return an ArrayList of Toppings
+     * @throws ProductException if toppings cannot be fetched from the database
+     */
     public ArrayList<Topping> getAllToppings() throws ProductException {
         ArrayList<Topping> toppingList = new ArrayList<>();
         String sql = "SELECT * FROM toppings";
