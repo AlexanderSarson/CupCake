@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  * Mapping of orders from the database to java objects
  * @author Benjamin Paepke
+ * @author Oscar Laurberg
  * @version 1.0
  */
 class OrderMapper {

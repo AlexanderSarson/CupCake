@@ -13,11 +13,18 @@ class BottomMapper extends ProductMapper {
     }
 
     private void setup() {
+
         table = "Bottoms";
         product_id = "bottom_id";
         product_name = "bottom_name";
         product_price = "bottom_price";
     }
+
+    /**
+     * Gets all Bottoms from the database
+     * @return an ArrayList of Bottoms
+     * @throws ProductException is anything goes wrong while fetching all bottoms from the database
+     */
 
 //    public ArrayList<Bottom> getAllBottoms() throws ProductException {
 //        ArrayList<Bottom> bottomList = new ArrayList<>();
@@ -40,4 +47,5 @@ class BottomMapper extends ProductMapper {
 //        }
 //        return bottomList;
 //    }
+
 }
