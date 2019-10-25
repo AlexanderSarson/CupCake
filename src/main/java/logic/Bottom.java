@@ -5,10 +5,8 @@ package logic;
 /**
  * The Bottom class represents the bottom in the Cupcake object
  * The bottom contains the attributes id, price & name
- *
  *  @author Oscar
  *  version 1.0
- *
  */
 
 public class Bottom extends BaseEntity implements IProduct{
@@ -22,12 +20,12 @@ public class Bottom extends BaseEntity implements IProduct{
      * @param name the name of the bottom
      * @throws IllegalArgumentException if the price is a negative value.
      */
-
     public Bottom (int price, String name ) throws IllegalArgumentException{
         if (price < 0) throw new IllegalArgumentException("Price must be a positive value");
-        else
-            this.price=price;
-            this.name=name;
+        else {
+            this.price = price;
+            this.name = name;
+        }
     }
 
     /**

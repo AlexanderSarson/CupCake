@@ -7,17 +7,17 @@
 package persistence;
 
 import logic.Cupcake;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +37,7 @@ public class ProductMapperTest {
     @Mock
     private PreparedStatement statement;
     @Mock
-    private SQLConnection sqlConnection;
+    private DataSource dataSource;
     @Mock
     private Connection connection;
 
@@ -54,9 +54,9 @@ public class ProductMapperTest {
         when(resSet.getString("bottom_name")).thenReturn("testBotName");
         when(resSet.getString("bottom_picture")).thenReturn("testBotPic");
 
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeQuery()).thenReturn(resSet);
         
         ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
         Cupcake cupcake = cupcakes.get(0);
@@ -70,5 +70,24 @@ public class ProductMapperTest {
         assertEquals(5, cupcake.getBottom().getPrice());
         assertEquals(5, cupcake.getTopping().getPrice());
     }
-
+    
+    @Test
+    public void test_getProductFromID() throws SQLException, ProductException {
+        when(resSet.getInt("topping_id")).thenReturn(1);
+        when(resSet.getInt("topping_price")).thenReturn(5);
+        when(resSet.getString("topping_name")).thenReturn("testTopName");
+        when(resSet.getString("topping_picture")).thenReturn("testTopPic");
+        when(resSet.getInt("bottom_id")).thenReturn(1);
+        when(resSet.getInt("bottom_price")).thenReturn(5);
+        when(resSet.getString("bottom_name")).thenReturn("testBotName");
+        when(resSet.getString("bottom_picture")).thenReturn("testBotPic");
+        when(resSet.getInt("cupcake_id")).thenReturn(1);
+        when(resSet.next()).thenReturn(true);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        
+        Cupcake cupcake = productMapper.getProductFromID(1);
+        assertEquals(1, cupcake.getId());
+    }
 }

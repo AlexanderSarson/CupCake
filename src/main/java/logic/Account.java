@@ -9,11 +9,6 @@ public class Account extends BaseEntity{
     private int balance;
 
     /**
-     * Base constructor, if we don't have id.
-     */
-    public Account() { }
-
-    /**
      * Constructor of an account, with an initial balance.
      * @param id The id of the account
      * @param balance The balance of the account.
@@ -28,6 +23,10 @@ public class Account extends BaseEntity{
         }
     }
 
+    /**
+     * Constructor of an account when data is flowing towards backend, and id is not available.
+     * @param balance The balance of the user, must be a positive value.
+     */
     public Account(int balance) {
         if(validateBalance(balance)) {
             this.balance = balance;
@@ -36,6 +35,11 @@ public class Account extends BaseEntity{
         }
     }
 
+    /**
+     * Simply checks whether or not the given balance is above or is zero
+     * @param balance The balance to be checked.
+     * @return TRUE if the balance is valid, FALSE if the balance is not valid.
+     */
     private boolean validateBalance(int balance) {
         return balance >= 0;
     }

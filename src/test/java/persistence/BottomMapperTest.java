@@ -1,6 +1,7 @@
 package persistence;
 
 import logic.Bottom;
+import net.bytebuddy.dynamic.scaffold.MethodRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,9 +26,9 @@ public class BottomMapperTest {
     @Mock
     private ResultSet resSet;
     @Mock
-    private PreparedStatement statement;
+    private DataSource dataSource;
     @Mock
-    private SQLConnection sqlConnection;
+    private PreparedStatement statement;
     @Mock
     private Connection connection;
 
@@ -35,49 +36,51 @@ public class BottomMapperTest {
     public void test_createProduct_with_existing_topping() throws SQLException, ProductException {
         Bottom top = new Bottom(5,"Chocolate");
         when(resSet.next()).thenReturn(true).thenReturn(false);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         bottomMapper.createProduct(top);
-        verify(sqlConnection,times(0)).executeQuery(any(PreparedStatement.class));
+        verify(statement,times(0)).executeQuery();
     }
 
     @Test
     public void test_createProduct() throws SQLException, ProductException {
         Bottom top = new Bottom(5,"Chocolate");
         when(resSet.next()).thenReturn(false);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
-        when(sqlConnection.executeQuery(statement)).thenReturn(true);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1);
 
         bottomMapper.createProduct(top);
-        verify(sqlConnection, times(1)).executeQuery(any(PreparedStatement.class));
+        verify(statement, times(1)).executeUpdate();
     }
 
     @Test(expected = ProductException.class)
     public void test_updateProduct_without_existing_product() throws SQLException, ProductException {
-        Bottom top = new Bottom(5,"Chocolate");
+        Bottom bottom = new Bottom(5,"Chocolate");
+        bottom.setId(1);
         when(resSet.next()).thenReturn(false);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeQuery()).thenReturn(resSet);
 
-        bottomMapper.updateProduct(top);
-        verify(sqlConnection, times(0)).executeQuery(statement);
+        bottomMapper.updateProduct(bottom);
+        verify(statement, times(0)).executeQuery();
     }
 
     @Test
     public void test_updateProduct_with_existing_product() throws SQLException, ProductException {
-        Bottom top = new Bottom(5,"Chocolate");
+        Bottom bottom = new Bottom(5,"Chocolate");
+        bottom.setId(1);
         when(resSet.next()).thenReturn(true).thenReturn(true);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
-        when(sqlConnection.executeQuery(statement)).thenReturn(true);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1);
 
-        bottomMapper.updateProduct(top);
-        verify(sqlConnection, times(1)).executeQuery(statement);
+        bottomMapper.updateProduct(bottom);
+        verify(statement, times(1)).executeUpdate();
     }
 }

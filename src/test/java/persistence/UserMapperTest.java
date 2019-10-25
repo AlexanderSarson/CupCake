@@ -26,13 +26,15 @@ public class UserMapperTest {
     private UserMapper mapper;
 
     @Mock
-    private PreparedStatement ps;
+    private PreparedStatement statement;
     @Mock
     private ResultSet resSet;
     @Mock
-    private SQLConnection connection;
+    private DataSource dataSource;
     @Mock
-    private Connection sqlConnection;
+    private SQLConnection DELETE_ME;
+    @Mock
+    private Connection connection;
 
     @Before
     public void setup() throws Exception {
@@ -50,9 +52,9 @@ public class UserMapperTest {
         when(resSet.getInt("account_id")).thenReturn(1);
         when(resSet.getInt("user_balance")).thenReturn(1000);
 
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         ArrayList<User> users = mapper.getAllUser();
         User user = users.get(0);
@@ -70,10 +72,9 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         mapper.createUser(user,acc,"test");
     }
@@ -83,11 +84,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen", "peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(0);
 
         mapper.createUser(user,acc,"test");
     }
@@ -97,11 +97,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(false);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(0);
 
         mapper.deleteUser(user);
     }
@@ -110,11 +109,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(0);
 
         mapper.deleteUser(user);
     }
@@ -124,11 +122,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(1).thenReturn(0);
 
         mapper.deleteUser(user);
     }
@@ -138,10 +135,9 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         mapper.deleteUser(user);
     }
@@ -151,11 +147,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true).thenReturn(true);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(1).thenReturn(1);
 
         mapper.deleteUser(user);
     }
@@ -165,11 +160,10 @@ public class UserMapperTest {
     Account acc = new Account (10000);
     User user = new User ("Peter Larsen", "peter@example.com", Role.CUSTOMER, acc);
     when(resSet.next()).thenReturn(true).thenReturn(false);
-
-    when(connection.getConnection()).thenReturn(sqlConnection);
-    when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-    when(connection.selectQuery(ps)).thenReturn(resSet);
-    when(connection.executeQuery(ps)).thenReturn(false);
+    when(dataSource.getConnection()).thenReturn(connection);
+    when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+    when(statement.executeQuery()).thenReturn(resSet);
+    when(statement.executeUpdate()).thenReturn(0);
 
     mapper.updateUser(user);
     }
@@ -179,11 +173,10 @@ public class UserMapperTest {
         Account acc = new Account (10000);
         User user = new User ("Peter Larsen", "peter@example.com", Role.CUSTOMER, acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(false);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(0);
 
         mapper.updateUser(user);
     }
@@ -193,10 +186,9 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         mapper.updateUser(user);
 
@@ -207,11 +199,10 @@ public class UserMapperTest {
         Account acc = new Account(10000);
         User user = new User("Peter Larsen","peter@example.com",Role.CUSTOMER,acc);
         when(resSet.next()).thenReturn(true).thenReturn(false);
-
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
-        when(connection.executeQuery(ps)).thenReturn(true).thenReturn(true);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1).thenReturn(1);
 
         mapper.updateUser(user);
 
