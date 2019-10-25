@@ -20,8 +20,8 @@ public class LogicFacade {
         }
     }
 
-    public List<Cupcake> getPremadeCupcakes(){
-        return null;
+    public List<Cupcake> getPremadeCupcakes() throws ProductException {
+        return storageFacade.getPremadeCupcakes();
     }
 
     // ------ BOTTOM ------
@@ -34,7 +34,7 @@ public class LogicFacade {
         storageFacade.updateBottom(bottom);
         return bottom;
     }
-    public ArrayList<Bottom> getAllBottoms() throws ProductException {
+    public List<Bottom> getAllBottoms() throws ProductException {
         return storageFacade.getAllBottoms();
     }
     public void deleteBottom(Bottom bottom) {
@@ -51,7 +51,7 @@ public class LogicFacade {
         storageFacade.updateTopping(topping);
         return topping;
     }
-    public ArrayList<Topping> getAllToppings() throws ProductException {
+    public List<Topping> getAllToppings() throws ProductException {
         return storageFacade.getAllToppings();
     }
     public void deleteTopping(Topping topping) {

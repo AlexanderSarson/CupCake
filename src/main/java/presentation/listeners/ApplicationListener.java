@@ -2,6 +2,7 @@ package presentation.listeners;
 
 import logic.Cupcake;
 import logic.LogicFacade;
+import persistence.ProductException;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -32,8 +33,14 @@ public class ApplicationListener implements ServletContextListener,
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
-      List<Cupcake> cupcakes = new LogicFacade().getPremadeCupcakes();
-      sce.getServletContext().setAttribute("cupcakes", cupcakes);
+        List<Cupcake> cupcakes = null;
+        try {
+            cupcakes = new LogicFacade().getPremadeCupcakes();
+        } catch (ProductException e) {
+            // TODO(Benjamin) Handle me!
+            e.printStackTrace();
+        }
+        sce.getServletContext().setAttribute("cupcakes", cupcakes);
     }
 
     public void contextDestroyed (ServletContextEvent sce) {

@@ -27,12 +27,12 @@ public class navigationTests {
 
     @AfterClass
     public static void closeBrowser() {
-        driver.close();
+        if(driver != null)
+            driver.close();
     }
 
     @Test
     public void Should_ForwardToLogin_When_EditUserIsAccessedWithoutLogin () {
-
     }
 
     @Test

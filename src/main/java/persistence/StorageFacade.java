@@ -31,6 +31,9 @@ public class StorageFacade {
     }
 
     // ------ PRODUCT ------
+    public List<Cupcake> getPremadeCupcakes() throws ProductException {
+        return productMapper.getPremadeCucpakes();
+    }
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         return productMapper.getAllProducts();
     }
@@ -75,7 +78,7 @@ public class StorageFacade {
     public void deleteBottom(Bottom bottom) {
         //bottomMapper.deleteProduct(bottom);
     }
-    public ArrayList<Bottom> getAllBottoms() throws ProductException {
+    public List<Bottom> getAllBottoms() throws ProductException {
         return null;
     }
 
@@ -89,7 +92,7 @@ public class StorageFacade {
     public void deleteTopping(Topping topping) {
         //toppingMapper.deleteProduct(topping);
     }
-    public ArrayList<Topping> getAllToppings() throws ProductException {
+    public List<Topping> getAllToppings() throws ProductException {
         return null;
     }
 }
