@@ -118,7 +118,7 @@ public class StorageFacadeTest {
         Order lastOrder = orders.get(orders.size()-1);
 
         assertEquals(order.getId(),lastOrder.getId());
-        //assertEquals(order.getDate(),lastOrder.getDate());
+        assertEquals(order.getDate(),lastOrder.getDate());
         assertEquals(order.getTotalQuantity(),lastOrder.getTotalQuantity());
     }
     @Test
