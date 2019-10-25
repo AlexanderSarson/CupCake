@@ -20,6 +20,10 @@ public class LogicFacade {
         }
     }
 
+    public List<Cupcake> getPremadeCupcakes(){
+        return null;
+    }
+
     // ------ BOTTOM ------
     public Bottom createBottom(String name, int price, String picturePath) throws ProductException {
         Bottom bottom = new Bottom(price,name);
