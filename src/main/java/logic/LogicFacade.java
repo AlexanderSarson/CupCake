@@ -1,6 +1,8 @@
 package logic;
 import persistence.*;
 
+import java.io.IOException;
+import java.lang.reflect.Executable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,8 +15,13 @@ import java.util.List;
  */
 
 public class LogicFacade {
-    private StorageFacade storageFacade = new StorageFacade();
-    public LogicFacade(){}
+    private StorageFacade storageFacade;
+    public LogicFacade() {
+        try {
+            storageFacade = new StorageFacade();
+        } catch (IOException e) {
+        }
+    }
 
     // ------ PRODUCT ------
     public ArrayList<Cupcake> getAllCupcakes() throws ProductException {
