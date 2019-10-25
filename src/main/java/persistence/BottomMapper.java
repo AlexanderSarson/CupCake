@@ -1,7 +1,8 @@
 package persistence;
 
 class BottomMapper extends ProductMapper {
-    public BottomMapper() {
+    public BottomMapper(DataSource dataSource) {
+        super(dataSource);
         setup();
     }
 

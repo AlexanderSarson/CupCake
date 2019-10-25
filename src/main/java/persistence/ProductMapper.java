@@ -1,7 +1,6 @@
 
 package persistence;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +11,6 @@ import logic.Cupcake;
 import logic.IProduct;
 import logic.Topping;
 
-import javax.xml.crypto.Data;
-
 /**
  * This class has the purpose of mapping Products from the database to jave objects. General data, such as Cupcakes and intances where all tables are being checked,
  * can be collected through this class. Data regarding Bottoms or Toppings, make use of {@link logic.Bottom} and {@link logic.Topping}
@@ -23,19 +20,19 @@ import javax.xml.crypto.Data;
  */
 class ProductMapper {
     protected String table = "", product_id = "", product_name = "", product_price ="";
-
-    public ProductMapper() {}
+    private DataSource dataSource;
+    public ProductMapper(DataSource dataSource) {this.dataSource = dataSource;}
 
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 cupcakes.add(findCupcakeFromResultSet(rs));
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new ProductException("Error when fetching all Cupcakes");
         }
         return cupcakes;
@@ -44,7 +41,7 @@ class ProductMapper {
     public Cupcake getProductFromID(int id) throws ProductException {
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id where cupcake_id = ?";
         Cupcake cupcake = null;
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -52,7 +49,7 @@ class ProductMapper {
                 throw new ProductException("Could not find cupcake with id: " + id);
             else
                 cupcake = findCupcakeFromResultSet(rs);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new ProductException("Error when fetching Cupcake");
         }
         return cupcake;
@@ -87,7 +84,7 @@ class ProductMapper {
      */
     public void createProduct(IProduct product) throws ProductException {
         String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1,product.getName());
             ResultSet rs = statement.executeQuery();
@@ -100,7 +97,7 @@ class ProductMapper {
                     insertPS.setString(1,product.getName());
                     insertPS.setInt(2, product.getPrice());
                     if(insertPS.executeUpdate() == 1) {
-                        int id = DataSource.lastID(connection, insertPS);
+                        int id = dataSource.lastID(connection, insertPS);
                         product.setId(id);
                     }
                     else {
@@ -108,14 +105,14 @@ class ProductMapper {
                     }
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new ProductException("Connection failed");
         }
     }
 
     public void updateProduct(IProduct product) throws ProductException{
         String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
-        try(Connection connection = DataSource.getInstance().getConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1,product.getId());
             ResultSet rs = ps.executeQuery();
@@ -133,7 +130,7 @@ class ProductMapper {
                     }
                 }
             }
-        }catch(SQLException | IOException e){
+        }catch(SQLException e){
             throw new ProductException("Product could not be updated");
         }
     }

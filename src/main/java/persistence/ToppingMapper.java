@@ -1,7 +1,8 @@
 package persistence;
 
 class ToppingMapper extends ProductMapper {
-    public ToppingMapper() {
+    public ToppingMapper(DataSource dataSource) {
+        super(dataSource);
         setup();
     }
 

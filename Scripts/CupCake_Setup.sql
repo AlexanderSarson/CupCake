@@ -82,13 +82,15 @@ FOREIGN KEY (bottom_id)
 
 -- INSERT USERS
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
-INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'CUSTOMER'); 
+INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'ADMIN'); 
 
 -- INSERT LOGINS
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
+INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (2, 'loginMailTest2', 'loginPasswordTest', '2384');
 
 -- INSERT ACCOUNTS
 INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20);
+INSERT INTO Accounts (user_id, user_balance) VALUES (2, 20);
 
 -- INSERT ORDERS (Date format YYYY-MM-DD)
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');

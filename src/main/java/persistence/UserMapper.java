@@ -4,7 +4,6 @@ import logic.Account;
 import logic.Role;
 import logic.User;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,8 @@ import java.util.ArrayList;
  * version 1.01
  */
 class UserMapper {
-    public UserMapper() {}
+    private DataSource dataSource;
+    public UserMapper(DataSource dataSource) { this.dataSource = dataSource; }
 
     /**
      * Validates the users, is a registered user, using mail and password.
@@ -30,7 +30,7 @@ class UserMapper {
     public User login(String mail, String password) throws UserException {
         User user = null;
         String sql = "select user_id from Logins where login_mail = ? and login_password = ?";
-        try (Connection connection = DataSource.getInstance().getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1,mail);
             ps.setString(2, password);
@@ -45,7 +45,7 @@ class UserMapper {
             while(rs.next()){
                 user = findUserFromResultSet(rs);
             }
-        }catch (SQLException | IOException e){
+        }catch (SQLException e){
             throw new UserException("Error validating user");
         }
         if(user == null)
@@ -62,14 +62,14 @@ class UserMapper {
     public ArrayList<User> getAllUser() throws UserException {
         ArrayList<User> users = new ArrayList<>();
         String sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 User user = findUserFromResultSet(rs);
                 users.add(user);
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new UserException("Error fetching users");
         }
         return users;
@@ -82,7 +82,7 @@ class UserMapper {
      */
     public void deleteUser(User user) throws UserException {
         String sql = "select * from Users WHERE user_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, user.getID());
             ResultSet rs = ps.executeQuery();
@@ -148,7 +148,7 @@ class UserMapper {
                     connection.setAutoCommit(true);
                 }
             }
-        }catch (SQLException | IOException e){
+        }catch (SQLException e){
             throw new UserException("User could not be deleted");
         }
     }
@@ -162,7 +162,7 @@ class UserMapper {
      */
     public User createUser(User user, Account account, String password) throws UserException {
         String sql = "select * from Logins where login_mail = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setString(1,user.getMail());
             ResultSet rs = ps.executeQuery();
@@ -180,7 +180,7 @@ class UserMapper {
                         throw new SQLException("Could not insert into users");
                     }
                     else {
-                        user.setID(DataSource.lastID(connection,userPS));
+                        user.setID(dataSource.lastID(connection,userPS));
                     }
                     // Insert into Logins
                     String loginPrepare = "INSERT INTO Logins(user_id, login_mail, login_password, login_salt) values (?,?,?,?)";
@@ -202,7 +202,7 @@ class UserMapper {
                         if(accPS.executeUpdate() != 1) {
                             throw new SQLException("Could not insert into account");
                         } else {
-                            account.setId(DataSource.lastID(connection,accPS));
+                            account.setId(dataSource.lastID(connection,accPS));
                         }
                     }
                     // Commit all transactions
@@ -217,7 +217,7 @@ class UserMapper {
                     connection.setAutoCommit(true);
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new UserException("User creation failed");
         }
         return user;
@@ -230,7 +230,7 @@ class UserMapper {
      */
     public void updateUser(User user) throws UserException{
         String sql = "SELECT * from Users WHERE user_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, user.getID());
             ResultSet rs = ps.executeQuery();
@@ -264,7 +264,7 @@ class UserMapper {
                     connection.setAutoCommit(true);
                 }
             }
-        }catch (SQLException | IOException e){
+        }catch (SQLException e){
             throw new UserException("User could not be updated");
         }
     }
@@ -277,7 +277,7 @@ class UserMapper {
      */
     public void addFunds(User user, int amount) throws UserException {
         String sql = "SELECT user_balance FROM Accounts where user_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1,user.getId());
             ResultSet rs = statement.executeQuery();
@@ -295,7 +295,7 @@ class UserMapper {
                         throw new UserException("Could not update account balance");
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new UserException("Connection error");
         }
     }

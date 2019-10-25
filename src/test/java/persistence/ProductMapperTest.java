@@ -36,7 +36,7 @@ public class ProductMapperTest {
     @Mock
     private PreparedStatement statement;
     @Mock
-    private SQLConnection sqlConnection;
+    private DataSource dataSource;
     @Mock
     private Connection connection;
 
@@ -53,9 +53,9 @@ public class ProductMapperTest {
         when(resSet.getString("bottom_name")).thenReturn("testBotName");
         when(resSet.getString("bottom_picture")).thenReturn("testBotPic");
 
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeQuery()).thenReturn(resSet);
         
         ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
         Cupcake cupcake = cupcakes.get(0);

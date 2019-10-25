@@ -1,5 +1,6 @@
 package persistence;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,14 +17,18 @@ import logic.*;
  */
 public class StorageFacade {
     private final SQLConnection con = new SQLConnection();
+    private DataSource dataSource = new DataSource();
     private PreparedStatement ps;
 
-    private OrderMapper orderMapper = new OrderMapper();
-    private UserMapper userMapper = new UserMapper();
-    private ProductMapper productMapper = new ProductMapper();
+    private OrderMapper orderMapper = new OrderMapper(dataSource);
+    private UserMapper userMapper = new UserMapper(dataSource);
+    private ProductMapper productMapper = new ProductMapper(dataSource);
 
-    private BottomMapper bottomMapper = new BottomMapper();
-    private ToppingMapper toppingMapper = new ToppingMapper();
+    private BottomMapper bottomMapper = new BottomMapper(dataSource);
+    private ToppingMapper toppingMapper = new ToppingMapper(dataSource);
+
+    public StorageFacade() throws IOException {
+    }
 
     // ------ PRODUCT ------
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
@@ -47,7 +52,6 @@ public class StorageFacade {
     // ------ ORDER ------
     public List<Order> getAllOrders(User user) throws OrderException { return orderMapper.getAllOrders(user); }
     public Order createOrder(Order order, User user) throws SQLException, OrderException { return orderMapper.createOrder(order, user); }
-    public void updateOrder(Order order) { orderMapper.updateOrder(order);}
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 
     public void updateUser(User user) throws UserException {

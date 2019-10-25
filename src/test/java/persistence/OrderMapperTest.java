@@ -1,8 +1,6 @@
 package persistence;
 
 import logic.*;
-import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,13 +23,13 @@ public class OrderMapperTest {
     @InjectMocks
     private OrderMapper orderMapper;
     @Mock
-    private PreparedStatement ps;
+    private PreparedStatement statement;
     @Mock
     private ResultSet resSet;
     @Mock
-    private SQLConnection connection;
+    private DataSource dataSource;
     @Mock
-    private Connection sqlConnection;
+    private Connection connection;
 
     @Test
     public void getAllOrders() throws SQLException, OrderException {
@@ -53,9 +51,9 @@ public class OrderMapperTest {
         when(resSet.getInt("topping_price")).thenReturn(11);
         //when(resSet.getString("topping_picture")).thenReturn("blueBerryPicture");
 
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
         ArrayList<Order> orders = orderMapper.getAllOrders(user);
@@ -70,9 +68,9 @@ public class OrderMapperTest {
     @Test(expected = OrderException.class)
     public void test_getAllOrders_with_no_orders() throws SQLException, OrderException {
         when(resSet.next()).thenReturn(false);
-        when(connection.getConnection()).thenReturn(sqlConnection);
-        when(sqlConnection.prepareStatement(any(String.class))).thenReturn(ps);
-        when(connection.selectQuery(ps)).thenReturn(resSet);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(statement);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
         ArrayList<Order> orders = orderMapper.getAllOrders(user);

@@ -1,30 +1,40 @@
 package persistence;
 
 import logic.*;
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
 public class StorageFacadeTest {
-    private UserMapper userMapper = new UserMapper();
-    private ProductMapper productMapper = new ProductMapper();
-    private BottomMapper bottomMapper = new BottomMapper();
-    private ToppingMapper toppingMapper = new ToppingMapper();
-    private OrderMapper orderMapper = new OrderMapper();
+    private static DataSource dataSource;
+    static {
+        try {
+            dataSource = new DataSource();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    private ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
-    private ArrayList<String> scanFromFile(String filename) {
+    private UserMapper userMapper = new UserMapper(dataSource);
+    private ProductMapper productMapper = new ProductMapper(dataSource);
+    private BottomMapper bottomMapper = new BottomMapper(dataSource);
+    private ToppingMapper toppingMapper = new ToppingMapper(dataSource);
+    private OrderMapper orderMapper = new OrderMapper(dataSource);
+
+    private static ArrayList<String> scanFromFile(String filename) {
         ArrayList<String> lines = new ArrayList();
         try {
             Scanner scan = new Scanner(new File("Scripts/" + filename));
@@ -42,16 +52,30 @@ public class StorageFacadeTest {
     private User user;
     @Before
     public void setUp() {
+        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
         account = new Account(20);
         account.setId(1);
         user = new User(1,"userNameTest","loginMailTest",Role.CUSTOMER,account);
 
-        try {
-            Statement stmt = DataSource.getInstance().getConnection().createStatement();
+        try (Connection connection = dataSource.getConnection();
+             Statement stmt = connection.createStatement()) {
             for (String sqlStatement : DBsetUp) {
                 stmt.executeUpdate(sqlStatement);
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+         ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
+        try (Connection connection = dataSource.getConnection();
+        Statement stmt = connection.createStatement()) {
+            for (String sqlStatement : DBsetUp) {
+                stmt.executeUpdate(sqlStatement);
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -62,7 +86,6 @@ public class StorageFacadeTest {
         ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
         assertEquals(50, cupcakes.size());
     }
-
     @Test
     public void getProduct() throws ProductException {
         Cupcake cupcake = productMapper.getProductFromID(10);
@@ -70,7 +93,6 @@ public class StorageFacadeTest {
         assertEquals(2,cupcake.getTopping().getId());
         assertEquals(5,cupcake.getBottom().getId());
     }
-
 
     // ----- ORDER -----
     @Test
@@ -88,14 +110,34 @@ public class StorageFacadeTest {
         Cupcake cupcake = new Cupcake(bottom,topping);
         cupcake.setId(1);
         order.addLineItem(new LineItem(cupcake,1));
+
         orderMapper.createOrder(order,user);
+
         assertEquals(2,order.getId());
+        List<Order> orders = orderMapper.getAllOrders(user);
+        Order lastOrder = orders.get(orders.size()-1);
+
+        assertEquals(order.getId(),lastOrder.getId());
+        //assertEquals(order.getDate(),lastOrder.getDate());
+        assertEquals(order.getTotalQuantity(),lastOrder.getTotalQuantity());
     }
     @Test
-    public void updateOrder() {
+    public void deleteOrder() throws OrderException {
+        int size = orderMapper.getNumberOfOrders();
+        Order order = new Order();
+        order.setId(1);
+        orderMapper.deleteOrder(order);
+        int newSize = orderMapper.getNumberOfOrders();
+        assertEquals(size-1, newSize);
     }
-    @Test
-    public void deleteOrder() {
+    @Test(expected = OrderException.class)
+    public void deleteOrder_with_non_existing_order() throws OrderException {
+        int size = orderMapper.getNumberOfOrders();
+        Order order = new Order();
+        order.setId(-100);
+        orderMapper.deleteOrder(order);
+        int newSize = orderMapper.getNumberOfOrders();
+        assertEquals(size, newSize);
     }
 
     // ----- User -----
@@ -163,10 +205,6 @@ public class StorageFacadeTest {
         bottom.setId(11);
         bottomMapper.updateProduct(bottom);
     }
-    @Test
-    @Ignore
-    public void deleteBottom() {
-    }
 
     // ----- TOPPING -----
     @Test
@@ -186,9 +224,5 @@ public class StorageFacadeTest {
         Topping topping = new Topping(13, "Stone");
         topping.setId(50);
         toppingMapper.updateProduct(topping);
-    }
-    @Test
-    @Ignore
-    public void deleteTopping() {
     }
 }

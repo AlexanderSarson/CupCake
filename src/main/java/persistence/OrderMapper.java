@@ -2,24 +2,23 @@ package persistence;
 
 import logic.*;
 
-import javax.xml.crypto.Data;
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Mapping of orders from the database to java objects.
- *
+ * Mapping of orders from the database to java objects
  * @author Benjamin Paepke
  * @version 1.0
  */
 class OrderMapper {
+    private DataSource dataSource;
+    public OrderMapper(DataSource dataSource) { this.dataSource = dataSource;}
 
     public ArrayList<Order> getAllOrders(User user) throws OrderException {
         ArrayList<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM Orders where Orders.user_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             ResultSet rs = statement.executeQuery();
@@ -66,7 +65,7 @@ class OrderMapper {
                     }
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new OrderException("Could not fetch user's orders.");
         }
         return orders;
@@ -74,7 +73,7 @@ class OrderMapper {
 
     public Order createOrder(Order order, User user) throws OrderException {
         String sql = "SELECT * from Cupcakes WHERE cupcake_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             for (int i = 0; i < order.getSize(); i++) {
                 ps.setInt(1, order.getLineItem(i).getCupcake().getId());
@@ -83,7 +82,7 @@ class OrderMapper {
                 if (!rs.next()) {
                     String cupcakePrepare = "INSERT INTO Cupcakes(cupcake_id,topping_id,bottom_id) values (?,?,?)";
                     try (PreparedStatement cupcakePS = connection.prepareStatement(cupcakePrepare)) {
-                        int nextID = DataSource.lastID(connection, cupcakePS);
+                        int nextID = dataSource.lastID(connection, cupcakePS);
                         cupcakePS.setLong(1, nextID);
                         order.getLineItem(i).getCupcake().setId(nextID);
                         cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getTopping().getId());
@@ -102,13 +101,14 @@ class OrderMapper {
             String orderPrepare = "INSERT INTO Orders (user_id,order_date) values(?,?)";
             try (PreparedStatement orderPS = connection.prepareStatement(orderPrepare)) {
                 orderPS.setInt(1, user.getId());
-                orderPS.setDate(2, Date.valueOf(LocalDate.now()));
+                // Why does this produce a date that is one day behind????
+                orderPS.setDate(2, java.sql.Date.valueOf(order.getDate().toString()));
                 if (orderPS.executeUpdate() != 1) {
                     connection.rollback();
                     connection.setAutoCommit(false);
                     throw new SQLException("Could not insert into orders");
                 }
-                order.setId(DataSource.lastID(connection, orderPS));
+                order.setId(dataSource.lastID(connection, orderPS));
             }
             //Insert into lineitems
             String lineItemPrepare = "INSERT INTO LineItems (cupcake_id,order_id,lineitem_qty) values(?,?,?)";
@@ -125,10 +125,30 @@ class OrderMapper {
                 }
             }
             connection.commit();
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             throw new OrderException("Could not create order");
         }
         return order;
+    }
+
+    /**
+     * This is a method for testing, it should not be used outside of the Test Package.
+     * @return number of orders currently in the database.
+     */
+    public int getNumberOfOrders() throws OrderException {
+        int res = 0;
+        String sql = "SELECT count(*) FROM Orders";
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+            if(!rs.next()) {
+                throw new OrderException("Could not fetch number of orders!");
+            }
+            res = rs.getInt("count(*)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     /**
@@ -138,17 +158,17 @@ class OrderMapper {
      * @throws OrderException If anythings goes wrong with removing the order.
      * @throws SQLException
      */
-    public void deleteOrder(Order order) throws OrderException, SQLException {
+    public void deleteOrder(Order order) throws OrderException{
         String sql = "DELETE FROM LineItems where order_id = ?";
-        try (Connection connection = DataSource.getInstance().getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             if (isOrderStored(connection, order)) {
                 connection.setAutoCommit(false);
                 statement.setInt(1, order.getId());
-                if (statement.executeUpdate() != 1) {
+                if (statement.executeUpdate() >= 1) {
                     sql = "DELETE FROM Orders where order_id = ?";
                     try (PreparedStatement ps = connection.prepareStatement(sql);) {
-                        statement.setInt(1, order.getId());
+                        ps.setInt(1, order.getId());
                         if (ps.executeUpdate() != 0) {
                             // IF we succeeded in both removing all the LineItems and the actual order, commit the changes.
                             connection.commit();
@@ -158,15 +178,17 @@ class OrderMapper {
                         }
                     }
                 }
+                else {
+                    connection.rollback();
+                }
                 connection.setAutoCommit(true);
             } else {
                 throw new OrderException("Order is not stored");
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new OrderException("Connection error");
         }
     }
-
 
     /**
      * Checks if a given order is stored in the database.

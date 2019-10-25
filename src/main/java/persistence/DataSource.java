@@ -12,10 +12,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DataSource {
-    private static DataSource instance;
     private BasicDataSource basicDataSource;
 
-    private DataSource() throws IOException {
+    public DataSource() throws IOException {
         String fileUser = "", filePassword = "", fileURL ="";
         FileInputStream fileInput = new FileInputStream("db.properties");
         Properties properties = new Properties();
@@ -33,22 +32,15 @@ public class DataSource {
         basicDataSource.setUrl(fileURL);
 
         basicDataSource.setMinIdle(20);
-        basicDataSource.setMaxIdle(50);
-        basicDataSource.setMaxOpenPreparedStatements(200);
-    }
-
-    public static DataSource getInstance() throws IOException {
-        if(instance == null) {
-            instance = new DataSource();
-        }
-        return instance;
+        basicDataSource.setMaxIdle(1000);
+        basicDataSource.setMaxOpenPreparedStatements(400);
     }
 
     public Connection getConnection() throws SQLException {
         return basicDataSource.getConnection();
     }
 
-    public static int lastID(Connection connection, PreparedStatement statement) throws SQLException {
+    public int lastID(Connection connection, PreparedStatement statement) throws SQLException {
         statement = connection.prepareStatement("select last_insert_id() as id");
         ResultSet rs = statement.executeQuery();
         rs.next();
