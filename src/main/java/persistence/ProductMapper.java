@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,18 +18,12 @@ import logic.Topping;
  * can be collected through this class. Data regarding Bottoms or Toppings, make use of {@link logic.Bottom} and {@link logic.Topping}
  * @author rando
  * @author Benjamin Paepke
+ * @version 1.01
  */
 public class ProductMapper {
     protected String table = "", product_id = "", product_name = "", product_price ="";
-    private SQLConnection connection;
-
-    /**
-     * Constructor of a ProductMapper
-     * @param connection is the connection to the database
-     */
-    public ProductMapper(SQLConnection connection) {
-        this.connection = connection;
-    }
+    private DataSource dataSource;
+    public ProductMapper(DataSource dataSource) {this.dataSource = dataSource;}
 
     /**
      * Gets all cupcakes from database
@@ -41,10 +32,10 @@ public class ProductMapper {
      */
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
-        String sql = "SELECT * FROM bottoms, toppings";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ResultSet rs = connection.selectQuery(ps);
+        String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 cupcakes.add(findCupcakeFromResultSet(rs));
             }
@@ -61,68 +52,21 @@ public class ProductMapper {
      * @throws ProductException if anything goes wrong while trying to fetch cupcake
      */
     public Cupcake getProductFromID(int id) throws ProductException {
-        String sql = "SELECT * FROM Cupcakes WHERE cupcake_id = ?";
+        String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id where cupcake_id = ?";
         Cupcake cupcake = null;
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
-            cupcake = findCupcakeFromResultSet(connection.selectQuery(ps));
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next())
+                throw new ProductException("Could not find cupcake with id: " + id);
+            else
+                cupcake = findCupcakeFromResultSet(rs);
         } catch (SQLException e) {
             throw new ProductException("Error when fetching Cupcake");
         }
         return cupcake;
     }
-    
-//    public boolean deleteProductFromID(IProduct product) throws ProductException{
-//        String sql = "SELECT * FROM cupcakes WHERE cupcake_id = ?";
-//        try{
-//            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-//            ps.setLong(1, product.getId());
-//            ResultSet rs = connection.selectQuery(ps);
-//            if(!rs.next()){
-//                throw new ProductException("User dosn't exist in database");
-//            } else {
-//                connection.getConnection().setAutoCommit(false);
-//                try{
-//                    //Delete from cupcakes
-//                    //SELECT * FROM cupcakes INNER JOIN toppings USING (topping_id) WHERE topping_id = 10;
-//                    String deleteCupcake = "DELETE FROM cupcakes WHERE cupcake_id = ?";
-//                    PreparedStatement cupcakePS = connection.getConnection().prepareStatement(deleteCupcake);
-//                    cupcakePS.setLong(1, product.getId());
-//                    if(!connection.executeQuery(cupcakePS)){
-//                        throw new SQLException("Product could not be deleted");
-//                    }
-//                    //Delete from topping/bottom
-//                    String deleteTopBot = "DELETE FROM " + ;
-//                    //Commit all transactions
-//                    connection.getConnection().commit();
-//                } catch (SQLException ex) {
-//                    connection.getConnection().rollback();
-//                    throw new ProductException("Product could not be deleted");
-//                } finally {
-//                    connection.getConnection().setAutoCommit(true);
-//                }
-//            }
-//        }catch (SQLException e){
-//            throw new ProductException("Product could not be deleted");
-//        }
-////        String[] topOrBot = topOrBot(validation);
-////        String table = topOrBot[0]; //Toppings/Bottoms
-////        String row = topOrBot[1]; //topping/bottom
-////        String sql = "DELETE FROM " + table + " WHERE " + row + "_id = ?";
-////        try {
-////            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-////            ps.setInt(1, id);
-////            return connection.executeQuery(ps); //If sucsess <-True
-////        } catch (SQLException e) {
-////            throw new ProductException("Error when fetching Cupcake");
-////        }
-//////TODO(Tobias): Update All Cupcakes?
-////        //Update Cupcakes Topping id + Alle Bottom id
-////        //Update Cupcakes Bottom id + Alle Topping id
-//        return false;
-//        
-//    }
 
     /**
      * Finds cupcake from a given Resultset
@@ -146,7 +90,10 @@ public class ProductMapper {
         Bottom bot = new Bottom(botPrice, botName);
         bot.setId(botID);
         //Completed Cupcake object return
-        return new Cupcake(bot, top);
+        int cupcakeID = rs.getInt("cupcake_id");
+        Cupcake cupcake = new Cupcake(bot, top);
+        cupcake.setId(cupcakeID);
+        return cupcake;
     }
 
     /**
@@ -156,24 +103,25 @@ public class ProductMapper {
      */
     public void createProduct(IProduct product) throws ProductException {
         String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
-        try {
-            PreparedStatement statement = connection.getConnection().prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1,product.getName());
-            ResultSet rs = connection.selectQuery(statement);
+            ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 throw new ProductException("Product already exists");
             }
             else {
                 sql = "INSERT INTO "+table+" ("+product_name+", "+product_price+") VALUES (?,?)";
-                statement = connection.getConnection().prepareStatement(sql);
-                statement.setString(1,product.getName());
-                statement.setInt(2, product.getPrice());
-                if(connection.executeQuery(statement)) {
-                    int id = connection.lastID();
-                    product.setId(id);
-                }
-                else {
-                    throw new ProductException("Could not create product");
+                try (PreparedStatement insertPS = connection.prepareStatement(sql);) {
+                    insertPS.setString(1,product.getName());
+                    insertPS.setInt(2, product.getPrice());
+                    if(insertPS.executeUpdate() == 1) {
+                        int id = dataSource.lastID(connection, insertPS);
+                        product.setId(id);
+                    }
+                    else {
+                        throw new ProductException("Could not create product");
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -187,22 +135,23 @@ public class ProductMapper {
      * @throws ProductException If anything goes wrong while updating product
      */
     public void updateProduct(IProduct product) throws ProductException{
-        String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
-        try{
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ps.setString(1,product.getName());
-            ResultSet rs = connection.selectQuery(ps);
+        String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1,product.getId());
+            ResultSet rs = ps.executeQuery();
             if(!rs.next()){
                 throw new ProductException("Product doesn't exist in database");
             }
             else{
                 sql = "UPDATE "+table+" SET "+product_name+"= ?, "+product_price+" = ? WHERE "+product_id+" = ?";
-                ps = connection.getConnection().prepareStatement(sql);
-                ps.setString(1,product.getName());
-                ps.setInt(2,product.getPrice());
-                ps.setInt(3,product.getId());
-                if(!connection.executeQuery(ps)){
-                    throw new SQLException("Product could not be updated");
+                try (PreparedStatement updatePS = connection.prepareStatement(sql)) {
+                    updatePS.setString(1,product.getName());
+                    updatePS.setInt(2,product.getPrice());
+                    updatePS.setInt(3,product.getId());
+                    if(updatePS.executeUpdate() != 1){
+                        throw new SQLException("Product could not be updated");
+                    }
                 }
             }
         }catch(SQLException e){

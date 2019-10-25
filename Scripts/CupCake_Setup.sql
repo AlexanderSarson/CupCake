@@ -21,7 +21,7 @@ FOREIGN KEY (user_id)
 CREATE TABLE Accounts(
 account_id INT AUTO_INCREMENT,
 user_id INT,
-user_balance FLOAT NOT NULL,
+user_balance int NOT NULL,
 PRIMARY KEY (account_id),
 FOREIGN KEY (user_id)
 	REFERENCES Users (user_id)
@@ -38,14 +38,14 @@ CREATE TABLE Toppings(
 topping_id INT AUTO_INCREMENT,
 topping_name VARCHAR(50) NOT NULL,
 topping_price FLOAT NOT NULL,
-topping_picture VARCHAR(100) NOT NULL,
+topping_picture VARCHAR(100),
 PRIMARY KEY (topping_id)
 );
 CREATE TABLE Bottoms(
 bottom_id INT AUTO_INCREMENT,
 bottom_name VARCHAR(50) NOT NULL,
 bottom_price FLOAT NOT NULL,
-bottom_picture VARCHAR(100) NOT NULL,
+bottom_picture VARCHAR(100),
 PRIMARY KEY (bottom_id)
 );
 CREATE TABLE Cupcakes(
@@ -81,21 +81,19 @@ FOREIGN KEY (bottom_id)
 
 
 -- INSERT USERS
-INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'userRoleTest'); 
-INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'userRoleTest2'); 
-
+INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
+INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'ADMIN'); 
 
 -- INSERT LOGINS
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
-
+INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (2, 'loginMailTest2', 'loginPasswordTest', '2384');
 
 -- INSERT ACCOUNTS
-INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20.5);
-
+INSERT INTO Accounts (user_id, user_balance) VALUES (1, 20);
+INSERT INTO Accounts (user_id, user_balance) VALUES (2, 20);
 
 -- INSERT ORDERS (Date format YYYY-MM-DD)
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');
-
 
 -- INSERT TOPPINGS
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Chocolate', 5.0, 'PictureStringHere');
@@ -109,14 +107,12 @@ INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Lem
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Blue cheese', 9.0, 'PictureStringHere');
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Stinky Socks', 10.0, 'PictureStringHere');
 
-
 -- INSERT BOTTOMS
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Chocolate', 5.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Vanilla', 5.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Nutmeg', 5.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Pistacio', 6.0, 'PictureStringHere');
 INSERT INTO Bottoms (bottom_name, bottom_price, bottom_picture) VALUES ('Almond', 7.0, 'PictureStringHere');
-
 
 -- INSERT CUPCAKES
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (1, 1);
@@ -169,7 +165,6 @@ INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 2);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 3);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 4);
 INSERT INTO Cupcakes (topping_id, bottom_id) VALUES (10, 5);
-
 
 -- INSERT LINEITEMS
 INSERT INTO LineItems (cupcake_id, order_id, lineitem_qty) VALUES (48, 1, 5);

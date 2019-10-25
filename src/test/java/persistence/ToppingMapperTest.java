@@ -1,6 +1,6 @@
 package persistence;
 
-import logic.Bottom;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import logic.Topping;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,9 @@ public class ToppingMapperTest {
     @Mock
     private PreparedStatement statement;
     @Mock
-    private SQLConnection sqlConnection;
+    private DataSource dataSource;
+    @Mock
+    private SQLConnection DELETE_ME;
     @Mock
     private Connection connection;
 
@@ -38,14 +40,13 @@ public class ToppingMapperTest {
     public void test_createProduct() throws SQLException, ProductException {
         Topping top = new Topping(5,"Chocolate");
         when(resSet.next()).thenReturn(false).thenReturn(true).thenReturn(false);
-        when(sqlConnection.lastID()).thenReturn(100);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.lastID(any(Connection.class),any(PreparedStatement.class))).thenReturn(100);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.executeQuery(statement)).thenReturn(true);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(1);
+        when(statement.executeQuery()).thenReturn(resSet);
 
         toppingMapper.createProduct(top);
-
         assertEquals(100,top.getId());
     }
 
@@ -53,10 +54,10 @@ public class ToppingMapperTest {
     public void test_createProduct_with_connection_error() throws SQLException, ProductException {
         Topping top = new Topping(5,"Chocolate");
         when(resSet.next()).thenReturn(false).thenReturn(true).thenReturn(false);
-        when(sqlConnection.getConnection()).thenReturn(connection);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
-        when(sqlConnection.executeQuery(statement)).thenReturn(false);
-        when(sqlConnection.selectQuery(statement)).thenReturn(resSet);
+        when(statement.executeUpdate()).thenReturn(0);
+        when(statement.executeQuery()).thenReturn(resSet);
         toppingMapper.createProduct(top);
     }
 }
