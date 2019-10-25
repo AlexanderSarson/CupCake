@@ -72,7 +72,6 @@ public class ProductMapperTest {
     
     @Test
     public void test_getProductFromID() throws SQLException, ProductException {
-       when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resSet.getInt("topping_id")).thenReturn(1);
         when(resSet.getInt("topping_price")).thenReturn(5);
         when(resSet.getString("topping_name")).thenReturn("testTopName");
