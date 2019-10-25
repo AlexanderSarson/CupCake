@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+
 import logic.Bottom;
 import logic.Cupcake;
 import logic.IProduct;
@@ -37,7 +37,7 @@ public class ProductMapper {
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                cupcakes.add(findCupcakeFromResultSet(rs));
+                cupcakes.add(findCupcakeFromResultSet(rs,false));
             }
         } catch (SQLException e) {
             throw new ProductException("Error when fetching all Cupcakes");
@@ -61,7 +61,7 @@ public class ProductMapper {
             if(!rs.next())
                 throw new ProductException("Could not find cupcake with id: " + id);
             else
-                cupcake = findCupcakeFromResultSet(rs);
+                cupcake = findCupcakeFromResultSet(rs,false);
         } catch (SQLException e) {
             throw new ProductException("Error when fetching Cupcake");
         }
@@ -94,7 +94,10 @@ public class ProductMapper {
      * @return the cupcake from the resultset
      * @throws SQLException if anything goes wrong while trying to find cupcake
      */
-    private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {
+    private Cupcake findCupcakeFromResultSet(ResultSet rs, boolean isPremade) throws SQLException {
+        String cupcakeID = "cupcake_id";
+        if(isPremade)
+                cupcakeID = "premadecupcake_id";
         //Cupcake Topping object creation
         int topID = rs.getInt("topping_id");
         int topPrice = rs.getInt("topping_price");
@@ -110,9 +113,9 @@ public class ProductMapper {
         Bottom bot = new Bottom(botPrice, botName);
         bot.setId(botID);
         //Completed Cupcake object return
-        int cupcakeID = rs.getInt("cupcake_id");
+        int id = rs.getInt(cupcakeID);
         Cupcake cupcake = new Cupcake(bot, top);
-        cupcake.setId(cupcakeID);
+        cupcake.setId(id);
         return cupcake;
     }
 
@@ -177,6 +180,21 @@ public class ProductMapper {
         }catch(SQLException e){
             throw new ProductException("Product could not be updated");
         }
+    }
+
+    public List<Cupcake> getPremadeCucpakes() throws ProductException {
+        List<Cupcake> premade = new ArrayList<>();
+        String sql = "select * from PreMadeCupcakes join Toppings on PreMadeCupcakes.topping_id = Toppings.topping_id join Bottoms on PreMadeCupcakes.bottom_id = Bottoms.bottom_id;";
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                premade.add(findCupcakeFromResultSet(rs,true));
+            }
+        } catch (SQLException e) {
+            throw new ProductException("Could not fetch Premade-cupcakes");
+        }
+        return premade;
     }
 }
 

@@ -1,5 +1,8 @@
 package persistence;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -11,10 +14,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -42,13 +46,12 @@ public class SQLConnectionTest {
 
     @Before
     public void setUp() {
-        try {
-            Statement stmt = sqlcon.getConnection().createStatement();
+        try (Statement stmt = sqlcon.getConnection().createStatement()){
             for (String sqlStatement : DBsetUp) {
-                stmt.executeUpdate(sqlStatement);
+                if(!sqlStatement.isEmpty())
+                    stmt.executeUpdate(sqlStatement);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -62,6 +65,7 @@ public class SQLConnectionTest {
             PreparedStatement ps = sqlcon.getConnection().prepareStatement("SELECT * FROM Users WHERE user_id = 1");
             //Act
             ResultSet rs = sqlcon.selectQuery(ps);
+            rs.next();
             String result = rs.getString("user_name");
             //Assert
             assertEquals("userNameTest", result);
@@ -86,6 +90,7 @@ public class SQLConnectionTest {
         PreparedStatement ps = sqlcon.getConnection().prepareStatement("SELECT * FROM Users WHERE user_id = ASDF");
         //Act
         ResultSet rs = sqlcon.selectQuery(ps);
+        rs.next();
         //Assert
     }
 
@@ -93,20 +98,15 @@ public class SQLConnectionTest {
      * Test of executeQuery method, of class SQLConnection.
      */
     @Test
-    public void testExecuteQuery() {
-        try {
-            //Arrange
-            PreparedStatement ps = sqlcon.getConnection().prepareStatement("INSERT INTO USERS(user_name, user_role) VALUES (?, ?)");
-            ps.setString(1, "testName");
-            ps.setString(2, "testRole");
-            //Act
-            ResultSet rs = sqlcon.selectQuery(ps);
-            String result = rs.getString("user_name");
-            //Assert
-            assertEquals("userNameTest", result);
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLConnectionTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void testExecuteQuery() throws SQLException {
+        //Arrange
+        PreparedStatement ps = sqlcon.getConnection().prepareStatement("INSERT INTO Users(user_name, user_role) VALUES (?, ?)");
+        ps.setString(1, "testName");
+        ps.setString(2, "testRole");
+        //Act
+        boolean rowsChanged = sqlcon.executeQuery(ps);
+        //Assert
+        assertTrue(rowsChanged);
     }
 
     @Test(expected = SQLException.class)

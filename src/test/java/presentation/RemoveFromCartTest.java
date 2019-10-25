@@ -15,18 +15,19 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
- *
- * @author Alexander
- */
+ * @author madsbrandt
+*/
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class AddToCartCommandTest {
+public class RemoveFromCartTest {
 
     @Spy
-    private AddToCartCommand spyAddToCartCommand;
+    private RemoveFromCartCommand spyRemoveFromCartCommand;
 
     @Mock
     private HttpServletRequest mockRequest;
@@ -36,30 +37,30 @@ public class AddToCartCommandTest {
 
     @Mock
     private RequestDispatcher mockRequestDispatcher;
-    
+
     @Mock
     private LogicFacade mockLogicFacade;
-    
+
     @Mock
     private ShoppingCart mockShoppingCart;
 
     @Mock
     private Topping mockTopping;
-    
+
     @Mock
     private Bottom mockBottom;
-    
+
     @Test
-    public void testAddToCartCommandExecute() throws Exception {
+    public void testRemoveFromCartCommandExecute() throws Exception {
         when(mockRequest.getAttribute("topping")).thenReturn(mockTopping);
         when(mockRequest.getAttribute("bottom")).thenReturn(mockBottom);
         when(mockRequest.getAttribute("shoppingcart")).thenReturn(mockShoppingCart);
-        when(mockRequest.getContextPath()).thenReturn("Shop.jsp");
-        when(spyAddToCartCommand.getLogicFacade()).thenReturn(mockLogicFacade);
+        when(mockRequest.getContextPath()).thenReturn("showCart.jsp");
+        when(spyRemoveFromCartCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
-        spyAddToCartCommand.execute(mockRequest, mockResponse);
-        verify(mockLogicFacade).addToShoppingCart(mockBottom,mockTopping,mockShoppingCart);
-        verify(spyAddToCartCommand).forwardToPage(mockRequest, mockResponse, "shop");
-    }
+        spyRemoveFromCartCommand.execute(mockRequest, mockResponse);
+        verify(spyRemoveFromCartCommand).forwardToPage(mockRequest, mockResponse, "showCart");
+        //verify(mockLogicFacade).removeFromShoppingcart(mockTopping, mockBottom, mockShoppingCart);
 
+    }
 }

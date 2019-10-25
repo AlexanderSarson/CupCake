@@ -6,18 +6,19 @@
 
 package persistence;
 
+import logic.Cupcake;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import logic.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -89,5 +90,4 @@ public class ProductMapperTest {
         Cupcake cupcake = productMapper.getProductFromID(1);
         assertEquals(1, cupcake.getId());
     }
-
 }

@@ -50,34 +50,31 @@ public class StorageFacadeTest {
 
     private Account account;
     private User user;
-    @Before
-    public void setUp() {
-        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
-        account = new Account(20);
-        account.setId(1);
-        user = new User(1,"userNameTest","loginMailTest",Role.CUSTOMER,account);
 
+    private static void rebuildDB() {
+        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
         try (Connection connection = dataSource.getConnection();
              Statement stmt = connection.createStatement()) {
             for (String sqlStatement : DBsetUp) {
-                stmt.executeUpdate(sqlStatement);
+                if(!sqlStatement.isEmpty())
+                    stmt.executeUpdate(sqlStatement);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
+    }
+
+    @Before
+    public void setUp() {
+        account = new Account(20);
+        account.setId(1);
+        user = new User(1,"userNameTest","loginMailTest",Role.CUSTOMER,account);
+        rebuildDB();
     }
 
     @AfterClass
     public static void tearDownClass() {
-         ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
-        try (Connection connection = dataSource.getConnection();
-        Statement stmt = connection.createStatement()) {
-            for (String sqlStatement : DBsetUp) {
-                stmt.executeUpdate(sqlStatement);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
+        rebuildDB();
     }
 
     // ----- PRODUCT -----
@@ -93,6 +90,13 @@ public class StorageFacadeTest {
         assertEquals(2,cupcake.getTopping().getId());
         assertEquals(5,cupcake.getBottom().getId());
     }
+
+    @Test
+    public void getPremadeCupcakes() throws ProductException {
+        List<Cupcake> cupcakes = productMapper.getPremadeCucpakes();
+        assertEquals(10, cupcakes.size());
+    }
+
 
     // ----- ORDER -----
     @Test

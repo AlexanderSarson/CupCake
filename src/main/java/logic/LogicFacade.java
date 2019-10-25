@@ -1,8 +1,6 @@
 package logic;
 import persistence.*;
-
 import java.io.IOException;
-import java.lang.reflect.Executable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.List;
 
 /**
  * @author Oscar
- * @author Benjamin Paepke
  * version 1.0
  */
 
@@ -23,17 +20,8 @@ public class LogicFacade {
         }
     }
 
-    // ------ PRODUCT ------
-    public ArrayList<Cupcake> getAllCupcakes() throws ProductException {
-        return storageFacade.getAllProducts();
-    }
-    public Cupcake getCupcakeByID(int id) throws ProductException {
-        return storageFacade.getProduct(id);
-    }
-
-    public List getPremadeCupcakes(){
-        // TODO(Benjamin): Implement me!
-        return null;
+    public List<Cupcake> getPremadeCupcakes() throws ProductException {
+        return storageFacade.getPremadeCupcakes();
     }
 
     // ------ BOTTOM ------
@@ -46,7 +34,7 @@ public class LogicFacade {
         storageFacade.updateBottom(bottom);
         return bottom;
     }
-    public ArrayList<Bottom> getAllBottoms() throws ProductException {
+    public List<Bottom> getAllBottoms() throws ProductException {
         return storageFacade.getAllBottoms();
     }
     public void deleteBottom(Bottom bottom) {
@@ -63,7 +51,7 @@ public class LogicFacade {
         storageFacade.updateTopping(topping);
         return topping;
     }
-    public ArrayList<Topping> getAllToppings() throws ProductException {
+    public List<Topping> getAllToppings() throws ProductException {
         return storageFacade.getAllToppings();
     }
     public void deleteTopping(Topping topping) {
@@ -74,6 +62,7 @@ public class LogicFacade {
     public ShoppingCart getShoppingCart() {
         return new ShoppingCart();
     }
+
     public void addToShoppingCart(Bottom bottom, Topping topping, ShoppingCart shoppingCart){
         shoppingCart.addCupcakeToOrder(new Cupcake(bottom,topping));
     }
@@ -103,6 +92,5 @@ public class LogicFacade {
         else {
             storageFacade.addFunds(user,amountToDeposit);
         }
-
     }
 }

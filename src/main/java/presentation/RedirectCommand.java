@@ -7,7 +7,7 @@ public class RedirectCommand extends Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String path = request.getParameter("target").replaceAll(".jsp","");
-        forwardToPage(request,response,path);
+        String target = request.getParameter("target");
+        response.sendRedirect(target);
     }
 }
