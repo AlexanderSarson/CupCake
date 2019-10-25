@@ -46,7 +46,6 @@ public class StorageFacade {
     // ------ ORDER ------
     public List<Order> getAllOrders(User user) throws OrderException { return orderMapper.getAllOrders(user); }
     public Order createOrder(Order order, User user) throws SQLException, OrderException { return orderMapper.createOrder(order, user); }
-    public void updateOrder(Order order) { orderMapper.updateOrder(order);}
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 
     public void updateUser(User user) throws UserException {

@@ -17,10 +17,21 @@ import java.util.ArrayList;
  */
 class OrderMapper {
     private SQLConnection connection;
+
+    /**
+     * Constructor of OrderMapper
+     * @param connection is the connection to the database
+     */
     public OrderMapper(SQLConnection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Gets a specific users orders from database
+     * @param user the user we which orders we want to get
+     * @return the users orders
+     * @throws OrderException if the user don't have any orders in the database
+     */
     public ArrayList<Order> getAllOrders(User user) throws OrderException {
         ArrayList<Order> orders = new ArrayList<>();
         try {
@@ -83,6 +94,14 @@ class OrderMapper {
         return orders;
     }
 
+    /**
+     * Creates an order in the database
+     * @param order is the order object which contains LineItems with cupcakes and quantity
+     * @param user is the user who "owns" the order
+     * @return the order
+     * @throws SQLException
+     * @throws OrderException if anything goes wrong while creating order
+     */
     public Order createOrder(Order order, User user) throws SQLException, OrderException {
             //Burde man pakke nedenstående ind i en metode der tjekker om cupcake allerede findes i db?
         try {

@@ -20,16 +20,25 @@ import logic.Topping;
  * This class has the purpose of mapping Products from the database to jave objects. General data, such as Cupcakes and intances where all tables are being checked,
  * can be collected through this class. Data regarding Bottoms or Toppings, make use of {@link logic.Bottom} and {@link logic.Topping}
  * @author rando
- * @authror Benjamin Paepke
+ * @author Benjamin Paepke
  */
 class ProductMapper {
     protected String table = "", product_id = "", product_name = "", product_price ="";
     private SQLConnection connection;
 
+    /**
+     * Constructor of a ProductMapper
+     * @param connection is the connection to the database
+     */
     public ProductMapper(SQLConnection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Gets all cupcakes from database
+     * @return an ArrayList of cupcakes
+     * @throws ProductException if cupcakes cannot be fetched from database
+     */
     public ArrayList<Cupcake> getAllProducts() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "SELECT * FROM bottoms, toppings";
@@ -44,7 +53,13 @@ class ProductMapper {
         }
         return cupcakes;
     }
-    
+
+    /**
+     * Gets cupcake from a given ID
+     * @param id the id of the cupcake
+     * @return the cupcake with the given id
+     * @throws ProductException if anything goes wrong while trying to fetch cupcake
+     */
     public Cupcake getProductFromID(int id) throws ProductException {
         String sql = "SELECT * FROM Cupcakes WHERE cupcake_id = ?";
         Cupcake cupcake = null;
@@ -109,6 +124,12 @@ class ProductMapper {
 //        
 //    }
 
+    /**
+     * Finds cupcake from a given Resultset
+     * @param rs the resultset from where you want to find the cupcake
+     * @return the cupcake from the resultset
+     * @throws SQLException if anything goes wrong while trying to find cupcake
+     */
     private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {
         //Cupcake Topping object creation
         int topID = rs.getInt("topping_id");
@@ -160,6 +181,11 @@ class ProductMapper {
         }
     }
 
+    /**
+     * Updates a product either {@link logic.Bottom} or {@link logic.Topping}
+     * @param product The bottom or topping to be updated
+     * @throws ProductException If anything goes wrong while updating product
+     */
     public void updateProduct(IProduct product) throws ProductException{
         String sql = "SELECT * FROM "+table+" where "+product_name+" = ?";
         try{
