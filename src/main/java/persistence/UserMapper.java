@@ -4,6 +4,7 @@ import logic.Account;
 import logic.Role;
 import logic.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,13 +14,11 @@ import java.util.ArrayList;
  * The purpose of the class is to map user objects to dabase information, and database information back to User Objects.
  * The holds all CRUD operations regarding Users.
  * @author Oscar, Benjamin
- * version 1.0
+ * version 1.01
  */
 class UserMapper {
-    private SQLConnection connection;
-    public UserMapper(SQLConnection connection) {
-        this.connection = connection;
-    }
+    private DataSource dataSource;
+    public UserMapper(DataSource dataSource) { this.dataSource = dataSource; }
 
     /**
      * Validates the users, is a registered user, using mail and password.
@@ -30,23 +29,22 @@ class UserMapper {
      */
     public User login(String mail, String password) throws UserException {
         User user = null;
-        String sql = "select user_id from logins where login_mail = ? and where login_password = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+        String sql = "select user_id from Logins where login_mail = ? and login_password = ?";
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1,mail);
             ps.setString(2, password);
-            ResultSet rs = connection.selectQuery(ps);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("user_id");
 
             }
             sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
-            ps = connection.getConnection().prepareStatement(sql);
-            rs = connection.selectQuery(ps);
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
             while(rs.next()){
                 user = findUserFromResultSet(rs);
             }
-
         }catch (SQLException e){
             throw new UserException("Error validating user");
         }
@@ -64,9 +62,9 @@ class UserMapper {
     public ArrayList<User> getAllUser() throws UserException {
         ArrayList<User> users = new ArrayList<>();
         String sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
-            ResultSet rs = connection.selectQuery(ps);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)){
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 User user = findUserFromResultSet(rs);
                 users.add(user);
@@ -84,44 +82,70 @@ class UserMapper {
      */
     public void deleteUser(User user) throws UserException {
         String sql = "select * from Users WHERE user_id = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, user.getID());
-            ResultSet rs = connection.selectQuery(ps);
+            ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new UserException("User doesn't exist in database");
             } else {
-                connection.getConnection().setAutoCommit(false);
+                connection.setAutoCommit(false);
                 try {
                     //Delete from logins
-                    String deleteLogin = "DELETE from logins WHERE user_id = ?";
-                    PreparedStatement loginPS = connection.getConnection().prepareStatement(deleteLogin);
-                    loginPS.setLong(1, user.getID());
-                    if (!connection.executeQuery(loginPS)) {
-                        throw new SQLException("User login could not be deleted");
-
+                    String deleteLogin = "DELETE from Logins WHERE user_id = ?";
+                    try (PreparedStatement loginPS = connection.prepareStatement(deleteLogin)) {
+                        loginPS.setInt(1, user.getID());
+                        if (loginPS.executeUpdate() != 1) {
+                            throw new SQLException("User login could not be deleted");
+                        }
                     }
                     //Delete from accounts
-                    String deleteAccount = "DELETE from accounts where user_id = ?";
-                    PreparedStatement accountPS = connection.getConnection().prepareStatement(deleteAccount);
-                    accountPS.setLong(1, user.getID());
-                    if (!connection.executeQuery(accountPS)) {
-                        throw new SQLException("User account could not be deleted");
+                    String deleteAccount = "DELETE from Accounts where user_id = ?";
+                    try (PreparedStatement accountPS = connection.prepareStatement(deleteAccount)) {
+                        accountPS.setLong(1, user.getID());
+                        if (accountPS.executeUpdate() != 1) {
+                            throw new SQLException("User account could not be deleted");
+                        }
+                    }
+                    //Delete lineItems related to user's orders.
+                    String findOrders = "SELECT * FROM Orders where user_id = ?";
+                    try (PreparedStatement userPS = connection.prepareStatement(findOrders)) {
+                        userPS.setInt(1, user.getID());
+                        ResultSet orders = userPS.executeQuery();
+                        while(orders.next()) {
+                            int orderID = orders.getInt("order_id");
+                            String deleteLineItems = "DELETE FROM LineItems where order_id = ?";
+                            try (PreparedStatement lineItemsPS = connection.prepareStatement(deleteLineItems)) {
+                                lineItemsPS.setInt(1,orderID);
+                                if(lineItemsPS.executeUpdate() == 0) {
+                                    throw new UserException("LineItems of user could not be deleted");
+                                }
+                            }
+                        }
+                    }
+                    // Delete all orders of the user
+                    String deleteOrders = "DELETE FROM Orders where user_id = ?";
+                    try(PreparedStatement deleteOrdersPS = connection.prepareStatement(deleteOrders)) {
+                        deleteOrdersPS.setInt(1,user.getId());
+                        if(deleteOrdersPS.executeUpdate() == 0) {
+                            throw new UserException("Could not delete user's orders");
+                        }
                     }
                     //Delete from users
-                    String deleteUser = "DELETE from users WHERE user_ID = ?";
-                    PreparedStatement userPS = connection.getConnection().prepareStatement(deleteUser);
-                    userPS.setLong(1, user.getID());
-                    if (!connection.executeQuery(userPS)) {
-                        throw new SQLException("User could not be deleted");
+                    String deleteUser = "DELETE from Users WHERE user_ID = ?";
+                    try (PreparedStatement userPS = connection.prepareStatement(deleteUser)) {
+                        userPS.setLong(1, user.getID());
+                        if (userPS.executeUpdate() != 1) {
+                            throw new SQLException("User could not be deleted");
+                        }
                     }
                     //Commit all transactions
-                    connection.getConnection().commit();
+                    connection.commit();
                 } catch (SQLException ex) {
-                    connection.getConnection().rollback();
+                    connection.rollback();
                     throw new UserException("User could not be deleted");
                 } finally {
-                    connection.getConnection().setAutoCommit(true);
+                    connection.setAutoCommit(true);
                 }
             }
         }catch (SQLException e){
@@ -137,60 +161,60 @@ class UserMapper {
      * @throws UserException If anything goes wrong during creation, a UserException will be thrown.
      */
     public User createUser(User user, Account account, String password) throws UserException {
-        String sql = "select * from logins where login_mail = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+        String sql = "select * from Logins where login_mail = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setString(1,user.getMail());
-            ResultSet rs = connection.selectQuery(ps);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 // If we already have a user with the given mail address.
                 throw new UserException("User mail already exists in database");
             } else {
                 // Begin transaction.
-                connection.getConnection().setAutoCommit(false);
-                try {
-                    // Insert into Users
-                    String userPrepare = "INSERT INTO Users(user_name,user_role) values(?,?)";
-                    PreparedStatement userPS = connection.getConnection().prepareStatement(userPrepare);
+                connection.setAutoCommit(false);
+                String userPrepare = "INSERT INTO Users(user_name,user_role) values(?,?)";
+                try (PreparedStatement userPS = connection.prepareStatement(userPrepare)) {
                     userPS.setString(1, user.getName());
                     userPS.setString(2, user.getRole().name());
-                    if(!connection.executeQuery(userPS)) {
+                    if(userPS.executeUpdate() != 1) {
                         throw new SQLException("Could not insert into users");
                     }
                     else {
-                        user.setID(connection.lastID());
+                        user.setID(dataSource.lastID(connection,userPS));
                     }
                     // Insert into Logins
                     String loginPrepare = "INSERT INTO Logins(user_id, login_mail, login_password, login_salt) values (?,?,?,?)";
-                    PreparedStatement loginPS = connection.getConnection().prepareStatement(loginPrepare);
-                    loginPS.setInt(1,user.getID());
-                    loginPS.setString(2,user.getMail());
-                    loginPS.setString(3, password);
-                    loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
-                    if(!connection.executeQuery(loginPS)) {
-                        throw new SQLException("Could not insert into login");
+                    try(PreparedStatement loginPS = connection.prepareStatement(loginPrepare)) {
+                        loginPS.setInt(1,user.getID());
+                        loginPS.setString(2,user.getMail());
+                        loginPS.setString(3, password);
+                        loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
+                        if(loginPS.executeUpdate() != 1) {
+                            throw new SQLException("Could not insert into login");
+                        }
                     }
 
                     // Insert into Accounts
                     String accountPrepare = "INSERT INTO Accounts(user_id,user_balance) values (?,?)";
-                    PreparedStatement accPS = connection.getConnection().prepareStatement(accountPrepare);
-                    accPS.setInt(1,user.getID());
-                    accPS.setInt(2,account.getBalance());
-                    if(!connection.executeQuery(accPS)) {
-                        throw new SQLException("Could not insert into account");
-                    } else {
-                        account.setId(connection.lastID());
+                    try(PreparedStatement accPS = connection.prepareStatement(accountPrepare)) {
+                        accPS.setInt(1,user.getID());
+                        accPS.setInt(2,account.getBalance());
+                        if(accPS.executeUpdate() != 1) {
+                            throw new SQLException("Could not insert into account");
+                        } else {
+                            account.setId(dataSource.lastID(connection,accPS));
+                        }
                     }
                     // Commit all transactions
-                    connection.getConnection().commit();
+                    connection.commit();
                 } catch (SQLException ex) {
                     // If anything goes wrong - rollback.
-                    connection.getConnection().rollback();
+                    connection.rollback();
                     throw new UserException("User creation failed");
                 }
                 finally {
                     // What ever happens set auto commit back to true.
-                    connection.getConnection().setAutoCommit(true);
+                    connection.setAutoCommit(true);
                 }
             }
         } catch (SQLException e) {
@@ -205,37 +229,39 @@ class UserMapper {
      * @throws UserException If the user can't be found, or if something goes wrong in the update proces.
      */
     public void updateUser(User user) throws UserException{
-        String sql = "SELECT * from users WHERE user_id = ?";
-        try {
-            PreparedStatement ps = connection.getConnection().prepareStatement(sql);
+        String sql = "SELECT * from Users WHERE user_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, user.getID());
-            ResultSet rs = connection.selectQuery(ps);
+            ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new UserException("User doesn't exist in database");
             } else {
-                connection.getConnection().setAutoCommit(false);
+                connection.setAutoCommit(false);
                 try {
                     //Delete update logins
-                    String updateMail = "UPDATE logins SET login_mail = ? WHERE user_id = ?";
-                    PreparedStatement loginsPS = connection.getConnection().prepareStatement(updateMail);
-                    loginsPS.setString(1, user.getMail());
-                    loginsPS.setLong(2, user.getID());
-                    if (!connection.executeQuery(loginsPS)) {
-                        throw new SQLException("Mail could not be updated");
+                    String updateMail = "UPDATE Logins SET login_mail = ? WHERE user_id = ?";
+                    try (PreparedStatement loginsPS = connection.prepareStatement(updateMail)) {
+                        loginsPS.setString(1, user.getMail());
+                        loginsPS.setLong(2, user.getID());
+                        if (loginsPS.executeUpdate() != 1) {
+                            throw new SQLException("Mail could not be updated");
+                        }
                     }
-                    String updateName = "UPDATE user SET user_name = ? WHERE user_id = ?";
-                    PreparedStatement userPS = connection.getConnection().prepareStatement(updateName);
-                    userPS.setString(1, user.getName());
-                    userPS.setLong(2, user.getID());
-                    if (!connection.executeQuery(userPS)) {
-                        throw new UserException("User name could not be updated");
+                    String updateName = "UPDATE Users SET user_name = ? WHERE user_id = ?";
+                    try (PreparedStatement userPS = connection.prepareStatement(updateName)) {
+                        userPS.setString(1, user.getName());
+                        userPS.setLong(2, user.getID());
+                        if (userPS.executeUpdate() != 1) {
+                            throw new UserException("User name could not be updated");
+                        }
                     }
-                    connection.getConnection().commit();
+                    connection.commit();
                 } catch (SQLException ex) {
-                    connection.getConnection().rollback();
+                    connection.rollback();
                     throw new UserException("User could not be updated");
                 } finally {
-                    connection.getConnection().setAutoCommit(true);
+                    connection.setAutoCommit(true);
                 }
             }
         }catch (SQLException e){
@@ -251,23 +277,23 @@ class UserMapper {
      */
     public void addFunds(User user, int amount) throws UserException {
         String sql = "SELECT user_balance FROM Accounts where user_id = ?";
-        PreparedStatement statement = null;
-        try {
-            statement = connection.getConnection().prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1,user.getId());
-            ResultSet rs = connection.selectQuery(statement);
+            ResultSet rs = statement.executeQuery();
             if(!rs.next())
                 throw new UserException("Can't add funds, user was not found");
             else {
                 int balance = rs.getInt("user_balance");
                 balance += amount;
-
+                user.getAccount().setBalance(balance);
                 sql = "UPDATE Accounts set user_balance = ? where user_id = ?";
-                statement = connection.getConnection().prepareStatement(sql);
-                statement.setInt(1,balance);
-                statement.setInt(2,user.getId());
-                if(!connection.executeQuery(statement))
-                    throw new UserException("Could not update account balance");
+                try(PreparedStatement updatePS = connection.prepareStatement(sql)) {
+                    updatePS.setInt(1,balance);
+                    updatePS.setInt(2,user.getId());
+                    if(updatePS.executeUpdate() != 1)
+                        throw new UserException("Could not update account balance");
+                }
             }
         } catch (SQLException e) {
             throw new UserException("Connection error");
@@ -287,7 +313,6 @@ class UserMapper {
         Role role = Role.valueOf(rs.getString("user_role"));
         int account_id = rs.getInt("account_id");
         int account_balance = rs.getInt("user_balance");
-
         Account acc = new Account(account_id,account_balance);
         return new User(id,name,mail,role,acc);
     }
