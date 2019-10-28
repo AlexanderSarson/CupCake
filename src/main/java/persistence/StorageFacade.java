@@ -34,11 +34,11 @@ public class StorageFacade {
     public List<Cupcake> getPremadeCupcakes() throws ProductException {
         return productMapper.getPremadeCucpakes();
     }
-    public ArrayList<Cupcake> getAllProducts() throws ProductException {
-        return productMapper.getAllProducts();
+    public ArrayList<Cupcake> getCupCakes() throws ProductException {
+        return productMapper.getAllCupcakes();
     }
-    public Cupcake getProduct(int id) throws ProductException {
-        return productMapper.getProductFromID(id);
+    public Cupcake getCupcake(int id) throws ProductException {
+        return productMapper.getCupcakeFromID(id);
     }
 
     // ------ USER ------

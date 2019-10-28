@@ -1,10 +1,7 @@
 
 package persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class ProductMapper {
      * @return an ArrayList of cupcakes
      * @throws ProductException if cupcakes cannot be fetched from database
      */
-    public ArrayList<Cupcake> getAllProducts() throws ProductException {
+    public ArrayList<Cupcake> getAllCupcakes() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id";
         try (Connection connection = dataSource.getConnection();
@@ -44,7 +41,22 @@ public class ProductMapper {
         }
         return cupcakes;
     }
+    //TODO (OSCAR): FIx sql statement & tests
+    public ArrayList<IProduct> getAllProducts() throws ProductException, SQLException {
+        ArrayList<IProduct> products = new ArrayList<>();
+        String sql = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                products.add(findProductFromResultSet(rs));
 
+            }
+        }catch(SQLException e){
+            throw new ProductException("Error when fetching all products");
+        }
+        return products;
+    }
     /**
      * Gets cupcake from a given ID
      * @param id the id of the cupcake
@@ -72,20 +84,41 @@ public class ProductMapper {
 
     public IProduct getProductFromID (int id) throws ProductException, SQLException{
         String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
-        try (Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1,id);
-            ResultSet rs = statement.executeQuery();
+        IProduct product = null;
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
             if(!rs.next()){
                 throw new ProductException("Product with given ID doesn't exist");
             } else{
-                int productID = rs.getInt(product_id);
-                String productName = rs.getString(product_name);
-                int productPrice = rs.getInt(product_price);
-                String ProductPic = rs.getString(4);
+                product = findProductFromResultSet(rs);
             }
+
+        }catch (SQLException e){
+            throw new ProductException("Product couldn't be fetched from database");
+
         }
-        return null;
+        return product;
+    }
+
+
+
+    private IProduct findProductFromResultSet(ResultSet rs) throws SQLException {
+        IProduct product = null;
+        int productID = rs.getInt(product_id);
+        int productPrice = rs.getInt(product_price);
+        String productName = rs.getString(product_name);
+        String ProductPic = rs.getString(4);
+        if (table.equals("Bottoms")) {
+            product = new Bottom(productPrice, productName);
+            product.setId(productID);
+
+        } else if (table.equals("Toppings")) {
+            product = new Topping(productPrice, productName);
+            product.setId(productID);
+        }
+        return product;
     }
 
     /**
@@ -94,6 +127,7 @@ public class ProductMapper {
      * @return the cupcake from the resultset
      * @throws SQLException if anything goes wrong while trying to find cupcake
      */
+
     private Cupcake findCupcakeFromResultSet(ResultSet rs, boolean isPremade) throws SQLException {
         String cupcakeID = "cupcake_id";
         if(isPremade)
