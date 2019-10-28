@@ -1,9 +1,9 @@
 package logic;
+
 import persistence.*;
+
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,7 +66,7 @@ public class LogicFacade {
     public void addToShoppingCart(Bottom bottom, Topping topping, ShoppingCart shoppingCart){
         shoppingCart.addCupcakeToOrder(new Cupcake(bottom,topping));
     }
-    public ShoppingCart submitOrder(User user, ShoppingCart shoppingcart) throws SQLException, OrderException {
+    public ShoppingCart submitOrder(User user, ShoppingCart shoppingcart) throws OrderException, UserBalanceException {
         if(shoppingcart.getDate() == null)
             shoppingcart.setDate(LocalDate.now());
         return (ShoppingCart)storageFacade.createOrder(shoppingcart, user);

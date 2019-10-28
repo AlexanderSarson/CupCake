@@ -6,7 +6,7 @@ import persistence.OrderException;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OrderTest {
     private Order order;
@@ -58,6 +58,12 @@ public class OrderTest {
     @Test
     public void test_getLineItem() throws OrderException {
         assertEquals(item, order.getLineItem(0));
+    }
+
+    @Test
+    public void test_getOrderPrice() {
+        order.addLineItem(item);
+        assertEquals(160,order.getOrderPrice());
     }
 
     @Test

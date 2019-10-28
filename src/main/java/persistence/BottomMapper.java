@@ -1,11 +1,5 @@
 package persistence;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import logic.Bottom;
-
 class BottomMapper extends ProductMapper {
     public BottomMapper(DataSource dataSource) {
         super(dataSource);
@@ -13,11 +7,18 @@ class BottomMapper extends ProductMapper {
     }
 
     private void setup() {
+
         table = "Bottoms";
         product_id = "bottom_id";
         product_name = "bottom_name";
         product_price = "bottom_price";
     }
+
+    /**
+     * Gets all Bottoms from the database
+     * @return an ArrayList of Bottoms
+     * @throws ProductException is anything goes wrong while fetching all bottoms from the database
+     */
 
 //    public ArrayList<Bottom> getAllBottoms() throws ProductException {
 //        ArrayList<Bottom> bottomList = new ArrayList<>();
@@ -40,4 +41,5 @@ class BottomMapper extends ProductMapper {
 //        }
 //        return bottomList;
 //    }
+
 }

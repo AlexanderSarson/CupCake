@@ -1,6 +1,7 @@
 package logic;
 
 import persistence.OrderException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -102,6 +103,14 @@ public class Order extends BaseEntity {
             res += item.getQuantity();
         }
         return res;
+    }
+
+    public int getOrderPrice() {
+        int total = 0;
+        for (LineItem item: lineItems) {
+            total += item.calculateTotalPrice();
+        }
+        return total;
     }
 
     /**

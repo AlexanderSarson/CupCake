@@ -3,12 +3,9 @@ package persistence;
 import logic.*;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class provides all necessary methods of the storage layer, to any that might have a use for them.
@@ -16,9 +13,7 @@ import java.util.logging.Logger;
  * @author Benjamin Paepke
  */
 public class StorageFacade {
-    private final SQLConnection con = new SQLConnection();
     private DataSource dataSource = new DataSource();
-    private PreparedStatement ps;
 
     private OrderMapper orderMapper = new OrderMapper(dataSource);
     private UserMapper userMapper = new UserMapper(dataSource);
@@ -34,11 +29,11 @@ public class StorageFacade {
     public List<Cupcake> getPremadeCupcakes() throws ProductException {
         return productMapper.getPremadeCucpakes();
     }
-    public ArrayList<Cupcake> getAllProducts() throws ProductException {
-        return productMapper.getAllProducts();
+    public ArrayList<Cupcake> getCupCakes() throws ProductException {
+        return productMapper.getAllCupcakes();
     }
-    public Cupcake getProduct(int id) throws ProductException {
-        return productMapper.getProductFromID(id);
+    public Cupcake getCupcake(int id) throws ProductException {
+        return productMapper.getCupcakeFromID(id);
     }
 
     // ------ USER ------
@@ -54,7 +49,7 @@ public class StorageFacade {
 
     // ------ ORDER ------
     public List<Order> getAllOrders(User user) throws OrderException { return orderMapper.getAllOrders(user); }
-    public Order createOrder(Order order, User user) throws SQLException, OrderException { return orderMapper.createOrder(order, user); }
+    public Order createOrder(Order order, User user) throws OrderException, UserBalanceException { return orderMapper.createOrder(order, user); }
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 
     public void updateUser(User user) throws UserException {

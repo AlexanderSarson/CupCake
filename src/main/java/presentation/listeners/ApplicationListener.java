@@ -2,6 +2,7 @@ package presentation.listeners;
 
 import logic.Cupcake;
 import logic.LogicFacade;
+import persistence.DataSource;
 import persistence.ProductException;
 
 import javax.servlet.ServletContextEvent;
@@ -11,7 +12,10 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 /*
 author: madsbrandt
@@ -35,8 +39,14 @@ public class ApplicationListener implements ServletContextListener,
       */
         List<Cupcake> cupcakes = null;
         try {
+                InputStream inputStream = ApplicationListener.class.getResourceAsStream("/db.properties");
+                if(inputStream != null) {
+                    Properties properties = new Properties();
+                    properties.load(inputStream);
+                    DataSource.setProperties(properties);
+                }
             cupcakes = new LogicFacade().getPremadeCupcakes();
-        } catch (ProductException e) {
+        } catch (ProductException | IOException e) {
             // TODO(Benjamin) Handle me!
             e.printStackTrace();
         }
