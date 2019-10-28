@@ -2,6 +2,7 @@ package persistence;
 
 import logic.*;
 import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class StorageFacadeTest {
     private ToppingMapper toppingMapper = new ToppingMapper(dataSource);
     private OrderMapper orderMapper = new OrderMapper(dataSource);
 
-    private static ArrayList<String> scanFromFile(String filename) {
+    private ArrayList<String> scanFromFile(String filename) {
         ArrayList<String> lines = new ArrayList();
         try {
             Scanner scan = new Scanner(new File("Scripts/" + filename));
@@ -51,7 +52,7 @@ public class StorageFacadeTest {
     private Account account;
     private User user;
 
-    private static void rebuildDB() {
+    private void rebuildDB() {
         ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
         try (Connection connection = dataSource.getConnection();
              Statement stmt = connection.createStatement()) {
@@ -68,24 +69,23 @@ public class StorageFacadeTest {
         account = new Account(20);
         account.setId(1);
         user = new User(1,"userNameTest","loginMailTest",Role.CUSTOMER,account);
-        rebuildDB();
     }
 
-    @AfterClass
-    public static void tearDownClass() {
+    @After
+    public void tearDownClass() {
         ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
         rebuildDB();
     }
 
     // ----- PRODUCT -----
     @Test
-    public void getAllProducts() throws ProductException {
-        ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
+    public void getAllCupcakes() throws ProductException {
+        ArrayList<Cupcake> cupcakes = productMapper.getAllCupcakes();
         assertEquals(50, cupcakes.size());
     }
     @Test
-    public void getProduct() throws ProductException {
-        Cupcake cupcake = productMapper.getProductFromID(10);
+    public void testGetCupcakeFromID() throws ProductException {
+        Cupcake cupcake = productMapper.getCupcakeFromID(10);
         assertEquals(10,cupcake.getId());
         assertEquals(2,cupcake.getTopping().getId());
         assertEquals(5,cupcake.getBottom().getId());
@@ -156,6 +156,13 @@ public class StorageFacadeTest {
         userMapper.addFunds(user,1000);
         assertEquals(exp, user.getAccount().getBalance());
     }
+    @Test (expected = IllegalArgumentException.class)
+    public void add_negative_amount_funds() throws UserException{
+        Account newAcc = new Account (1000);
+        User user = new User("PeterLarsen","PeterL@example.com",Role.CUSTOMER,newAcc);
+        user = userMapper.createUser(user,account,"Larsen1234");
+        userMapper.addFunds(user,-100);
+    }
 
     @Test
     public void createUser() throws UserException {
@@ -197,6 +204,12 @@ public class StorageFacadeTest {
         bottomMapper.createProduct(bottom);
         assertEquals(6, bottom.getId());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_bottom_with_negative_price() throws ProductException{
+        Bottom bottom = new Bottom(-5,"RichChocolate");
+        bottomMapper.createProduct(bottom);
+    }
     @Test
     public void updateBottom() throws ProductException {
         Bottom bottom = new Bottom(10,"WhiteChocolate");
@@ -209,6 +222,30 @@ public class StorageFacadeTest {
         bottom.setId(11);
         bottomMapper.updateProduct(bottom);
     }
+    @Test(expected = ProductException.class)
+    public void create_existing_bottom() throws ProductException{
+        Bottom bottom = new Bottom(1,"Chocolate");
+        bottomMapper.createProduct(bottom);
+    }
+
+    @Test (expected = ProductException.class)
+    public void update_bottom_with_existing_name() throws ProductException {
+        Bottom bot = new Bottom (1,"Rockwool");
+        bottomMapper.createProduct(bot);
+        bot.setName("Chocolate");
+        bottomMapper.updateProduct(bot);
+    }
+
+@Test
+        public void testGetBottomFromID() throws ProductException, SQLException{
+        Bottom bottom = new Bottom(12,"Brick");
+        bottomMapper.createProduct(bottom);
+        IProduct bottom2;
+       //bottom2 = bottomMapper.getProductFromID(6);
+        assertEquals(bottom.getName(),bottomMapper.getProductFromID(6).getName());
+        assertEquals(bottom.getPrice(),bottomMapper.getProductFromID(6).getPrice());
+    }
+
 
     // ----- TOPPING -----
     @Test
@@ -229,4 +266,30 @@ public class StorageFacadeTest {
         topping.setId(50);
         toppingMapper.updateProduct(topping);
     }
-}
+    @Test(expected = IllegalArgumentException.class)
+        public void create_topping_with_negative_price() throws ProductException{
+        Topping top = new Topping (-1,"BlueFrosting");
+        toppingMapper.createProduct(top);
+        }
+    @Test(expected = ProductException.class)
+        public void create_existing_topping() throws ProductException{
+        Topping top = new Topping(1,"Chocolate");
+        toppingMapper.createProduct(top);
+    }
+
+    @Test (expected = ProductException.class)
+    public void update_topping_with_existing_name() throws ProductException{
+        Topping top = new Topping (1,"Rockwool");
+        toppingMapper.createProduct(top);
+        top.setName("Chocolate");
+        toppingMapper.updateProduct(top);
+    }
+
+    @Test
+    public void testGetToppingFromID() throws ProductException, SQLException{
+        Topping topping = new Topping(12,"Brick");
+        toppingMapper.createProduct(topping);
+        assertEquals(topping.getName(),toppingMapper.getProductFromID(11).getName());
+        assertEquals(topping.getPrice(),toppingMapper.getProductFromID(11).getPrice());
+    }
+    }

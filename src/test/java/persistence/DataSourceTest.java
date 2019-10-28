@@ -1,15 +1,12 @@
 package persistence;
 
+import org.junit.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -36,7 +33,7 @@ public class DataSourceTest {
         }
         return lines;
     }
-
+/*
     @Before
     public void setUp() {
         try (Statement stmt = dataSource.getConnection().createStatement()){
@@ -46,8 +43,29 @@ public class DataSourceTest {
             }
         } catch (SQLException e) {
         }
+    }*/
+
+    @After
+    public void tearDownClass() {
+        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
+        rebuildDB();
     }
 
+    private void rebuildDB() {
+        ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");
+        try (Connection connection = dataSource.getConnection();
+             Statement stmt = connection.createStatement()) {
+            for (String sqlStatement : DBsetUp) {
+                if(!sqlStatement.isEmpty())
+                    stmt.executeUpdate(sqlStatement);
+            }
+        } catch (SQLException e) {
+        }
+    }
+
+    /**
+     * Test of selectQuery method, of class SQLConnection.
+     */
     @Test
     public void testSelectQuery() {
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement("SELECT * FROM Users WHERE user_id = 1")){
