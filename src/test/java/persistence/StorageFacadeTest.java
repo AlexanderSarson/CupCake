@@ -237,7 +237,7 @@ public class StorageFacadeTest {
     }
 
         @Test
-        public void test_get_bottom_from_ID() throws ProductException, SQLException{
+        public void test_get_bottom_from_ID() throws ProductException{
         Bottom bottom = new Bottom(12,"Brick");
         bottomMapper.createProduct(bottom);
         assertEquals(bottom.getName(),bottomMapper.getProductFromID(6).getName());
@@ -248,6 +248,12 @@ public class StorageFacadeTest {
             Bottom bottom = new Bottom(12,"Brick");
             bottomMapper.createProduct(bottom);
             bottomMapper.getProductFromID(7);
+        }
+        @Test
+        public void get_all_bottoms() throws ProductException{
+        ArrayList<IProduct> allBottoms;
+        allBottoms = bottomMapper.getAllProducts();
+        assertEquals(5,allBottoms.size());
         }
 
 
@@ -290,7 +296,7 @@ public class StorageFacadeTest {
     }
 
     @Test
-    public void test_get_topping_from_ID() throws ProductException, SQLException{
+    public void test_get_topping_from_ID() throws ProductException{
         Topping topping = new Topping(12,"Brick");
         toppingMapper.createProduct(topping);
         assertEquals(topping.getName(),toppingMapper.getProductFromID(11).getName());
@@ -302,4 +308,10 @@ public class StorageFacadeTest {
         toppingMapper.createProduct(topping);
         toppingMapper.getProductFromID(12);
         }
+    @Test
+    public void get_all_Toppings() throws ProductException{
+        ArrayList<IProduct> allToppings;
+        allToppings = toppingMapper.getAllProducts();
+        assertEquals(10,allToppings.size());
+    }
     }
