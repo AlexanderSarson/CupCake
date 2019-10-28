@@ -188,7 +188,7 @@ class UserMapper {
                         loginPS.setInt(1,user.getID());
                         loginPS.setString(2,user.getMail());
                         loginPS.setString(3, password);
-                        loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
+                        loginPS.setInt(4,1000);
                         if(loginPS.executeUpdate() != 1) {
                             throw new SQLException("Could not insert into login");
                         }
