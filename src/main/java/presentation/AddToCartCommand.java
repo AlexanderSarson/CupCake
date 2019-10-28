@@ -12,6 +12,7 @@ import logic.Topping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,17 +24,20 @@ public class AddToCartCommand extends Command{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Topping top = (Topping) request.getAttribute("topping");
         Bottom bot = (Bottom) request.getAttribute("bottom");
+        HttpSession session = request.getSession();
+        
         LogicFacade logicFacade = getLogicFacade();
 
         ShoppingCart cart;
-        if (request.getAttribute("shoppingCart") == null) {
+        if (session.getAttribute("shoppingCart") == null) {
             cart = logicFacade.getShoppingCart();
         } else {
-            cart = (ShoppingCart) request.getAttribute("shoppingCart");
+            cart = (ShoppingCart) session.getAttribute("shoppingCart");
         }
 
         logicFacade.addToShoppingCart(bot, top, cart);
-        String page = request.getContextPath().replaceAll(".jsp", "");
-        forwardToPage(request, response, page);
+        response.sendRedirect("Jsp/shop/mainShop.jsp");
+//        String page = request.getContextPath().replaceAll(".jsp", "");
+//        forwardToPage(request, response, page);
     }
 }
