@@ -131,15 +131,15 @@ public class OrderMapperTest {
         Order order = new Order();
         LineItem lineItem = new LineItem(cup,5);
         order.addLineItem(lineItem);
-        when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(true);
-
+        when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(true);
+        when(resSet.getInt("user_balance")).thenReturn(1000);
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
         when(statement.executeUpdate()).thenReturn(1).thenReturn(1).thenReturn(1);
 
         orderMapper.createOrder(order,user);
-        verify(statement,times(2)).executeUpdate();
+        verify(statement,times(3)).executeUpdate();
     }
     @Test
     public void updateOrder() {

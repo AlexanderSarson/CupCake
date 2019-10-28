@@ -66,7 +66,7 @@ public class StorageFacadeTest {
 
     @Before
     public void setUp() {
-        account = new Account(20);
+        account = new Account(1000);
         account.setId(1);
         user = new User(1,"userNameTest","loginMailTest",Role.CUSTOMER,account);
     }
