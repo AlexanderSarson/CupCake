@@ -3,7 +3,7 @@ package persistence;
 import java.sql.Connection;
 
 /**
- *
+ * Pooling Interface
  * @author rando
  */
 
