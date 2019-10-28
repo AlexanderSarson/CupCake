@@ -210,7 +210,6 @@ class OrderMapper {
 
     /**
      * Checks if a given order is stored in the database.
-     *
      * @param order The order to be checked.
      * @return TRUE if the order is currently stored, FALSE if the order is not currently stored.
      * @throws SQLException If there is a connection error or MySQL syntax error.

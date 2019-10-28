@@ -42,7 +42,7 @@ public class ProductMapperTest {
     private Connection connection;
 
     @Test
-    public void test_getAllProducts() throws SQLException, ProductException {
+    public void test_getAllCupcakes() throws SQLException, ProductException {
         //First and 2'nd time next() is called, it returns true, the third time false
         when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resSet.getInt("topping_id")).thenReturn(1);
