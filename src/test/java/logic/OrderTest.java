@@ -61,6 +61,12 @@ public class OrderTest {
     }
 
     @Test
+    public void test_getOrderPrice() {
+        order.addLineItem(item);
+        assertEquals(160,order.getOrderPrice());
+    }
+
+    @Test
     public void test_getTotalQuantity() {
         int exp = item.getQuantity()*2;
         order.addLineItem(item);

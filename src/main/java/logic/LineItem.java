@@ -30,8 +30,7 @@ public class LineItem extends BaseEntity {
      * @return the total price.
      */
     public int calculateTotalPrice(){
-        int cupcakePrice = cupcake.getBottom().getPrice()+cupcake.getTopping().getPrice();
-        int totalPrice = cupcakePrice*quantity;
+        int totalPrice = cupcake.getPrice()*quantity;
         return totalPrice;
     }
 

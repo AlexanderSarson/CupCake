@@ -80,7 +80,7 @@ public class OrderMapperTest {
     }
 
     @Test (expected = OrderException.class)
-    public void test_create_order_when_insert_order_fails() throws SQLException, OrderException {
+    public void test_create_order_when_insert_order_fails() throws SQLException, OrderException, UserBalanceException {
         Bottom bot = new Bottom (5,"Cherry");
         Topping top = new Topping (5,"Coconut");
         Cupcake cup = new Cupcake (bot,top);
@@ -101,7 +101,7 @@ public class OrderMapperTest {
 
     }
     @Test (expected = OrderException.class)
-    public void test_create_order_when_insert_lineitem_fails() throws SQLException, OrderException {
+    public void test_create_order_when_insert_lineitem_fails() throws SQLException, OrderException, UserBalanceException {
         Bottom bot = new Bottom (5,"Cherry");
         Topping top = new Topping (5,"Coconut");
         Cupcake cup = new Cupcake (bot,top);
@@ -122,7 +122,7 @@ public class OrderMapperTest {
 
     }
     @Test
-    public void test_create_order() throws SQLException, OrderException {
+    public void test_create_order() throws SQLException, OrderException, UserBalanceException {
         Bottom bot = new Bottom (5,"Cherry");
         Topping top = new Topping (5,"Coconut");
         Cupcake cup = new Cupcake (bot,top);

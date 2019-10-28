@@ -85,7 +85,7 @@ class OrderMapper {
      * @throws SQLException
      * @throws OrderException if anything goes wrong while creating order
      */
-    public Order createOrder(Order order, User user) throws OrderException {
+    public Order createOrder(Order order, User user) throws OrderException, UserBalanceException {
         String sql = "SELECT * from Cupcakes WHERE cupcake_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -141,8 +141,34 @@ class OrderMapper {
                     }
                 }
             }
+            // Update the balance of the user
+            String userBalance = "select user_balance from Accounts where user_id = ?";
+            try (PreparedStatement balanceStatement = connection.prepareStatement(userBalance)) {
+                balanceStatement.setInt(1,user.getId());
+                ResultSet balance = balanceStatement.executeQuery();
+                if(balance.next()) {
+                    int newBalance = balance.getInt("user_balance") - order.getOrderPrice();
+                    if(newBalance >= 0) {
+                        userBalance = "UPDATE Accounts SET user_balance = ? where user_id = ?";
+                        try(PreparedStatement updateStatement = connection.prepareStatement(userBalance)) {
+                            updateStatement.setInt(1,newBalance);
+                            updateStatement.setInt(2,user.getId());
+                            if(updateStatement.executeUpdate() != 1) {
+                                connection.rollback();
+                                connection.setAutoCommit(true);
+                                throw new UserException("Could not update user account balance");
+                            }
+                        }
+                    }
+                    else {
+                        throw new UserBalanceException("Insufficient funds!");
+                    }
+                } else {
+                    throw new UserException("Could not get user balance.");
+                }
+            }
             connection.commit();
-        } catch (SQLException e) {
+        } catch (SQLException | UserException e) {
             throw new OrderException("Could not create order");
         }
         return order;

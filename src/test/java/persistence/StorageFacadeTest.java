@@ -105,7 +105,7 @@ public class StorageFacadeTest {
         assertEquals(1,orders.size());
     }
     @Test
-    public void createOrder() throws OrderException {
+    public void createOrder() throws OrderException, UserBalanceException {
         Order order = new Order(LocalDate.now());
         Bottom bottom = new Bottom(1,"test");
         bottom.setId(1);

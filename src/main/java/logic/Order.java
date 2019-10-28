@@ -104,6 +104,14 @@ public class Order extends BaseEntity {
         return res;
     }
 
+    public int getOrderPrice() {
+        int total = 0;
+        for (LineItem item: lineItems) {
+            total += item.calculateTotalPrice();
+        }
+        return total;
+    }
+
     /**
      * Returns the number of LineItems in the order.
      * @return The number of LineItems in the order.
