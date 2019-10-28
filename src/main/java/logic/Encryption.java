@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
- *
+ * Encryption of password, using SHA-512.
  * @author rando
  */
 public class Encryption {

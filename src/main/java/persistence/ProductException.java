@@ -13,6 +13,10 @@ package persistence;
 
 public class ProductException extends Exception {
 
+    /**
+     *
+     * @param s
+     */
     public ProductException(String s) {
         super(s);
     }
