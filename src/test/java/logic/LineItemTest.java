@@ -26,13 +26,13 @@ public class LineItemTest {
     @Test
     public void testCalculateTotalPrice() {
         int expected = 150;
-        int result = lineitem.calculateTotalPrice();
+        int result = lineitem.getPrice();
         assertEquals(expected,result);
         cupcake.getBottom().setPrice(8);
         cupcake.getTopping().setPrice(5);
         lineitem.setQuantity(5);
         int expected1 = 65;
-        int result1 = lineitem.calculateTotalPrice();
+        int result1 = lineitem.getPrice();
         assertEquals(expected1,result1);
     }
 

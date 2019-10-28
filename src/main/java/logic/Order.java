@@ -51,11 +51,12 @@ public class Order extends BaseEntity {
      * @return 0 or positive value if the cupcake is present in the order, -1 if the cupcake is not present in the order.
      */
     private int getCupcakeIndex(Cupcake cupcake) {
-        for (LineItem item: lineItems) {
-            Cupcake c = item.getCupcake();
-            if(c.getBottom().getName().equals(cupcake.getBottom().getName()) &&
-                    c.getTopping().getName().equals(cupcake.getTopping().getName())) {
-                return lineItems.indexOf(c);
+        for (int i = 0; i < lineItems.size(); i++) {
+            Cupcake c = lineItems.get(i).getCupcake();
+            boolean botSame = c.getBottom().getId() == cupcake.getBottom().getId();
+            boolean topSame = c.getTopping().getId() == cupcake.getTopping().getId();
+            if( botSame && topSame) {
+                return i;
             }
         }
         return -1;
@@ -120,7 +121,7 @@ public class Order extends BaseEntity {
     public int getOrderPrice() {
         int total = 0;
         for (LineItem item: lineItems) {
-            total += item.calculateTotalPrice();
+            total += item.getPrice();
         }
         return total;
     }

@@ -22,11 +22,10 @@ public class AddToCartCommand extends Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Topping top = (Topping) request.getAttribute("topping");
-        Bottom bot = (Bottom) request.getAttribute("bottom");
-        HttpSession session = request.getSession();
-        
         LogicFacade logicFacade = getLogicFacade();
+        Topping top = (Topping) logicFacade.parseToIProduct(request.getParameter("topping"));
+        Bottom bot = (Bottom) logicFacade.parseToIProduct(request.getParameter("bottom"));
+        HttpSession session = request.getSession();
 
         ShoppingCart cart;
         if (session.getAttribute("shoppingCart") == null) {
@@ -36,7 +35,8 @@ public class AddToCartCommand extends Command{
         }
 
         logicFacade.addToShoppingCart(bot, top, cart);
-        response.sendRedirect("Jsp/shop/mainShop.jsp");
+        session.setAttribute("shoppingCart", cart);
+        response.sendRedirect("jsp/shop/mainShop.jsp");
 //        String page = request.getContextPath().replaceAll(".jsp", "");
 //        forwardToPage(request, response, page);
     }

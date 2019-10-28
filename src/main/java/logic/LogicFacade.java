@@ -26,6 +26,24 @@ public class LogicFacade {
         return storageFacade.getPremadeCupcakes();
     }
 
+    public IProduct parseToIProduct(String str) {
+        String[] parts = str.split(",");
+        int id = Integer.parseInt(parts[1]);
+        int price = Integer.parseInt(parts[2]);
+        String name = parts[3];
+        IProduct product = null;
+        if(parts[0].equals("Bottom")) {
+            product = new Bottom(price,name);
+            product.setId(id);
+        } else if (parts[0].equals("Topping")) {
+            product = new Topping(price,name);
+            product.setId(id);
+        } else {
+            // TODO(Benjamin): Throw an exception here!?
+        }
+        return product;
+    }
+
     // ------ BOTTOM ------
     public Bottom createBottom(String name, int price, String picturePath) throws ProductException {
         Bottom bottom = new Bottom(price,name);

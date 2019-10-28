@@ -76,6 +76,7 @@ FOREIGN KEY (topping_id)
 FOREIGN KEY (bottom_id)
 	REFERENCES Bottoms (bottom_id)
 );
+
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'ADMIN');
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');

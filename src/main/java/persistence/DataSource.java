@@ -32,6 +32,7 @@ public class DataSource {
         filePassword = properties.getProperty("password");
 
         basicDataSource = new BasicDataSource();
+        basicDataSource.setDriverClassName("com.mysql.jdbc.Driver");
         basicDataSource.setUsername(fileUser);
         basicDataSource.setPassword(filePassword);
         basicDataSource.setUrl(fileURL);

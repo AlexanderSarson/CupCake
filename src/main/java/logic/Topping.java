@@ -61,4 +61,9 @@ public class Topping extends BaseEntity implements IProduct{
         else
             this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Topping,"+ id + "," + price +","+ name;
+    }
 }
