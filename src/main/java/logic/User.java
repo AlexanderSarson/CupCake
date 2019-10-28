@@ -12,7 +12,7 @@ public class User extends BaseEntity{
     private Account account;
 
     /**
-     * The basic constructor of the user, where a id is available
+     * The basic constructor of the user, where an id is available
      * @param id The id of the user.
      * @param name The full name of the user.
      * @param mail The e-mail address of the user.
