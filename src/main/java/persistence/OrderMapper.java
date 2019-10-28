@@ -118,7 +118,7 @@ class OrderMapper {
                 // Why does this produce a date that is one day behind????
                 if(order.getDate() == null)
                     order.setDate(LocalDate.now());
-                orderPS.setDate(2, java.sql.Date.valueOf(order.getDate().toString()));
+                orderPS.setDate(2, java.sql.Date.valueOf(LocalDate.of(order.getDate().getYear(), order.getDate().getMonth(), order.getDate().getDayOfMonth()).plusDays(1)));
                 if (orderPS.executeUpdate() != 1) {
                     connection.rollback();
                     connection.setAutoCommit(false);
