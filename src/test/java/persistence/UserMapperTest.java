@@ -32,8 +32,6 @@ public class UserMapperTest {
     @Mock
     private DataSource dataSource;
     @Mock
-    private SQLConnection DELETE_ME;
-    @Mock
     private Connection connection;
 
     @Before
@@ -41,7 +39,6 @@ public class UserMapperTest {
     }
 
     @Test
-
     public void test_getAllUsers() throws SQLException, UserException {
         // First and second time next() is called, it returns true, then it returns false.
         when(resSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
