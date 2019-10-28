@@ -1,13 +1,10 @@
 
 package persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+
 import logic.Bottom;
 import logic.Cupcake;
 import logic.IProduct;
@@ -30,28 +27,43 @@ public class ProductMapper {
      * @return an ArrayList of cupcakes
      * @throws ProductException if cupcakes cannot be fetched from database
      */
-    public ArrayList<Cupcake> getAllProducts() throws ProductException {
+    public ArrayList<Cupcake> getAllCupcakes() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                cupcakes.add(findCupcakeFromResultSet(rs));
+                cupcakes.add(findCupcakeFromResultSet(rs,false));
             }
         } catch (SQLException e) {
             throw new ProductException("Error when fetching all Cupcakes");
         }
         return cupcakes;
     }
+    //TODO (OSCAR): FIx sql statement & tests
+    public ArrayList<IProduct> getAllProducts() throws ProductException, SQLException {
+        ArrayList<IProduct> products = new ArrayList<>();
+        String sql = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                products.add(findProductFromResultSet(rs));
 
+            }
+        }catch(SQLException e){
+            throw new ProductException("Error when fetching all products");
+        }
+        return products;
+    }
     /**
      * Gets cupcake from a given ID
      * @param id the id of the cupcake
      * @return the cupcake with the given id
      * @throws ProductException if anything goes wrong while trying to fetch cupcake
      */
-    public Cupcake getProductFromID(int id) throws ProductException {
+    public Cupcake getCupcakeFromID(int id) throws ProductException {
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id where cupcake_id = ?";
         Cupcake cupcake = null;
         try (Connection connection = dataSource.getConnection();
@@ -61,11 +73,52 @@ public class ProductMapper {
             if(!rs.next())
                 throw new ProductException("Could not find cupcake with id: " + id);
             else
-                cupcake = findCupcakeFromResultSet(rs);
+                cupcake = findCupcakeFromResultSet(rs,false);
         } catch (SQLException e) {
             throw new ProductException("Error when fetching Cupcake");
         }
         return cupcake;
+    }
+
+    //getProductFromID(int id) for både topping og bottom.
+
+    public IProduct getProductFromID (int id) throws ProductException, SQLException{
+        String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
+        IProduct product = null;
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()){
+                throw new ProductException("Product with given ID doesn't exist");
+            } else{
+                product = findProductFromResultSet(rs);
+            }
+
+        }catch (SQLException e){
+            throw new ProductException("Product couldn't be fetched from database");
+
+        }
+        return product;
+    }
+
+
+
+    private IProduct findProductFromResultSet(ResultSet rs) throws SQLException {
+        IProduct product = null;
+        int productID = rs.getInt(product_id);
+        int productPrice = rs.getInt(product_price);
+        String productName = rs.getString(product_name);
+        String ProductPic = rs.getString(4);
+        if (table.equals("Bottoms")) {
+            product = new Bottom(productPrice, productName);
+            product.setId(productID);
+
+        } else if (table.equals("Toppings")) {
+            product = new Topping(productPrice, productName);
+            product.setId(productID);
+        }
+        return product;
     }
 
     /**
@@ -74,7 +127,11 @@ public class ProductMapper {
      * @return the cupcake from the resultset
      * @throws SQLException if anything goes wrong while trying to find cupcake
      */
-    private Cupcake findCupcakeFromResultSet(ResultSet rs) throws SQLException {
+
+    private Cupcake findCupcakeFromResultSet(ResultSet rs, boolean isPremade) throws SQLException {
+        String cupcakeID = "cupcake_id";
+        if(isPremade)
+                cupcakeID = "premadecupcake_id";
         //Cupcake Topping object creation
         int topID = rs.getInt("topping_id");
         int topPrice = rs.getInt("topping_price");
@@ -90,9 +147,9 @@ public class ProductMapper {
         Bottom bot = new Bottom(botPrice, botName);
         bot.setId(botID);
         //Completed Cupcake object return
-        int cupcakeID = rs.getInt("cupcake_id");
+        int id = rs.getInt(cupcakeID);
         Cupcake cupcake = new Cupcake(bot, top);
-        cupcake.setId(cupcakeID);
+        cupcake.setId(id);
         return cupcake;
     }
 
@@ -157,6 +214,21 @@ public class ProductMapper {
         }catch(SQLException e){
             throw new ProductException("Product could not be updated");
         }
+    }
+
+    public List<Cupcake> getPremadeCucpakes() throws ProductException {
+        List<Cupcake> premade = new ArrayList<>();
+        String sql = "select * from PreMadeCupcakes join Toppings on PreMadeCupcakes.topping_id = Toppings.topping_id join Bottoms on PreMadeCupcakes.bottom_id = Bottoms.bottom_id;";
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                premade.add(findCupcakeFromResultSet(rs,true));
+            }
+        } catch (SQLException e) {
+            throw new ProductException("Could not fetch Premade-cupcakes");
+        }
+        return premade;
     }
 }
 

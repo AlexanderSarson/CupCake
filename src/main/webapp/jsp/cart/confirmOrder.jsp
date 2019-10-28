@@ -7,13 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
 <head>
 	<title>Confirm Order</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
 	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
 </head>
+
 <body>
 	<%@include file="/jsp/nav.jsp"%>
 
@@ -24,9 +26,9 @@
 			</div>
 
 			<div class="uk-card-body">
-				<c:set var="orderTotal" value="0"/>
+				<c:set var="orderTotal" value="0" />
 				<c:forEach items="${sessionScope.order.getOrderItems()}" var="item">
-					<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }"/>
+					<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }" />
 
 					<div class="uk-child-width-1-2 uk-text-center" uk-grid>
 						<div>
@@ -49,11 +51,14 @@
 									<div>${item.getQty()}</div>
 								</div>
 								<div>
-									<div> $<c:out value="${item.getBook().getPrice() * item.getQty()}"/> </div>
+									<div> $
+										<c:out value="${item.getBook().getPrice() * item.getQty()}" />
+									</div>
 								</div>
 								<div>
 									<div>
-										<a href="${pageContext.request.contextPath}/checkout?&action=deleteItem&id=${item.getBook().getId()}">
+										<a
+											href="${pageContext.request.contextPath}/FrontController?&command=removeFromCart&topping=${item.getTopping}&bottom=${item.getBottom}">
 											<span uk-icon="minus-circle" class="uk-icon"></span>
 										</a>
 									</div>
@@ -63,7 +68,7 @@
 					</div>
 				</c:forEach>
 
-			<%-- TODO Placeholders --%>
+				<%-- TODO Placeholders --%>
 				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
 					<div>
 						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
@@ -159,7 +164,7 @@
 							<div>
 								<div>
 									<a href="${pageContext.request.contextPath}/checkout?&action=orderConfirmed"
-									   class="uk-button uk-button-primary">Confirm
+										class="uk-button uk-button-primary">Confirm
 									</a>
 								</div>
 							</div>
@@ -171,4 +176,5 @@
 	</div>
 
 </body>
+
 </html>

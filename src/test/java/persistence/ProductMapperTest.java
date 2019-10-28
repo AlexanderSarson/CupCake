@@ -6,18 +6,19 @@
 
 package persistence;
 
+import logic.Cupcake;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import logic.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -57,7 +58,7 @@ public class ProductMapperTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
         
-        ArrayList<Cupcake> cupcakes = productMapper.getAllProducts();
+        ArrayList<Cupcake> cupcakes = productMapper.getAllCupcakes();
         Cupcake cupcake = cupcakes.get(0);
         assertEquals(1, cupcake.getBottom().getId());
         assertEquals(1, cupcake.getTopping().getId());
@@ -71,7 +72,7 @@ public class ProductMapperTest {
     }
     
     @Test
-    public void test_getProductFromID() throws SQLException, ProductException {
+    public void test_getCupCakesFromID() throws SQLException, ProductException {
         when(resSet.getInt("topping_id")).thenReturn(1);
         when(resSet.getInt("topping_price")).thenReturn(5);
         when(resSet.getString("topping_name")).thenReturn("testTopName");
@@ -86,8 +87,7 @@ public class ProductMapperTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
         
-        Cupcake cupcake = productMapper.getProductFromID(1);
+        Cupcake cupcake = productMapper.getCupcakeFromID(1);
         assertEquals(1, cupcake.getId());
     }
-
 }

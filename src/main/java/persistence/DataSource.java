@@ -11,7 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * @author rando
+ * @author Benjamin Paepke
+ */
 public class DataSource {
+    private Properties prop = null;
     private BasicDataSource basicDataSource;
 
     public DataSource() throws IOException {
@@ -26,7 +31,6 @@ public class DataSource {
 
 
         basicDataSource = new BasicDataSource();
-        basicDataSource.setDriverClassName("com.mysql.jdbc.Driver");
         basicDataSource.setUsername(fileUser);
         basicDataSource.setPassword(filePassword);
         basicDataSource.setUrl(fileURL);

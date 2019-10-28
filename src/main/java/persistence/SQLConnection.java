@@ -27,7 +27,6 @@ public class SQLConnection implements IConectionPool {
 
     private Connection createConnection() {
         try (FileInputStream fileInput = new FileInputStream("db.properties")) {
-            Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
             properties.load(fileInput);
             String fileURL = properties.getProperty("url");
@@ -37,7 +36,7 @@ public class SQLConnection implements IConectionPool {
             connection = DriverManager.getConnection(fileURL, fileUSER, filePASSWORD);
             statement = connection.prepareStatement(fileURL);
             return connection;
-        } catch (IOException | ClassNotFoundException | SQLException ex) {
+        } catch (IOException | SQLException ex) {
             ex.printStackTrace();
         }
         return null;
