@@ -3,12 +3,9 @@ package persistence;
 import logic.*;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class provides all necessary methods of the storage layer, to any that might have a use for them.
@@ -16,9 +13,7 @@ import java.util.logging.Logger;
  * @author Benjamin Paepke
  */
 public class StorageFacade {
-    private final SQLConnection con = new SQLConnection();
     private DataSource dataSource = new DataSource();
-    private PreparedStatement ps;
 
     private OrderMapper orderMapper = new OrderMapper(dataSource);
     private UserMapper userMapper = new UserMapper(dataSource);

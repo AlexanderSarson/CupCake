@@ -16,19 +16,20 @@ import java.util.Properties;
  * @author Benjamin Paepke
  */
 public class DataSource {
-    private Properties prop = null;
+    private static Properties properties;
     private BasicDataSource basicDataSource;
 
     public DataSource() throws IOException {
+        if(properties == null) {
+            FileInputStream fileInput = new FileInputStream("db.properties");
+            properties = new Properties();
+            properties.load(fileInput);
+        }
         String fileUser = "", filePassword = "", fileURL ="";
-        FileInputStream fileInput = new FileInputStream("db.properties");
-        Properties properties = new Properties();
-        properties.load(fileInput);
         fileURL = properties.getProperty("url");
         fileURL += "?" + "serverTimezone=UTC";
         fileUser = properties.getProperty("user");
         filePassword = properties.getProperty("password");
-
 
         basicDataSource = new BasicDataSource();
         basicDataSource.setUsername(fileUser);
@@ -36,8 +37,12 @@ public class DataSource {
         basicDataSource.setUrl(fileURL);
 
         basicDataSource.setMinIdle(20);
-        basicDataSource.setMaxIdle(1000);
-        basicDataSource.setMaxOpenPreparedStatements(400);
+        basicDataSource.setMaxIdle(100);
+        basicDataSource.setMaxOpenPreparedStatements(200);
+    }
+
+    public static void setProperties(Properties prop) {
+        properties = prop;
     }
 
     public Connection getConnection() throws SQLException {
