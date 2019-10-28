@@ -160,7 +160,7 @@
             </activation>
             <properties>
                 <sonar.host.url>
-                    http://sonarqube:9000
+                    http://sonarqube02:9000
                 </sonar.host.url>
             </properties>
         </profile>
