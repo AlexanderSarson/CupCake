@@ -276,6 +276,8 @@ class UserMapper {
      * @throws UserException If the user cannot be found, or if the insertion of funds goes wrong.
      */
     public void addFunds(User user, int amount) throws UserException {
+        if(amount < 0)
+            throw new UserException("Amount to add must be above zero");
         String sql = "SELECT user_balance FROM Accounts where user_id = ?";
         try (Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {

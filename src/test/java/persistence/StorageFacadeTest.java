@@ -156,7 +156,7 @@ public class StorageFacadeTest {
         userMapper.addFunds(user,1000);
         assertEquals(exp, user.getAccount().getBalance());
     }
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = UserException.class)
     public void add_negative_amount_funds() throws UserException{
         Account newAcc = new Account (1000);
         User user = new User("PeterLarsen","PeterL@example.com",Role.CUSTOMER,newAcc);

@@ -1,5 +1,7 @@
 package logic;
 import persistence.*;
+
+import javax.ejb.Local;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -62,7 +64,6 @@ public class LogicFacade {
     public ShoppingCart getShoppingCart() {
         return new ShoppingCart();
     }
-
     public void addToShoppingCart(Bottom bottom, Topping topping, ShoppingCart shoppingCart){
         shoppingCart.addCupcakeToOrder(new Cupcake(bottom,topping));
     }
@@ -70,6 +71,10 @@ public class LogicFacade {
         if(shoppingcart.getDate() == null)
             shoppingcart.setDate(LocalDate.now());
         return (ShoppingCart)storageFacade.createOrder(shoppingcart, user);
+    }
+    public Order submitOrder(List<LineItem> items, User user) throws UserBalanceException, OrderException {
+        Order order = new Order(items, LocalDate.now());
+        return storageFacade.createOrder(order,user);
     }
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);

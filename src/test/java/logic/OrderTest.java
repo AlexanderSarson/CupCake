@@ -67,6 +67,33 @@ public class OrderTest {
     }
 
     @Test
+    public void test_addCupcakeToOrder_adding_same_cupcake_two_times() {
+        Bottom bottom = new Bottom(5,"WhiteChocolate");
+        Topping topping = new Topping(5, "Nutmeg");
+        Cupcake cupcake = new Cupcake(bottom,topping);
+        ShoppingCart cart = new ShoppingCart();
+        cart.addCupcakeToOrder(cupcake);
+        assertEquals(1, cart.getTotalQuantity());
+        cart.addCupcakeToOrder(cupcake);
+        assertEquals(2,cart.getTotalQuantity());
+    }
+
+    @Test
+    public void test_addCupcakeToOrder_adding_differet_cupcakes() {
+        Bottom bottom = new Bottom(5,"WhiteChocolate");
+        Topping topping = new Topping(5, "Nutmeg");
+        Cupcake cupcake = new Cupcake(bottom,topping);
+        Bottom anotherBottom = new Bottom(5,"WhiteChocolate");
+        Topping anotherTopping = new Topping(5, "Nutmeg");
+        Cupcake anotherCupcake = new Cupcake(anotherBottom,anotherTopping);
+        ShoppingCart cart = new ShoppingCart();
+        cart.addCupcakeToOrder(cupcake);
+        assertEquals(1, cart.getTotalQuantity());
+        cart.addCupcakeToOrder(anotherCupcake);
+        assertEquals(2,cart.getTotalQuantity());
+    }
+
+    @Test
     public void test_getTotalQuantity() {
         int exp = item.getQuantity()*2;
         order.addLineItem(item);
