@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css?family=Cabin|Raleway&display=swap');
+
+@media (min-width: 992px) {
+  .navbar {
+    height: 10vh;
+  }
+}
+
+:root {
+  --mainTransition: all 0.3s linear;
+  --mainGreen: rgb(14, 187, 175);
+  --mainWhite: #ffffff;
+  --mainGrey: rgb(157, 157, 157);
+  --mainPink: rgb(255, 215, 215);
+  --secGrey: rgb(238, 235, 228);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../images/spattern.png");
+}
+
+body i {
+    font-family: 'FontAwesome', serif !important;
+}
+
+body p {
+    font-family: Cabin, serif;
+  font-size: 1.2rem;
+}
+
+body h1 {
+    font-family: Raleway, serif;
+  transition: var(--mainTransition);
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                     Nav                                    */
+/* -------------------------------------------------------------------------- */
+
+.top-menu {
+  height: 17vh;
+  background-color: var(--secGrey);
+}
+
+.navbar-fixed {
+  top: 0;
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+}
+
+.navbar-fixed img {
+  transform: scale(0.4) translateY(7vh);
+}
+
+.navbar {
+  width: 100%;
+  height: 10vh;
+}
+
+.navbar-custom {
+  background-color: var(--secGrey);
+  border-color: #e7e7e7;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+  color: var(--mainGrey);
+}
+
+nav .fa-shopping-cart {
+  margin-right: 0.5rem;
+}
+
+nav {
+  font-family: Raleway, serif;
+  background-color: var(--secGrey);
+}
+
+nav .nav-item {
+  margin: 40px;
+}
+
+nav img {
+  height: auto;
+  max-width: 100%;
+  transition: all 1s ease-in-out;
+}
+
+.badge {
+  background-color: palevioletred;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 7px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  masthead                                  */
+/* -------------------------------------------------------------------------- */
+
+.masthead {
+  height: 70vh;
+  background-position-y: -22rem;
+  background-image: url('../images/mini-cupcake-product.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  margin: auto;
+  padding: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               Icon container                               */
+/* -------------------------------------------------------------------------- */
+
+.tripple-icon {
+  padding-top: 5vh;
+  background-image: url('../images/DotBG.png');
+  width: 100vw;
+}
+
+.tripple-icon img {
+  top: -13vh;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+}
+
+.tripple-icon img:hover {
+  transform: scale(1.1);
+}
+
+.tripple-icon p {
+  position: relative;
+  top: -15vh;
+}

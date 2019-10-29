@@ -22,11 +22,13 @@ public  class Command {
     private void initCommands() {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
+        commands.put("logout", new LogOutCommand());
         commands.put("register", new RegisterCommand());
         commands.put("addToCart", new AddToCartCommand());
         commands.put("submitOrder", new SubmitOrderCommand());
         commands.put("redirect", new RedirectCommand());
         commands.put("removeFromCart", new RemoveFromCartCommand());
+        commands.put("submitJSONOrder", new SubmitJSONOrderCommand());
     }
 
     public Command from(HttpServletRequest request) {
@@ -40,9 +42,9 @@ public  class Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception { //TODO make custom exception
     }
 
-    public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
+    public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
-            RequestDispatcher rd = request.getRequestDispatcher("jsp/" + page + ".jsp");
+            RequestDispatcher rd = request.getRequestDispatcher(path);
             rd.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

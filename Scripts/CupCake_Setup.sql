@@ -78,8 +78,8 @@ FOREIGN KEY (bottom_id)
 );
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'ADMIN');
-INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest', 'loginPasswordTest', '2384');
-INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (2, 'loginMailTest2', 'loginPasswordTest', '2384');
+INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMail@Test.com', 'loginPasswordTest', '2384');
+INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (2, 'loginMail@Test2.com', 'loginPasswordTest', '2384');
 INSERT INTO Accounts (user_id, user_balance) VALUES (1, 1000);
 INSERT INTO Accounts (user_id, user_balance) VALUES (2, 1000);
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');

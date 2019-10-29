@@ -6,133 +6,91 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 
 <head>
 	<title></title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/uikit.min.css" />
-	<script src="${pageContext.request.contextPath}/js/uikit.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/uikit-icons.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel=stylesheet href="<c:url value="/css/style.css"/>">
 </head>
 
 <body>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-	<nav class="uk-navbar-container uk-sticky">
-		<div class="uk-container uk-navbar">
-			<div class="nav-overlay uk-navbar-left">
-				<a class="uk-navbar-item uk-logo"
-					href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Cupcake</a>
-				<ul class="uk-navbar-nav">
-					<li class="uk-active">
-						<a href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Home</a>
-					</li>
-					<li>
-						<a href="#">About us</a>
-					</li>
-					<li>
-						<a href="${contextPath}/FrontController?&command=redirect&target=jsp/shop/mainShop.jsp">Shop</a>
-					</li>
-					<li>
-						<a href="#">Contact</a>
-					</li>
-				</ul>
-			</div>
+<!-- ----------------------------------------------------------------------- -->
+<!--                                 Navbar                                  -->
+<!-- ----------------------------------------------------------------------- -->
 
-			<div class="nav-overlay uk-navbar-right">
-				<ul class="uk-navbar-nav">
-					<li>
-						<a uk-icon="user" id="userNav"></a>
-						<div uk-dropdown>
-							<ul class="uk-nav uk-dropdown-nav">
-								<c:choose>
-									<c:when test="${sessionScope.user != null}">
-										<li>
-											<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
-												Page</a>
-										</li>
-										<li class="uk-nav-divider"></li>
-										<li>
-											<a href="${contextPath}/FrontController?&command=logout">Logout</a>
-										</li>
-									</c:when>
-
-									<c:otherwise>
-										<%@include file="user/loginForm.jsp"%>
-									</c:otherwise>
-								</c:choose>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a href="#offcanvas-usage" uk-toggle>
-							<span uk-icon="cart" class="uk-icon"></span>
-							<c:set var="productsInCart" value="0" />
-							<c:if test="${sessionScope.cart != null}">
-								<c:set var="productsInCart" value="${sessionScope.cart.size()}" />
-							</c:if>
-							<span class="uk-badge">
-								<c:out value="${productsInCart}" /> </span>
-						</a>
-					</li>
-				</ul>
-			</div>
-
-			<div id="offcanvas-usage" uk-offcanvas="overlay: true; flip: true">
-				<div class="uk-offcanvas-bar">
-
-					<button class="uk-offcanvas-close" type="button" uk-close></button>
-
-					<h3>Cart</h3>
-
-					<c:choose>
-
-						<c:when test="${sessionScope.cart == null || sessionScope.cart.isEmpty()}">
-							<h4>Your shopping cart is empty. Start shopping!</h4>
-						</c:when>
-
-						<c:when test="${sessionScope.cart != null}">
-							<table class="uk-table uk-table-middle uk-table-striped uk-table-hover ">
-								<thead>
-									<tr>
-										<th>Author</th>
-										<th>Title</th>
-										<th>Price</th>
-										<th>Quantity</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:set var="orderTotal" value="0" />
-									<c:forEach items="${sessionScope.cart}" var="item">
-										<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }" />
-										<tr>
-											<td>${item.getBook().getAuthor()}</td>
-											<td>${item.getBook().getTitle()}</td>
-											<td>${item.getBook().getPrice()}</td>
-											<td>${item.getQty()}</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-
-							<div class="uk-button-group">
-								<a href="${contextPath}/FrontController?&command=redirect&target=/cart/showCart" uk-icon="cart"
-									class="uk-button uk-button-default"> View Cart </a>
-								<a href="${contextPath}/FrontController?&command=redirect&target=/cart/confirmOrder" uk-icon="cart"
-									class="uk-button uk-button-primary"> Checkout </a>
+<nav class="navbar navbar-expand-lg navbar-custom">
+	<div class="navbar-collapse collapse w-100 dual-collapse2 order-1 order-md-0">
+		<ul class="navbar-nav ml-auto text-center">
+			<li class="nav-item active">
+				<a class="nav-link" href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">About us</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Contact</a>
+			</li>
+		</ul>
+	</div>
+	<div class="mx-auto my-2 order-0 order-md-1 position-relative">
+		<a class="mx-auto" href="${contextPath}/FrontController?&command=redirect&target=index.jsp">
+			<img src="<c:url value="/images/Logo.png"/>" class="rounded-circle">
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
+	<div class="navbar-collapse collapse w-100 dual-collapse2 order-2 order-md-2">
+		<ul class="navbar-nav mr-auto text-center">
+			<li class="nav-item">
+				<a class="nav-link"
+				   href="${contextPath}/FrontController?&command=redirect&target=jsp/shop/mainShop.jsp">Shop</a>
+			</li>
+			<li class="nav-item cart-icon">
+				<a class="nav-link" href="#" data-toggle="modal" data-target="#cart">
+                        <span>
+                            <i class="fa fa-shopping-cart"></i>
+                            Cart
+                        </span>
+					<span class="badge cart-items">0</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<div class="dropdown">
+							<button class="btn btn-secondary dropdown-toggle" type="button"
+									id="dropdownMenu2" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+								<c:out value="${sessionScope.user.getName()}"/>
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+								<a class="dropdown-item" href="${contextPath}/FrontController?&command=logout">Logout</a>
 							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<span>
+							<a class="nav-link"
+							   href="${contextPath}/FrontController?&command=redirect&target=jsp/user/login.jsp">
+								<i class="fa fa-user"></i>
+								Login
+							</a>
+						</span>
+					</c:otherwise>
+				</c:choose>
+			</li>
+		</ul>
+	</div>
+</nav>
 
-						</c:when>
-
-					</c:choose>
-
-				</div>
-			</div>
-		</div>
-
-	</nav>
+<script src="<c:url value="/js/shop.js"/>" async></script>
 </body>
 
 </html>

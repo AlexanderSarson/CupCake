@@ -5,9 +5,6 @@
  */
 package presentation;
 
-import logic.LogicFacade;
-import logic.User;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +19,7 @@ public class LogOutCommand extends Command{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         session.invalidate();
-        String page = "index";
-        forwardToPage(request, response, page);
+        String path = "index.jsp";
+        forwardToPage(request, response, path);
     }
 }
