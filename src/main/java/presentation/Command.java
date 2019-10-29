@@ -42,7 +42,7 @@ public  class Command {
 
     public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
         try {
-            RequestDispatcher rd = request.getRequestDispatcher("jsp/" + page + ".jsp");
+            RequestDispatcher rd = request.getRequestDispatcher(page);
             rd.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

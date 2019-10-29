@@ -25,7 +25,7 @@ public class LoginCommand extends Command{
         User user = logicFacade.login(email, password);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        String page = "index";
+        String page = "index.jsp";
         forwardToPage(request, response, page);
     }
 }

@@ -102,7 +102,7 @@ public class OrderTest {
     }
 
     @Test
-    public void getSize() {
+    public void test_getSize() {
         assertEquals(1,order.getSize());
     }
 }

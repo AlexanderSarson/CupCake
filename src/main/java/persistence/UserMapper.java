@@ -35,12 +35,15 @@ class UserMapper {
             ps.setString(1,mail);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                int id = rs.getInt("user_id");
-
+            int id;
+            if(rs.next()){
+                id = rs.getInt("user_id");
+            } else {
+                throw new UserException("Login failed");
             }
-            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
+            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id WHERE Users.user_id = ?";
             ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             while(rs.next()){
                 user = findUserFromResultSet(rs);
