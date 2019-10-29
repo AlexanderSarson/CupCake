@@ -1,7 +1,6 @@
 package presentation.listeners;
 
-import logic.Cupcake;
-import logic.LogicFacade;
+import logic.*;
 import persistence.DataSource;
 import persistence.ProductException;
 
@@ -38,19 +37,26 @@ public class ApplicationListener implements ServletContextListener,
          You can initialize servlet context related data here.
       */
         List<Cupcake> cupcakes = null;
+        List<Topping> toppings = null;
+        List<Bottom> bottoms = null;
         try {
-                InputStream inputStream = ApplicationListener.class.getResourceAsStream("/db.properties");
-                if(inputStream != null) {
-                    Properties properties = new Properties();
-                    properties.load(inputStream);
-                    DataSource.setProperties(properties);
-                }
-            cupcakes = new LogicFacade().getPremadeCupcakes();
+            InputStream inputStream = ApplicationListener.class.getResourceAsStream("/db.properties");
+            if(inputStream != null) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                DataSource.setProperties(properties);
+            }
+            LogicFacade logicFacade = new LogicFacade();
+            cupcakes = logicFacade.getPremadeCupcakes();
+            toppings = logicFacade.getAllToppings();
+            bottoms = logicFacade.getAllBottoms();
         } catch (ProductException | IOException e) {
             // TODO(Benjamin) Handle me!
             e.printStackTrace();
         }
         sce.getServletContext().setAttribute("cupcakes", cupcakes);
+        sce.getServletContext().setAttribute("toppings", toppings);
+        sce.getServletContext().setAttribute("bottoms", bottoms);
     }
 
     public void contextDestroyed (ServletContextEvent sce) {

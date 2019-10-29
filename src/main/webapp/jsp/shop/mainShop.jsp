@@ -23,8 +23,32 @@
     <%@ include file="/jsp/nav.jsp" %>
 
     <div class="uk-container">
+        <thead> Custom Cupcakes
+        </thead>
+        <tbody>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="customTopping">Topping:</label>
+                <div class="uk-form-controls">
+                    <select class="uk-select" id="customTopping">
+                        <c:forEach items="${applicationScope.toppings}" var="topping">
+                            <option>${topping.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="customTopping">Bottom:</label>
+                <div class="uk-form-controls">
+                    <select class="uk-select" id="customBottom">
+                        <c:forEach items="${applicationScope.bottoms}" var="topping">
+                            <option>${topping.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+        </tbody>
         <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
-            <thead>
+            <thead> Premade Cupcakes
                 <tr>
                     <th>Topping</th>
                     <th>Bottom</th>
@@ -35,8 +59,8 @@
             <tbody>
                 <c:forEach items="${applicationScope.cupcakes}" var="cupcake">
                     <tr>
-                        <td>${cupcake.getTopping()}</td>
-                        <td>${cupcake.getBottom()}</td>
+                        <td>${cupcake.getTopping().getName()}</td>
+                        <td>${cupcake.getBottom().getName()}</td>
                         <td>$${cupcake.getPrice()}</td>
                         <td class="uk-table-middle">
                             <a class="uk-button uk-button-default"

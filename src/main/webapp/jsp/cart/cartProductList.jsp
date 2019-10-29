@@ -31,8 +31,8 @@
 			<c:set var="orderTotal" value="${sessionScope.shoppingCart.getPrice()}" />
 			<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="lineItem">
 				<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
-					<div class="uk-first-column">${lineItem.getCupcake().getTopping()}</div>
-					<div>${lineItem.getCupcake().getBottom()}</div>
+					<div class="uk-first-column">${lineItem.getCupcake().getTopping().getName()}</div>
+					<div>${lineItem.getCupcake().getBottom().getName()}</div>
 					<div>$${lineItem.getCupcake().getPrice()}</div>
 					<div>${lineItem.getQuantity()}</div>
 					<div>$${lineItem.getPrice()}</div>

@@ -25,6 +25,7 @@ public class AddToCartCommand extends Command{
         LogicFacade logicFacade = getLogicFacade();
         Topping top = (Topping) logicFacade.parseToIProduct(request.getParameter("topping"));
         Bottom bot = (Bottom) logicFacade.parseToIProduct(request.getParameter("bottom"));
+        String target = request.getParameter("target");
         HttpSession session = request.getSession();
 
         ShoppingCart cart;
@@ -37,7 +38,5 @@ public class AddToCartCommand extends Command{
         logicFacade.addToShoppingCart(bot, top, cart);
         session.setAttribute("shoppingCart", cart);
         response.sendRedirect("jsp/shop/mainShop.jsp");
-//        String page = request.getContextPath().replaceAll(".jsp", "");
-//        forwardToPage(request, response, page);
     }
 }
