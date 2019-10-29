@@ -153,7 +153,7 @@ class OrderMapper {
                 balanceStatement.setInt(1,user.getId());
                 ResultSet balance = balanceStatement.executeQuery();
                 if(balance.next()) {
-                    int newBalance = balance.getInt("user_balance") - order.getOrderPrice();
+                    int newBalance = balance.getInt("user_balance") - order.getPrice();
                     if(newBalance >= 0) {
                         userBalance = "UPDATE Accounts SET user_balance = ? where user_id = ?";
                         try(PreparedStatement updateStatement = connection.prepareStatement(userBalance)) {

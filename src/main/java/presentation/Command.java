@@ -28,6 +28,7 @@ public  class Command {
         commands.put("redirect", new RedirectCommand());
         commands.put("removeFromCart", new RemoveFromCartCommand());
         commands.put("showAdminPanel", new ShowAdminPanelCommand());
+        commands.put("logout", new LogOutCommand());
     }
 
     public Command from(HttpServletRequest request) {
@@ -43,7 +44,7 @@ public  class Command {
 
     public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
         try {
-            RequestDispatcher rd = request.getRequestDispatcher(page);
+            RequestDispatcher rd = request.getRequestDispatcher(page + ".jsp");
             rd.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

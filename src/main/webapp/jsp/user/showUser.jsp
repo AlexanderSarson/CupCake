@@ -9,11 +9,8 @@
 <head>
 	<title>Customer Details</title>
 </head>
-
 <body>
-
 	<%@ include file="/jsp/nav.jsp" %>
-
 	<div class="uk-container">
 		<div class="uk-text-center" uk-grid>
 			<div class="uk-width-3-5@m">

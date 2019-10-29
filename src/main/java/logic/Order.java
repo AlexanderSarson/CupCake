@@ -119,7 +119,7 @@ public class Order extends BaseEntity {
      * Gets the total order price
      * @return The total price of the order.
      */
-    public int getOrderPrice() {
+    public int getPrice() {
         int total = 0;
         for (LineItem item: lineItems) {
             total += item.getPrice();

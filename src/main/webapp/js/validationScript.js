@@ -46,7 +46,7 @@ function validateAccountCreation() {
     }
 
     /** Validates that name only contains letters and spaces */
-    if(!name.value.match(/^[a-zA-Z]+$/)) {
+    if(!name.value.match(/^([a-zA-Z]+\s)*[a-zA-Z]+$/)) {
         name.classList.add("uk-form-danger");
         name.focus();
         errorContainer.innerHTML = "Name can only contain letters and spaces";

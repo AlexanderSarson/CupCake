@@ -47,35 +47,6 @@
                         </td>
                     </tr>
                 </c:forEach>
-
-                <%-- TODO Placeholders --%>
-                <tr>
-                    <td>Topping</td>
-                    <td>Bottom</td>
-                    <td>$5</td>
-                    <td class="uk-table-middle">
-                        <a class="uk-button uk-button-default"
-                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                            <span uk-icon="plus-circle" class="uk-icon"></span>
-                            <span>Add to Cart</span>
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Topping</td>
-                    <td>Bottom</td>
-                    <td>$5</td>
-                    <td class="uk-table-middle">
-                        <a class="uk-button uk-button-default"
-                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                            <span uk-icon="plus-circle" class="uk-icon"></span>
-                            <span>Add to Cart</span>
-                        </a>
-                    </td>
-                </tr>
-
-                <%-- Placeholders end --%>
             </tbody>
         </table>
     </div>

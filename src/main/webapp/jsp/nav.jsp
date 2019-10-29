@@ -67,7 +67,6 @@
 											<a href="${contextPath}/FrontController?&command=logout">Logout</a>
 										</li>
 									</c:when>
-
 									<c:otherwise>
 										<%@include file="user/loginForm.jsp"%>
 									</c:otherwise>
@@ -108,9 +107,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:set var="orderTotal" value="0" />
+									<c:set var="orderTotal" value="${order.getPrice()}" />
 									<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="item">
-										<c:set var="orderTotal" value="${orderTotal + item.getPrice()}" />
 										<tr>
 											<td>${item.getCupcake().getTopping().getName()}</td>
 											<td>${item.getCupcake().getBottom().getName()}</td>

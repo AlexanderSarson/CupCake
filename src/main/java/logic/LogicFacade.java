@@ -1,11 +1,8 @@
 package logic;
 import persistence.*;
 
-import javax.ejb.Local;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,7 +107,7 @@ public class LogicFacade {
         storageFacade.updateUser(user);
     }
     public User login(String email, String password) throws UserException {
-        return storageFacade.validateUser(email,Encryption.encryptPsw(password));
+        return storageFacade.validateUser(email,password);
     }
     public void addFunds(User user, int amountToDeposit) throws UserException {
         if(amountToDeposit < 0)

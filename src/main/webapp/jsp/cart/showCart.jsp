@@ -22,9 +22,7 @@
 	<div class="uk-container">
 		<div class="uk-text-center" uk-grid>
 			<div class="uk-width-2-3@m">
-
 				<%@include file="cartProductList.jsp"%>
-
 			</div>
 			<div class="uk-width-1-3@m">
 				<div class="uk-card uk-card-default">
@@ -35,7 +33,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="uk-card-body">
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m">Subtotal</div>

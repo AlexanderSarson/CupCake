@@ -63,7 +63,7 @@ public class OrderTest {
     @Test
     public void test_getOrderPrice() {
         order.addLineItem(item);
-        assertEquals(160,order.getOrderPrice());
+        assertEquals(160,order.getPrice());
     }
 
     @Test

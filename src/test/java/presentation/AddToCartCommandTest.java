@@ -59,7 +59,7 @@ public class AddToCartCommandTest {
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyAddToCartCommand.execute(mockRequest, mockResponse);
         verify(mockLogicFacade).addToShoppingCart(mockBottom,mockTopping,mockShoppingCart);
-        verify(spyAddToCartCommand).forwardToPage(mockRequest, mockResponse, "shop");
+        verify(spyAddToCartCommand).forwardToPage(mockRequest, mockResponse, "jsp/shop");
     }
 
 }

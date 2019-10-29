@@ -14,7 +14,7 @@ public class RegisterCommand extends Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String name = request.getParameter("name");
+        String name = request.getParameter("userName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         LogicFacade logicFacade = getLogicFacade();

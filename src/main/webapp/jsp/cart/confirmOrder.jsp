@@ -26,10 +26,8 @@
 			</div>
 
 			<div class="uk-card-body">
-				<c:set var="orderTotal" value="0" />
+				<c:set var="orderTotal" value="${order.getPrice()}" />
 				<c:forEach items="${sessionScope.order.getOrderItems()}" var="item">
-					<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }" />
-
 					<div class="uk-child-width-1-2 uk-text-center" uk-grid>
 						<div>
 							<div class="uk-child-width-1-2 uk-text-center" uk-grid>
