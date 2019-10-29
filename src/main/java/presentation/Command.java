@@ -31,6 +31,7 @@ public  class Command {
         commands.put("logout", new LogOutCommand());
         commands.put("showUser", new ShowUserCommand());
         commands.put("addFundsCommand", new AddFundsCommand());
+        commands.put("updateUser", new UpdateUserCommand());
     }
 
     public Command from(HttpServletRequest request) {

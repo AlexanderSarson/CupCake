@@ -193,7 +193,7 @@ function validateAccountEdit() {
     }
 
     /** Validates that password and confirm password matches */
-    if (newPass !== confirmPass.value) {
+    if (newPass.value !== confirmPass.value) {
         newPass.classList.add("uk-form-danger");
         confirmPass.classList.add("uk-form-danger");
         newPass.focus();
@@ -201,5 +201,5 @@ function validateAccountEdit() {
         return false;
     }
 
-    document.forms['createAccountForm'].submit();
+    document.forms['editAccountForm'].submit();
 }

@@ -232,7 +232,7 @@ class UserMapper {
      * @param user The user object to be updated with.
      * @throws UserException If the user can't be found, or if something goes wrong in the update proces.
      */
-    public void updateUser(User user) throws UserException{
+    public void updateUser(User user, String password) throws UserException{
         String sql = "SELECT * from Users WHERE user_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -244,12 +244,25 @@ class UserMapper {
                 connection.setAutoCommit(false);
                 try {
                     //Delete update logins
-                    String updateMail = "UPDATE Logins SET login_mail = ? WHERE user_id = ?";
-                    try (PreparedStatement loginsPS = connection.prepareStatement(updateMail)) {
-                        loginsPS.setString(1, user.getMail());
-                        loginsPS.setLong(2, user.getID());
-                        if (loginsPS.executeUpdate() != 1) {
-                            throw new SQLException("Mail could not be updated");
+                    if(password == null || password.isEmpty()) {
+                        String updateMail = "UPDATE Logins SET login_mail = ? WHERE user_id = ?";
+                        try (PreparedStatement loginsPS = connection.prepareStatement(updateMail)) {
+                            loginsPS.setString(1, user.getMail());
+                            loginsPS.setInt(2, user.getID());
+                            if (loginsPS.executeUpdate() != 1) {
+                                throw new SQLException("Mail could not be updated");
+                            }
+                        }
+                    }
+                    else{
+                        String updateMail = "UPDATE Logins SET login_mail = ?, login_password = ? WHERE user_id = ?";
+                        try (PreparedStatement loginsPS = connection.prepareStatement(updateMail)) {
+                            loginsPS.setString(1, user.getMail());
+                            loginsPS.setString(2,password);
+                            loginsPS.setInt(3, user.getID());
+                            if (loginsPS.executeUpdate() != 1) {
+                                throw new SQLException("Mail could not be updated");
+                            }
                         }
                     }
                     String updateName = "UPDATE Users SET user_name = ? WHERE user_id = ?";

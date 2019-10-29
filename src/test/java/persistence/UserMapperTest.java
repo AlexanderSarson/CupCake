@@ -163,7 +163,7 @@ public class UserMapperTest {
     when(statement.executeQuery()).thenReturn(resSet);
     when(statement.executeUpdate()).thenReturn(0);
 
-    mapper.updateUser(user);
+    mapper.updateUser(user,null);
     }
 
     @Test (expected = UserException.class)
@@ -176,7 +176,7 @@ public class UserMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
         when(statement.executeUpdate()).thenReturn(1).thenReturn(0);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
     }
 
     @Test (expected = UserException.class)
@@ -188,7 +188,7 @@ public class UserMapperTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
 
     }
 
@@ -202,7 +202,7 @@ public class UserMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
         when(statement.executeUpdate()).thenReturn(1).thenReturn(1);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
 
     }
 }

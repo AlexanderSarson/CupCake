@@ -48,13 +48,13 @@
 													<a href="${contextPath}/FrontController?&command=showAdminPanel">Admin Panel</a>
 												</li>
 												<li>
-													<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
+													<a href="${contextPath}/FrontController?&command=showUser">My
 														Page</a>
 												</li>
 											</c:when>
 											<c:otherwise>
 												<li>
-													<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
+													<a href="${contextPath}/FrontController?&command=showUser">My
 														Page</a>
 												</li>
 											</c:otherwise>

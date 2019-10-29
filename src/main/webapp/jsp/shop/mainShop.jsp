@@ -23,32 +23,53 @@
     <%@ include file="/jsp/nav.jsp" %>
 
     <div class="uk-container">
-        <thead> Custom Cupcakes
-        </thead>
-        <tbody>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="customTopping">Topping:</label>
-                <div class="uk-form-controls">
-                    <select class="uk-select" id="customTopping">
-                        <c:forEach items="${applicationScope.toppings}" var="topping">
-                            <option>${topping.getName()}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="customTopping">Bottom:</label>
-                <div class="uk-form-controls">
-                    <select class="uk-select" id="customBottom">
-                        <c:forEach items="${applicationScope.bottoms}" var="topping">
-                            <option>${topping.getName()}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-        </tbody>
         <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
-            <thead> Premade Cupcakes
+            <thead>
+                <h1 class="uk-h1"> Custom Cupcakes </h1>
+                <tr>
+                    <th>Topping</th>
+                    <th>Bottom</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form name="customCupcakeForm" action="${pageContext.request.contextPath}/FrontController" method="post">
+                    <input type="hidden" name="command" value="addToCart">
+                    <tr>
+                         <td>
+                            <div class="uk-margin">
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" name="customTopping">
+                                        <c:forEach items="${applicationScope.toppings}" var="topping">
+                                            <option name="toppingSelect" value="${topping}">${topping.getName()} - $${topping.getPrice()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="uk-margin">
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" name="customBottom">
+                                        <c:forEach items="${applicationScope.bottoms}" var="bottom">
+                                            <option name="bottomSelect" value="${bottom}">${bottom.getName()} - $${bottom.getPrice()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="uk-table-middle">
+                            <div class="uk-margin">
+                                <button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Add to cart</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+
+        </table>
+        <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
+            <thead> <h1 class="uk-h1">Premade Cupcakes</h1>
                 <tr>
                     <th>Topping</th>
                     <th>Bottom</th>

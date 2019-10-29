@@ -181,12 +181,12 @@ public class StorageFacadeTest {
     @Test
     public void testUpdateUser() throws UserException {
         User user = new User(1,"Peter", "Peter@example.com",Role.CUSTOMER,account);
-        userMapper.updateUser(user);
+        userMapper.updateUser(user,null);
     }
     @Test(expected = UserException.class)
     public void testUpdateUser_with_non_existing_user() throws UserException {
         User user = new User(1000,"Peter", "Peter@example.com",Role.CUSTOMER,account);
-        userMapper.updateUser(user);
+        userMapper.updateUser(user,null);
     }
     @Test
     public void testDeleteUser() throws UserException {

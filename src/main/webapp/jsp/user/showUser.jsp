@@ -80,7 +80,7 @@
 					<div class="uk-card-footer">
 						<div class="uk-button-group">
 							<div class="uk-width-1-1@m">
-								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=editUser">Edit Info</a>
+								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=redirect&target=jsp/user/editUser.jsp">Edit Info</a>
 							</div>
 							<div class="uk-width-1-1@m">
 								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=addFundsCommand&value=100">Add $100</a>

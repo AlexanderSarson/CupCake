@@ -104,8 +104,18 @@ public class LogicFacade {
         User user = new User(name,email,Role.CUSTOMER,new Account(0));
         return storageFacade.createUser(user,Encryption.encryptPsw(password));
     }
-    public void updateUser(User user) throws UserException {
-        storageFacade.updateUser(user);
+    public void updateUser(User user, String password) throws UserException {
+        storageFacade.updateUser(user, Encryption.encryptPsw(password));
+    }
+    public boolean validatePassword(User user, String password) {
+        try {
+            User storedUser = storageFacade.validateUser(user.getMail(),Encryption.encryptPsw(password));
+            if(storedUser.getId() != user.getId())
+                return false;
+        } catch (UserException e) {
+            return false;
+        }
+        return true;
     }
     public User login(String email, String password) throws UserException {
         return storageFacade.validateUser(email,Encryption.encryptPsw(password));

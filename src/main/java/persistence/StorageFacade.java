@@ -63,8 +63,8 @@ public class StorageFacade {
     public Order createOrder(Order order, User user) throws OrderException, UserBalanceException { return orderMapper.createOrder(order, user); }
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 
-    public void updateUser(User user) throws UserException {
-        userMapper.updateUser(user);
+    public void updateUser(User user, String password) throws UserException {
+        userMapper.updateUser(user, password);
     }
     public boolean deleteUser(User user) throws UserException {
         userMapper.deleteUser(user);
