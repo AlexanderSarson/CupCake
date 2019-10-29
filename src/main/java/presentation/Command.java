@@ -53,7 +53,7 @@ public  class Command {
         }
     }
 
-    public LogicFacade getLogicFacade() {
+    public logic.LogicFacade getLogicFacade() {
         return new LogicFacade();
     }
 }

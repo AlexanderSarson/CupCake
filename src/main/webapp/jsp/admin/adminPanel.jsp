@@ -9,14 +9,11 @@
 <head>
 	<title>Admin Panel</title>
 </head>
-
 <body>
-
 	<%@ include file="/jsp/nav.jsp" %>
-
 	<div class="uk-container">
 		<div class="uk-text-center" uk-grid>
-			<div class="uk-width-3-5@m">
+			<div class="uk-width-2-4@m">
 				<div class="uk-card uk-card-default">
 					<div class="uk-card-header">
 						<div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -35,33 +32,19 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${sessionScope.orders}" var="order">
+								<c:forEach items="${sessionScope.allOrders}" var="order">
 									<tr>
 										<td> ${order.getId()} </td>
-										<td> ${order.getOrderDate()} </td>
-										<td> $${order.getTotal()} </td>
+										<td> ${order.getDate()} </td>
+										<td> $${order.getPrice()} </td>
 									</tr>
 								</c:forEach>
-
-								<%-- TODO Placeholders --%>
-								<tr>
-									<td> 123 </td>
-									<td> 01-01-2019 </td>
-									<td> $20 </td>
-								</tr>
-								<tr>
-									<td> 123 </td>
-									<td> 01-01-2019 </td>
-									<td> $20 </td>
-								</tr>
-								<%-- Placeholders end --%>
-
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
-			<div class="uk-width-2-5@m">
+			<div class="uk-width-2-4@m">
 				<div class="uk-card uk-card-default">
 					<div class="uk-card-header">
 						<div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -80,27 +63,13 @@
 							</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${sessionScope.users}" var="user">
+							<c:forEach items="${sessionScope.allUsers}" var="user">
 								<tr>
 									<td> ${user.getId()} </td>
 									<td> ${user.getName()} </td>
-									<td> $${user.getMail()} </td>
+									<td> ${user.getMail()} </td>
 								</tr>
 							</c:forEach>
-
-							<%-- TODO Placeholders --%>
-							<tr>
-								<td> 123 </td>
-								<td> John Hitler </td>
-								<td> JHitler@wehrmacht.de </td>
-							</tr>
-							<tr>
-								<td> 321 </td>
-								<td> Jihadi John </td>
-								<td> JJ@allahRules.org </td>
-							</tr>
-							<%-- Placeholders end --%>
-
 							</tbody>
 						</table>
 					</div>

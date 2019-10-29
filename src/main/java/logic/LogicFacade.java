@@ -1,4 +1,5 @@
 package logic;
+
 import persistence.*;
 
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class LogicFacade {
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);
     }
-    public List<Order> getallOrders() throws OrderException, UserException {
+    public List<Order> getAllOrders() throws OrderException, UserException {
         return storageFacade.getAllOrders();
     }
 
@@ -124,3 +125,4 @@ public class LogicFacade {
         cart.removeCupcakeFromOrder(new Cupcake(bottom,topping));
     }
 }
+

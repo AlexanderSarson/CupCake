@@ -53,7 +53,10 @@ public class StorageFacade {
         List<User> users = getAllUsers();
         List<Order> orders = new ArrayList<>();
         for (User user: users) {
-            orders.addAll(getAllOrders(user));
+            try {
+                orders.addAll(getAllOrders(user));
+            } catch (OrderException e) {
+            }
         }
         return orders;
     }

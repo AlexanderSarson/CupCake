@@ -21,7 +21,7 @@ public class RegisterCommand extends Command {
         User user = logicFacade.newUser(name, email, password);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        String page = "index";
+        String page = "index.jsp";
         forwardToPage(request, response, page);
     }
 }

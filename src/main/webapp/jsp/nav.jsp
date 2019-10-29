@@ -43,7 +43,7 @@
 								<c:choose>
 									<c:when test="${sessionScope.user != null}">
 										<c:choose>
-											<c:when test="${sessionScope.user.getRole().getName() == 'ADMIN'}">
+											<c:when test="${sessionScope.user.isAdmin()}">
 												<li>
 													<a href="${contextPath}/FrontController?&command=showAdminPanel">Admin Panel</a>
 												</li>

@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,7 +57,7 @@ public class OrderMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
 
         User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
-        ArrayList<Order> orders = orderMapper.getAllOrders(user);
+        List<Order> orders = orderMapper.getAllOrders(user);
         Order order = orders.get(0);
         assertEquals(1, orders.size());
         assertEquals(1,order.getId());
@@ -73,7 +74,7 @@ public class OrderMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
 
         User user = new User(1,"Peter Larsen", "larsen@example.com",Role.CUSTOMER,null);
-        ArrayList<Order> orders = orderMapper.getAllOrders(user);
+        List<Order> orders = orderMapper.getAllOrders(user);
     }
 
     @Test (expected = OrderException.class)

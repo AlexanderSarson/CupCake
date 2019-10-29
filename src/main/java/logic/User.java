@@ -101,5 +101,5 @@ public class User extends BaseEntity{
      */
     public void setAccount(Account account) {this.account = account;}
 
-
+    public boolean isAdmin() { return role == Role.ADMIN; }
 }

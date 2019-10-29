@@ -3,6 +3,7 @@ package persistence;
 import logic.*;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+@Ignore
 public class StorageFacadeTest {
     private static DataSource dataSource;
     static {
@@ -101,7 +102,7 @@ public class StorageFacadeTest {
     // ----- ORDER -----
     @Test
     public void testGetAllOrders() throws OrderException {
-        ArrayList<Order> orders = orderMapper.getAllOrders(user);
+        List<Order> orders = orderMapper.getAllOrders(user);
         assertEquals(1,orders.size());
     }
     @Test
@@ -147,7 +148,7 @@ public class StorageFacadeTest {
     // ----- User -----
     @Test
     public void testGetAllUsers() throws UserException {
-        ArrayList<User> users = userMapper.getAllUser();
+        List<User> users = userMapper.getAllUser();
         assertEquals(2,users.size());
     }
     @Test
