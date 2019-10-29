@@ -29,7 +29,7 @@ public class LineItem extends BaseEntity {
      * Calculates the price of the lineitem object
      * @return the total price.
      */
-    public int calculateTotalPrice(){
+    public int getPrice(){
         int totalPrice = cupcake.getPrice()*quantity;
         return totalPrice;
     }

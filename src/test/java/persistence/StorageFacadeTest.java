@@ -79,7 +79,7 @@ public class StorageFacadeTest {
 
     // ----- PRODUCT -----
     @Test
-    public void getAllCupcakes() throws ProductException {
+    public void testGetAllCupcakes() throws ProductException {
         ArrayList<Cupcake> cupcakes = productMapper.getAllCupcakes();
         assertEquals(50, cupcakes.size());
     }
@@ -92,7 +92,7 @@ public class StorageFacadeTest {
     }
 
     @Test
-    public void getPremadeCupcakes() throws ProductException {
+    public void testGetPremadeCupcakes() throws ProductException {
         List<Cupcake> cupcakes = productMapper.getPremadeCucpakes();
         assertEquals(10, cupcakes.size());
     }
@@ -100,12 +100,12 @@ public class StorageFacadeTest {
 
     // ----- ORDER -----
     @Test
-    public void getAllOrders() throws OrderException {
+    public void testGetAllOrders() throws OrderException {
         ArrayList<Order> orders = orderMapper.getAllOrders(user);
         assertEquals(1,orders.size());
     }
     @Test
-    public void createOrder() throws OrderException, UserBalanceException {
+    public void testCreateOrder() throws OrderException, UserBalanceException {
         Order order = new Order(LocalDate.now());
         Bottom bottom = new Bottom(1,"test");
         bottom.setId(1);
@@ -126,7 +126,7 @@ public class StorageFacadeTest {
         assertEquals(order.getTotalQuantity(),lastOrder.getTotalQuantity());
     }
     @Test
-    public void deleteOrder() throws OrderException {
+    public void testDeleteOrder() throws OrderException {
         int size = orderMapper.getNumberOfOrders();
         Order order = new Order();
         order.setId(1);
@@ -135,7 +135,7 @@ public class StorageFacadeTest {
         assertEquals(size-1, newSize);
     }
     @Test(expected = OrderException.class)
-    public void deleteOrder_with_non_existing_order() throws OrderException {
+    public void testDeleteOrder_with_non_existing_order() throws OrderException {
         int size = orderMapper.getNumberOfOrders();
         Order order = new Order();
         order.setId(-100);
@@ -146,18 +146,18 @@ public class StorageFacadeTest {
 
     // ----- User -----
     @Test
-    public void getAllUsers() throws UserException {
+    public void testGetAllUsers() throws UserException {
         ArrayList<User> users = userMapper.getAllUser();
         assertEquals(2,users.size());
     }
     @Test
-    public void addFunds() throws UserException {
+    public void testAddFunds() throws UserException {
         int exp = user.getAccount().getBalance() + 1000;
         userMapper.addFunds(user,1000);
         assertEquals(exp, user.getAccount().getBalance());
     }
-    @Test (expected = IllegalArgumentException.class)
-    public void add_negative_amount_funds() throws UserException{
+    @Test (expected = UserException.class)
+    public void testAdd_negative_amount_funds() throws UserException{
         Account newAcc = new Account (1000);
         User user = new User("PeterLarsen","PeterL@example.com",Role.CUSTOMER,newAcc);
         user = userMapper.createUser(user,account,"Larsen1234");
@@ -165,71 +165,71 @@ public class StorageFacadeTest {
     }
 
     @Test
-    public void createUser() throws UserException {
+    public void testCreateUser() throws UserException {
         Account newAcc = new Account(1000);
         User user = new User("PeterLarsen","PeterL@example.com",Role.CUSTOMER,newAcc);
         user = userMapper.createUser(user,account,"Larsen1234");
         assertEquals(3, user.getId());
     }
     @Test(expected = UserException.class)
-    public void createUser_with_existing_mail() throws UserException {
+    public void testCreateUser_with_existing_mail() throws UserException {
         Account newAcc = new Account(1000);
         User user = new User("PeterLarsen","loginMailTest",Role.CUSTOMER,newAcc);
         user = userMapper.createUser(user,account,"Larsen1234");
     }
     @Test
-    public void updateUser() throws UserException {
+    public void testUpdateUser() throws UserException {
         User user = new User(1,"Peter", "Peter@example.com",Role.CUSTOMER,account);
         userMapper.updateUser(user);
     }
     @Test(expected = UserException.class)
-    public void updateUser_with_non_existing_user() throws UserException {
+    public void testUpdateUser_with_non_existing_user() throws UserException {
         User user = new User(1000,"Peter", "Peter@example.com",Role.CUSTOMER,account);
         userMapper.updateUser(user);
     }
     @Test
-    public void deleteUser() throws UserException {
+    public void testDeleteUser() throws UserException {
         userMapper.deleteUser(user);
     }
     @Test
-    public void validateUser() throws UserException {
+    public void testValidateUser() throws UserException {
         User user = userMapper.login("loginMailTest","loginPasswordTest");
         assertNotNull(user);
     }
 
     // ----- BOTTOM -----
     @Test
-    public void createBottom() throws ProductException {
+    public void testCreateBottom() throws ProductException {
         Bottom bottom = new Bottom(12,"Brick");
         bottomMapper.createProduct(bottom);
         assertEquals(6, bottom.getId());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void create_bottom_with_negative_price() throws ProductException{
+    public void testCreate_bottom_with_negative_price() throws ProductException{
         Bottom bottom = new Bottom(-5,"RichChocolate");
         bottomMapper.createProduct(bottom);
     }
     @Test
-    public void updateBottom() throws ProductException {
+    public void testUpdateBottom() throws ProductException {
         Bottom bottom = new Bottom(10,"WhiteChocolate");
         bottom.setId(1);
         bottomMapper.updateProduct(bottom);
     }
     @Test(expected = ProductException.class)
-    public void updateBottom_with_non_existing_product() throws ProductException {
+    public void testUpdateBottom_with_non_existing_product() throws ProductException {
         Bottom bottom = new Bottom(10,"WhiteChocolate");
         bottom.setId(11);
         bottomMapper.updateProduct(bottom);
     }
     @Test(expected = ProductException.class)
-    public void create_existing_bottom() throws ProductException{
+    public void testCreate_existing_bottom() throws ProductException{
         Bottom bottom = new Bottom(1,"Chocolate");
         bottomMapper.createProduct(bottom);
     }
 
     @Test (expected = ProductException.class)
-    public void update_bottom_with_existing_name() throws ProductException {
+    public void testUpdate_bottom_with_existing_name() throws ProductException {
         Bottom bot = new Bottom (1,"Rockwool");
         bottomMapper.createProduct(bot);
         bot.setName("Chocolate");
@@ -249,36 +249,36 @@ public class StorageFacadeTest {
 
     // ----- TOPPING -----
     @Test
-    public void createTopping() throws ProductException {
+    public void testCreateTopping() throws ProductException {
         Topping topping = new Topping(13,"Stone");
         toppingMapper.createProduct(topping);
         assertEquals(11, topping.getId());
     }
     @Test
-    public void updateTopping() throws ProductException {
+    public void testUpdateTopping() throws ProductException {
         Topping topping = new Topping(13, "Stone");
         topping.setId(1);
         toppingMapper.updateProduct(topping);
     }
     @Test(expected = ProductException.class)
-    public void updateTopping_with_non_existing_topping() throws ProductException {
+    public void testUpdateTopping_with_non_existing_topping() throws ProductException {
         Topping topping = new Topping(13, "Stone");
         topping.setId(50);
         toppingMapper.updateProduct(topping);
     }
     @Test(expected = IllegalArgumentException.class)
-        public void create_topping_with_negative_price() throws ProductException{
+        public void testCreate_topping_with_negative_price() throws ProductException{
         Topping top = new Topping (-1,"BlueFrosting");
         toppingMapper.createProduct(top);
         }
     @Test(expected = ProductException.class)
-        public void create_existing_topping() throws ProductException{
+        public void testCreate_existing_topping() throws ProductException{
         Topping top = new Topping(1,"Chocolate");
         toppingMapper.createProduct(top);
     }
 
     @Test (expected = ProductException.class)
-    public void update_topping_with_existing_name() throws ProductException{
+    public void testUpdate_topping_with_existing_name() throws ProductException{
         Topping top = new Topping (1,"Rockwool");
         toppingMapper.createProduct(top);
         top.setName("Chocolate");

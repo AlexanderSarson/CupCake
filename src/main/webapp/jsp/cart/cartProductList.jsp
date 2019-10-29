@@ -5,7 +5,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-
 <head>
 	<title></title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
@@ -30,7 +29,7 @@
 		</div>
 		<div class="uk-card-body">
 			<c:set var="orderTotal" value="0" />
-			<c:forEach items="${sessionScope.shoppingcart}" var="lineItem">
+			<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="lineItem">
 				<c:set var="orderTotal" value="${orderTotal + lineItem.getPrice()}" />
 
 				<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
@@ -42,7 +41,7 @@
 					<div class="uk-width-auto">
 						<div style="width: 20px;">
 							<a
-								href="${pageContext.request.contextPath}/FrontController?&command=removeFromCart&topping=${lineItem.getTopping}&bottom=${lineItem.getBottom}">
+								href="${pageContext.request.contextPath}/FrontController?&command=removeFromCart&topping=${lineItem.getCupcake().getTopping()}&bottom=${lineItem.getCupcake().getBottom()}">
 								<span uk-icon="minus-circle" class="uk-icon"></span>
 							</a>
 						</div>

@@ -22,7 +22,7 @@ public class BaseEntityTest {
     }
 
     @Test
-    public void getId() {
+    public void test_GetId() {
         long expected = 1;
         base.setId(1);
         long result = base.getId();
@@ -32,7 +32,7 @@ public class BaseEntityTest {
     }
 
     @Test
-    public void setId() {
+    public void test_SetId() {
         long expected = 2;
         base.setId(2);
         long result = base.getId();

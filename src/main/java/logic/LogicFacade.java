@@ -1,9 +1,11 @@
 package logic;
-
 import persistence.*;
 
+import javax.ejb.Local;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +24,24 @@ public class LogicFacade {
 
     public List<Cupcake> getPremadeCupcakes() throws ProductException {
         return storageFacade.getPremadeCupcakes();
+    }
+
+    public IProduct parseToIProduct(String str) {
+        String[] parts = str.split(",");
+        int id = Integer.parseInt(parts[1]);
+        int price = Integer.parseInt(parts[2]);
+        String name = parts[3];
+        IProduct product = null;
+        if(parts[0].equals("Bottom")) {
+            product = new Bottom(price,name);
+            product.setId(id);
+        } else if (parts[0].equals("Topping")) {
+            product = new Topping(price,name);
+            product.setId(id);
+        } else {
+            // TODO(Benjamin): Throw an exception here!?
+        }
+        return product;
     }
 
     // ------ BOTTOM ------
@@ -62,7 +82,6 @@ public class LogicFacade {
     public ShoppingCart getShoppingCart() {
         return new ShoppingCart();
     }
-
     public void addToShoppingCart(Bottom bottom, Topping topping, ShoppingCart shoppingCart){
         shoppingCart.addCupcakeToOrder(new Cupcake(bottom,topping));
     }
@@ -70,6 +89,10 @@ public class LogicFacade {
         if(shoppingcart.getDate() == null)
             shoppingcart.setDate(LocalDate.now());
         return (ShoppingCart)storageFacade.createOrder(shoppingcart, user);
+    }
+    public Order submitOrder(List<LineItem> items, User user) throws UserBalanceException, OrderException {
+        Order order = new Order(items, LocalDate.now());
+        return storageFacade.createOrder(order,user);
     }
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);

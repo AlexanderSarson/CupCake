@@ -21,7 +21,7 @@
 
 <body>
 
-	<form name="loginForm" action="FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
+	<form name="loginForm" action="${pageContext.request.contextPath}/FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
 		<input type="hidden" name="command" value="login">
 		<div class="uk-margin">
 			<div class="uk-inline uk-width-1-1">

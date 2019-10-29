@@ -72,11 +72,6 @@
             <version>3.5.3</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -165,7 +160,7 @@
             </activation>
             <properties>
                 <sonar.host.url>
-                    http://sonarqube:9000
+                    http://sonarqube02:9000
                 </sonar.host.url>
             </properties>
         </profile>

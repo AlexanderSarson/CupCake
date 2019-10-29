@@ -32,7 +32,7 @@ public class OrderMapperTest {
     private Connection connection;
 
     @Test
-    public void getAllOrders() throws SQLException, OrderException {
+    public void testGetAllOrders() throws SQLException, OrderException {
         // Get the order.
         when(resSet.next()).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(false);
         when(resSet.getInt("order_id")).thenReturn(1);

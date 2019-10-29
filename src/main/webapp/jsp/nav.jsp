@@ -70,8 +70,8 @@
 						<a href="#offcanvas-usage" uk-toggle>
 							<span uk-icon="cart" class="uk-icon"></span>
 							<c:set var="productsInCart" value="0" />
-							<c:if test="${sessionScope.cart != null}">
-								<c:set var="productsInCart" value="${sessionScope.cart.size()}" />
+							<c:if test="${sessionScope.shoppingCart != null}">
+								<c:set var="productsInCart" value="${sessionScope.shoppingCart.getTotalQuantity()}" />
 							</c:if>
 							<span class="uk-badge">
 								<c:out value="${productsInCart}" /> </span>
@@ -82,45 +82,40 @@
 
 			<div id="offcanvas-usage" uk-offcanvas="overlay: true; flip: true">
 				<div class="uk-offcanvas-bar">
-
 					<button class="uk-offcanvas-close" type="button" uk-close></button>
-
 					<h3>Cart</h3>
-
 					<c:choose>
-
-						<c:when test="${sessionScope.cart == null || sessionScope.cart.isEmpty()}">
+						<c:when test="${sessionScope.shoppingCart == null || sessionScope.shoppingCart.getSize() == 0}">
 							<h4>Your shopping cart is empty. Start shopping!</h4>
 						</c:when>
-
-						<c:when test="${sessionScope.cart != null}">
+						<c:when test="${sessionScope.shoppingCart != null}">
 							<table class="uk-table uk-table-middle uk-table-striped uk-table-hover ">
 								<thead>
 									<tr>
-										<th>Author</th>
-										<th>Title</th>
-										<th>Price</th>
+										<th>Toppings</th>
+										<th>Bottoms</th>
 										<th>Quantity</th>
+										<th>Price</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:set var="orderTotal" value="0" />
-									<c:forEach items="${sessionScope.cart}" var="item">
-										<c:set var="orderTotal" value="${orderTotal + item.getBook().getPrice() * item.getQty() }" />
+									<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="item">
+										<c:set var="orderTotal" value="${orderTotal + item.getPrice()}" />
 										<tr>
-											<td>${item.getBook().getAuthor()}</td>
-											<td>${item.getBook().getTitle()}</td>
-											<td>${item.getBook().getPrice()}</td>
-											<td>${item.getQty()}</td>
+											<td>${item.getCupcake().getTopping().getName()}</td>
+											<td>${item.getCupcake().getBottom().getName()}</td>
+											<td>${item.getQuantity()}</td>
+											<td>${item.getPrice()}</td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
 
 							<div class="uk-button-group">
-								<a href="${contextPath}/FrontController?&command=redirect&target=/cart/showCart" uk-icon="cart"
+								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/showCart.jsp" uk-icon="cart"
 									class="uk-button uk-button-default"> View Cart </a>
-								<a href="${contextPath}/FrontController?&command=redirect&target=/cart/confirmOrder" uk-icon="cart"
+								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/confirmOrder.jsp" uk-icon="cart"
 									class="uk-button uk-button-primary"> Checkout </a>
 							</div>
 

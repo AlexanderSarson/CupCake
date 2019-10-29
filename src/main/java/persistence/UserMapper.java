@@ -35,12 +35,15 @@ class UserMapper {
             ps.setString(1,mail);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                int id = rs.getInt("user_id");
-
+            int id;
+            if(rs.next()){
+                id = rs.getInt("user_id");
+            } else {
+                throw new UserException("Login failed");
             }
-            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
+            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id WHERE Users.user_id = ?";
             ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             while(rs.next()){
                 user = findUserFromResultSet(rs);
@@ -188,7 +191,7 @@ class UserMapper {
                         loginPS.setInt(1,user.getID());
                         loginPS.setString(2,user.getMail());
                         loginPS.setString(3, password);
-                        loginPS.setInt(4,1000); // TODO(Benjamin) Add the correct salt at some point.
+                        loginPS.setInt(4,1000);
                         if(loginPS.executeUpdate() != 1) {
                             throw new SQLException("Could not insert into login");
                         }
@@ -276,6 +279,8 @@ class UserMapper {
      * @throws UserException If the user cannot be found, or if the insertion of funds goes wrong.
      */
     public void addFunds(User user, int amount) throws UserException {
+        if(amount < 0)
+            throw new UserException("Amount to add must be above zero");
         String sql = "SELECT user_balance FROM Accounts where user_id = ?";
         try (Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {

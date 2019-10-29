@@ -4,6 +4,7 @@ import persistence.OrderException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents an order in the system, an order is comprised of LineItems {@link logic.LineItem}
@@ -12,10 +13,14 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Order extends BaseEntity {
-    private ArrayList<LineItem> lineItems = new ArrayList<>();
+    private List<LineItem> lineItems = new ArrayList<>();
     private LocalDate date;
 
     public Order() {};
+    public Order(List<LineItem> lineItems, LocalDate date) {
+        this.lineItems = lineItems;
+        this.date = date;
+    }
     public Order(LocalDate date) {
         this.date = date;
     }
@@ -33,7 +38,7 @@ public class Order extends BaseEntity {
      * @param cupcake The cupcake to be added.
      */
     public void addCupcakeToOrder(Cupcake cupcake) {
-        int index =  getCupcakeIndex(cupcake);
+        int index = getCupcakeIndex(cupcake);
         if(index >= 0) {
             lineItems.get(index).incrementQuantity();
         } else {
@@ -47,11 +52,12 @@ public class Order extends BaseEntity {
      * @return 0 or positive value if the cupcake is present in the order, -1 if the cupcake is not present in the order.
      */
     private int getCupcakeIndex(Cupcake cupcake) {
-        for (LineItem item: lineItems) {
-            Cupcake c = item.getCupcake();
-            if(c.getBottom().getName().equals(cupcake.getBottom().getName()) &&
-                    c.getTopping().getName().equals(cupcake.getTopping().getName())) {
-                return lineItems.indexOf(c);
+        for (int i = 0; i < lineItems.size(); i++) {
+            Cupcake c = lineItems.get(i).getCupcake();
+            boolean botSame = c.getBottom().getId() == cupcake.getBottom().getId();
+            boolean topSame = c.getTopping().getId() == cupcake.getTopping().getId();
+            if( botSame && topSame) {
+                return i;
             }
         }
         return -1;
@@ -89,7 +95,11 @@ public class Order extends BaseEntity {
             return lineItems.get(index);
     }
 
-    public ArrayList<LineItem> getLineItems() {
+    /**
+     * Returns the list of lineItems in the order.
+     * @return List of all LineItems in the order.
+     */
+    public List<LineItem> getLineItems() {
         return lineItems;
     }
 
@@ -105,10 +115,14 @@ public class Order extends BaseEntity {
         return res;
     }
 
+    /**
+     * Gets the total order price
+     * @return The total price of the order.
+     */
     public int getOrderPrice() {
         int total = 0;
         for (LineItem item: lineItems) {
-            total += item.calculateTotalPrice();
+            total += item.getPrice();
         }
         return total;
     }

@@ -63,4 +63,9 @@ public class Bottom extends BaseEntity implements IProduct{
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Bottom,"+ id + "," + price +","+ name;
+    }
 }
