@@ -27,6 +27,7 @@ public  class Command {
         commands.put("submitOrder", new SubmitOrderCommand());
         commands.put("redirect", new RedirectCommand());
         commands.put("removeFromCart", new RemoveFromCartCommand());
+        commands.put("showAdminPanel", new ShowAdminPanelCommand());
     }
 
     public Command from(HttpServletRequest request) {

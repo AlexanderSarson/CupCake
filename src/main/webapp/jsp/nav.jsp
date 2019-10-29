@@ -49,10 +49,19 @@
 							<ul class="uk-nav uk-dropdown-nav">
 								<c:choose>
 									<c:when test="${sessionScope.user != null}">
-										<li>
-											<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
-												Page</a>
-										</li>
+										<c:choose>
+											<c:when test="${sessionScope.user.getRole().getName() == 'ADMIN'}">
+												<li>
+													<a href="${contextPath}/FrontController?&command=showAdminPanel">Admin Panel</a>
+												</li>
+											</c:when>
+											<c:otherwise>
+												<li>
+													<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
+														Page</a>
+												</li>
+											</c:otherwise>
+										</c:choose>
 										<li class="uk-nav-divider"></li>
 										<li>
 											<a href="${contextPath}/FrontController?&command=logout">Logout</a>
