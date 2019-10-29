@@ -1,14 +1,17 @@
 
 package persistence;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import logic.Bottom;
 import logic.Cupcake;
 import logic.IProduct;
 import logic.Topping;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class has the purpose of mapping Products from the database to jave objects. General data, such as Cupcakes and intances where all tables are being checked,

@@ -6,7 +6,7 @@ import persistence.OrderException;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OrderTest {
     private Order order;

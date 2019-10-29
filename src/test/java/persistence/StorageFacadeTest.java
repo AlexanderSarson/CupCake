@@ -1,7 +1,6 @@
 package persistence;
 
 import logic.*;
-import org.junit.AfterClass;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class StorageFacadeTest {
     private static DataSource dataSource;
