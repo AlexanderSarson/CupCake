@@ -29,6 +29,7 @@ public  class Command {
         commands.put("removeFromCart", new RemoveFromCartCommand());
         commands.put("showAdminPanel", new ShowAdminPanelCommand());
         commands.put("logout", new LogOutCommand());
+        commands.put("showUser", new ShowUserCommand());
     }
 
     public Command from(HttpServletRequest request) {

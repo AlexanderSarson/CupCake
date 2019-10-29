@@ -30,13 +30,7 @@
 						<a href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Home</a>
 					</li>
 					<li>
-						<a href="#">About us</a>
-					</li>
-					<li>
 						<a href="${contextPath}/FrontController?&command=redirect&target=jsp/shop/mainShop.jsp">Shop</a>
-					</li>
-					<li>
-						<a href="#">Contact</a>
 					</li>
 				</ul>
 			</div>

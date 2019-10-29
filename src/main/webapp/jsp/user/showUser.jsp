@@ -26,33 +26,21 @@
 						<table class="uk-table uk-table-middle uk-table-striped uk-table-hover ">
 							<thead>
 								<tr>
-									<th>Order No.</th>
+									<th>Order ID</th>
 									<th>Order Date</th>
+									<th>Order Quantity</th>
 									<th>Total price</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${sessionScope.ordersForUser}" var="order">
+								<c:forEach items="${sessionScope.userOrders}" var="order">
 									<tr>
 										<td> ${order.getId()} </td>
-										<td> ${order.getOrderDate()} </td>
-										<td> $${order.getTotal()} </td>
+										<td> ${order.getDate()} </td>
+										<td> ${order.getTotalQuantity()} </td>
+										<td> $${order.getPrice()} </td>
 									</tr>
 								</c:forEach>
-
-								<%-- TODO Placeholders --%>
-								<tr>
-									<td> 123 </td>
-									<td> 01-01-2019 </td>
-									<td> $20 </td>
-								</tr>
-								<tr>
-									<td> 123 </td>
-									<td> 01-01-2019 </td>
-									<td> $20 </td>
-								</tr>
-								<%-- Placeholders end --%>
-
 							</tbody>
 						</table>
 					</div>
@@ -71,23 +59,23 @@
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m uk-text-bold uk-text-left">Customer Number:</div>
 							<div class="uk-width-1-2@m">
-								<c:out value="${sessionScope.user.getId()}" /> 123 </div>
+								<c:out value="${sessionScope.user.getId()}" /></div>
 						</div>
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Name: </div>
 							<div class="uk-width-1-2@m">
-								<c:out value="${sessionScope.user.getFirstName()}" /> John </div>
+								<c:out value="${sessionScope.user.getName()}" /></div>
 						</div>
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Email: </div>
 							<div class="uk-width-1-2@m">
-								<c:out value="${sessionScope.user.getEmail()}" /> email@nowhere.com </div>
+								<c:out value="${sessionScope.user.getMail()}" /></div>
 						</div>
 					</div>
 					<div class="uk-card-footer">
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-1@m">
-								<button class="uk-button uk-button-primary">Edit Info</button>
+								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=editUser">Edit Info</a>
 							</div>
 						</div>
 					</div>
