@@ -19,7 +19,6 @@
 
 <body>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 	<nav class="uk-navbar-container uk-sticky">
 		<div class="uk-container uk-navbar">
 			<div class="nav-overlay uk-navbar-left">

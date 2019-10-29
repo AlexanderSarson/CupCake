@@ -37,7 +37,7 @@
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m">Subtotal</div>
 							<div class="uk-width-1-2@m"> $
-								<c:out value="${orderTotal}" />
+								<c:out value="${sessionScope.shoppingCart.getPrice()}" />
 							</div>
 						</div>
 						<div class="uk-grid-small uk-grid">
@@ -50,7 +50,7 @@
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m">Total</div>
 							<div class="uk-width-1-2@m"> $
-								<c:out value="${orderTotal}" />
+								<c:out value="${sessionScope.shoppingCart.getPrice()}" />
 							</div>
 							<div class="uk-width-expand@m">
 								<a href="${pageContext.request.contextPath}/FrontController?&command=submitOrder"

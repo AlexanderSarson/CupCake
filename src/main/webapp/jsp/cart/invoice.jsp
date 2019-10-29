@@ -31,9 +31,6 @@
 								<div>
 									<a class="uk-link-heading" href="#">${item.getCupcake().getTopping().getName()}</a>
 									<a class="uk-link-heading" href="#">${item.getCupcake().getBottom().getName()}</a>
-									<!--<div>
-										<a class="uk-link-heading uk-text-muted uk-text-small" href="#">by</a>
-									</div>-->
 								</div>
 							</div>
 						</div>
@@ -50,11 +47,6 @@
 										<c:out value="${item.getPrice()}" />
 									</div>
 								</div>
-								<div>
-									<div>
-										<div></div>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -65,30 +57,47 @@
 				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
 					<div>
 						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
-							<div></div>
 							<div>
-								<div>
-								</div>
+								<a class="uk-link-heading" href="#">Order subtotal:</a>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="uk-child-width-1-4 uk-text-center" uk-grid>
+							<div>$
+								${order.getPrice()}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+					<div>
+						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+							<div>
+								<a class="uk-link-heading" href="#">Order Discount:</a>
 							</div>
 						</div>
 					</div>
 					<div>
 						<div class="uk-child-width-1-4 uk-text-center" uk-grid>
 							<div>
-								<div></div>
+								0.0 %
 							</div>
+						</div>
+					</div>
+				</div>
+				<div class="uk-child-width-1-2 uk-text-center" uk-grid>
+					<div>
+						<div class="uk-child-width-1-2 uk-text-center" uk-grid>
 							<div>
-								<div></div>
+								<a class="uk-link-heading" href="#">Order Total:</a>
 							</div>
-							<div>
-								<div></div>
-							</div>
-							<div>
-								<div>
-									<a href="${pageContext.request.contextPath}FrontController?&command=redirect&target=index.jsp"
-										class="uk-button uk-button-primary">Back
-									</a>
-								</div>
+						</div>
+					</div>
+					<div>
+						<div class="uk-child-width-1-4 uk-text-center" uk-grid>
+							<div>$
+								${order.getPrice()}
 							</div>
 						</div>
 					</div>

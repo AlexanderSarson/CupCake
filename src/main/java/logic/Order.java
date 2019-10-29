@@ -46,6 +46,18 @@ public class Order extends BaseEntity {
         }
     }
 
+    public void removeCupcakeFromOrder(Cupcake cupcake) {
+        int index = getCupcakeIndex(cupcake);
+        if(index >= 0) {
+            int newValue = lineItems.get(index).getQuantity() - 1;
+            if (newValue <= 0) {
+                lineItems.remove(index);
+            } else {
+                lineItems.get(index).setQuantity(newValue);
+            }
+        }
+    }
+
     /**
      * Gets the index of the cupcake, if it exists in the order.
      * @param cupcake The cupcake to be found

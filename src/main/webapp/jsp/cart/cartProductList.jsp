@@ -28,9 +28,8 @@
 			</div>
 		</div>
 		<div class="uk-card-body">
-			<c:set var="orderTotal" value="${order.getPrice()}" />
+			<c:set var="orderTotal" value="${sessionScope.shoppingCart.getPrice()}" />
 			<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="lineItem">
-				<c:set var="orderTotal" value="${orderTotal + lineItem.getPrice()}" />
 				<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
 					<div class="uk-first-column">${lineItem.getCupcake().getTopping()}</div>
 					<div>${lineItem.getCupcake().getBottom()}</div>

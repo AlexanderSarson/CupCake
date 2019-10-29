@@ -58,6 +58,8 @@ public class LineItem extends BaseEntity {
         quantity++;
     }
 
+
+
     /**
      * Gets the cupcake of a given lineitem
      * @return the cupcake

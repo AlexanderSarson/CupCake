@@ -94,7 +94,7 @@ public class LogicFacade {
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);
     }
-    public List<Order> getallOrders() throws OrderException {
+    public List<Order> getallOrders() throws OrderException, UserException {
         return storageFacade.getAllOrders();
     }
 
@@ -118,5 +118,9 @@ public class LogicFacade {
     }
     public List<User> getAllUsers() throws UserException {
         return storageFacade.getAllUsers();
+    }
+
+    public void removeFromShoppingCart(Topping topping, Bottom bottom, ShoppingCart cart) {
+        cart.removeCupcakeFromOrder(new Cupcake(bottom,topping));
     }
 }
