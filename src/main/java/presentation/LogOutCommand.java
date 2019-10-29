@@ -23,7 +23,7 @@ public class LogOutCommand extends Command{
         HttpSession session = request.getSession();
         session.setAttribute("user",null);
         session.invalidate();
-        String page = "index";
+        String page = "index.jsp";
         forwardToPage(request, response, page);
     }
 }

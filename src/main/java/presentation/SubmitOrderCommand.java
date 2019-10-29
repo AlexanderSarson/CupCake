@@ -14,22 +14,32 @@ import logic.Order;
 import logic.ShoppingCart;
 import logic.Topping;
 import logic.User;
+import persistence.OrderException;
+
+import java.time.LocalDate;
 
 /**
- *
+ *x
  * @author Alexander
  */
 public class SubmitOrderCommand extends Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ShoppingCart cart = (ShoppingCart) request.getAttribute("shoppingcart");
-        User user = (User) request.getAttribute("user");
-        LogicFacade logicFacade = getLogicFacade();
-        Order order = logicFacade.submitOrder(user, cart);
         HttpSession session = request.getSession();
-        session.setAttribute("order", order);
-        String page = "jsp/cart/invoice";
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
+        User user = (User) session.getAttribute("user");
+        cart.setDate(LocalDate.now());
+        LogicFacade logicFacade = getLogicFacade();
+        String page;
+        try {
+            Order order = logicFacade.submitOrder(user, cart);
+            session.setAttribute("order", order);
+            page = "jsp/cart/invoice.jsp";
+            session.setAttribute("shoppingCart", null);
+        } catch (OrderException e) {
+            page = "jsp/cart/showCart.jsp";
+        }
         forwardToPage(request, response, page);
     }
 }

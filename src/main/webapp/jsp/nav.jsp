@@ -116,7 +116,7 @@
 							<div class="uk-button-group">
 								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/showCart.jsp" uk-icon="cart"
 									class="uk-button uk-button-default"> View Cart </a>
-								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/confirmOrder.jsp" uk-icon="cart"
+								<a href="${contextPath}/FrontController?&command=submitOrder" uk-icon="cart"
 									class="uk-button uk-button-primary"> Checkout </a>
 							</div>
 

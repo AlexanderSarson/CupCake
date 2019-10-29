@@ -92,18 +92,19 @@ class OrderMapper {
      * @throws OrderException if anything goes wrong while creating order
      */
     public Order createOrder(Order order, User user) throws OrderException, UserBalanceException {
-        String sql = "SELECT * from Cupcakes WHERE cupcake_id = ?";
+        String sql = "SELECT cupcake_id from Cupcakes WHERE topping_id = ? and bottom_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             for (int i = 0; i < order.getSize(); i++) {
-                ps.setInt(1, order.getLineItem(i).getCupcake().getId());
+                ps.setInt(1, order.getLineItem(i).getCupcake().getTopping().getId());
+                ps.setInt(2, order.getLineItem(i).getCupcake().getBottom().getId());
                 ResultSet rs = ps.executeQuery();
                 //ID'et på cupcake skal gemmes
                 if (!rs.next()) {
                     String cupcakePrepare = "INSERT INTO Cupcakes(topping_id,bottom_id) values (?,?)";
                     try (PreparedStatement cupcakePS = connection.prepareStatement(cupcakePrepare)) {
-                        cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getTopping().getId());
-                        cupcakePS.setInt(3, order.getLineItem(i).getCupcake().getBottom().getId());
+                        cupcakePS.setInt(1, order.getLineItem(i).getCupcake().getTopping().getId());
+                        cupcakePS.setInt(2, order.getLineItem(i).getCupcake().getBottom().getId());
                         if (cupcakePS.executeUpdate() == 0) {
                             connection.rollback();
                             connection.setAutoCommit(false);
@@ -112,6 +113,9 @@ class OrderMapper {
                         int CupCakeID = dataSource.lastID(connection,cupcakePS);
                         order.getLineItem(i).getCupcake().setId(CupCakeID);
                     }
+                }
+                else {
+                    order.getLineItem(i).getCupcake().setId(rs.getInt("cupcake_id"));
                 }
             }
             connection.setAutoCommit(false);
@@ -165,6 +169,7 @@ class OrderMapper {
                                 throw new UserException("Could not update user account balance");
                             }
                         }
+                        user.getAccount().setBalance(newBalance);
                     }
                     else {
                         throw new UserBalanceException("Insufficient funds!");

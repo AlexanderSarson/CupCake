@@ -30,6 +30,7 @@ public  class Command {
         commands.put("showAdminPanel", new ShowAdminPanelCommand());
         commands.put("logout", new LogOutCommand());
         commands.put("showUser", new ShowUserCommand());
+        commands.put("addFundsCommand", new AddFundsCommand());
     }
 
     public Command from(HttpServletRequest request) {
@@ -45,7 +46,7 @@ public  class Command {
 
     public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
         try {
-            RequestDispatcher rd = request.getRequestDispatcher(page + ".jsp");
+            RequestDispatcher rd = request.getRequestDispatcher(page);
             rd.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

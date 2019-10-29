@@ -71,13 +71,27 @@
 							<div class="uk-width-1-2@m">
 								<c:out value="${sessionScope.user.getMail()}" /></div>
 						</div>
+						<div class="uk-grid-small uk-grid">
+							<div class="uk-width-1-2@m uk-text-bold uk-text-left"> Funds: $</div>
+							<div class="uk-width-1-2@m">
+								<c:out value="${sessionScope.user.getAccount().getBalance()}" /></div>
+						</div>
 					</div>
 					<div class="uk-card-footer">
-						<div class="uk-grid-small uk-grid">
+						<div class="uk-button-group">
 							<div class="uk-width-1-1@m">
 								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=editUser">Edit Info</a>
 							</div>
+							<div class="uk-width-1-1@m">
+								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=addFundsCommand&value=100">Add $100</a>
+							</div>
+							<div class="uk-width-1-1@m">
+								<a class="uk-button uk-button-primary" href="${contextPath}/FrontController?&command=addFundsCommand&value=200">Add $200</a>
+							</div>
 						</div>
+
+						<!--<div class="uk-grid-small uk-grid">
+						</div>-->
 					</div>
 				</div>
 			</div>

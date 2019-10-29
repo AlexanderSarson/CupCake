@@ -107,7 +107,7 @@ public class LogicFacade {
         storageFacade.updateUser(user);
     }
     public User login(String email, String password) throws UserException {
-        return storageFacade.validateUser(email,password);
+        return storageFacade.validateUser(email,Encryption.encryptPsw(password));
     }
     public void addFunds(User user, int amountToDeposit) throws UserException {
         if(amountToDeposit < 0)
