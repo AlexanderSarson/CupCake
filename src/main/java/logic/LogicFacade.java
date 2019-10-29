@@ -97,6 +97,9 @@ public class LogicFacade {
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);
     }
+    public List<Order> getallOrders() throws OrderException {
+        return storageFacade.getAllOrders();
+    }
 
     // ------ USER ------
     public User newUser(String name, String email, String password) throws UserException {
@@ -115,5 +118,8 @@ public class LogicFacade {
         else {
             storageFacade.addFunds(user,amountToDeposit);
         }
+    }
+    public List<User> getAllUsers() throws UserException {
+        return storageFacade.getAllUsers();
     }
 }
