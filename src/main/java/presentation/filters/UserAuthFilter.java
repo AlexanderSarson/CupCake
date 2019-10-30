@@ -15,7 +15,7 @@ public class UserAuthFilter implements Filter {
     private HttpServletRequest httpRequest;
 
     private static final String[] loginRequiredURLs = {
-            "/showUser", "/editUser", "/confirmOrder", "invoice"
+            "/showUser", "/editUser", "/confirmOrder", "/invoice"
     };
 
     @Override
@@ -30,8 +30,10 @@ public class UserAuthFilter implements Filter {
 
         boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
 
-        String loginURI = httpRequest.getContextPath() + "/login";
+        // TODO
+        String loginURI = httpRequest.getContextPath() + "/FrontController?&command=login";
         boolean isLoginRequest = httpRequest.getRequestURI().equals(loginURI);
+
         boolean isLoginPage = httpRequest.getRequestURI().endsWith("login.jsp");
         boolean isRegisterPage = httpRequest.getRequestURI().endsWith("createUser.jsp");
 
