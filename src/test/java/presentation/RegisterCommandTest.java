@@ -39,15 +39,14 @@ public class RegisterCommandTest {
     
     @Test
     public void testRegisterCommandExecute() throws Exception {
-        when(mockRequest.getParameter("name")).thenReturn("Joe");
         when(mockRequest.getParameter("email")).thenReturn("Joe@email.dk");
         when(mockRequest.getParameter("password")).thenReturn("password123");
         when(mockRequest.getSession()).thenReturn(mockSession);
         when(spyRegisterCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyRegisterCommand.execute(mockRequest, mockResponse);
-        verify(spyRegisterCommand).forwardToPage(mockRequest, mockResponse, "index");
-        verify(mockLogicFacade).newUser("Joe", "Joe@email.dk", "password123");
+        verify(spyRegisterCommand).forwardToPage(mockRequest, mockResponse, "index.jsp");
+        verify(mockLogicFacade).newUser(null, "Joe@email.dk", "password123");
         verify(mockSession).setAttribute(anyString(),any() );
     }
 
