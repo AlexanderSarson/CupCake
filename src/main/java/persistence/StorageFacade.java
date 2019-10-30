@@ -53,15 +53,18 @@ public class StorageFacade {
         List<User> users = getAllUsers();
         List<Order> orders = new ArrayList<>();
         for (User user: users) {
-            orders.addAll(getAllOrders(user));
+            try {
+                orders.addAll(getAllOrders(user));
+            } catch (OrderException e) {
+            }
         }
         return orders;
     }
     public Order createOrder(Order order, User user) throws OrderException, UserBalanceException { return orderMapper.createOrder(order, user); }
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 
-    public void updateUser(User user) throws UserException {
-        userMapper.updateUser(user);
+    public void updateUser(User user, String password) throws UserException {
+        userMapper.updateUser(user, password);
     }
     public boolean deleteUser(User user) throws UserException {
         userMapper.deleteUser(user);
@@ -81,8 +84,8 @@ public class StorageFacade {
     public void deleteBottom(Bottom bottom) {
         //bottomMapper.deleteProduct(bottom);
     }
-    public List<Bottom> getAllBottoms() throws ProductException {
-        return null;
+    public List<IProduct> getAllBottoms() throws ProductException {
+        return bottomMapper.getAllProducts();
     }
 
     // ------ TOPPING ------
@@ -95,7 +98,7 @@ public class StorageFacade {
     public void deleteTopping(Topping topping) {
         //toppingMapper.deleteProduct(topping);
     }
-    public List<Topping> getAllToppings() throws ProductException {
-        return null;
+    public List<IProduct> getAllToppings() throws ProductException {
+        return toppingMapper.getAllProducts();
     }
 }

@@ -28,13 +28,11 @@
 			</div>
 		</div>
 		<div class="uk-card-body">
-			<c:set var="orderTotal" value="0" />
+			<c:set var="orderTotal" value="${sessionScope.shoppingCart.getPrice()}" />
 			<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="lineItem">
-				<c:set var="orderTotal" value="${orderTotal + lineItem.getPrice()}" />
-
 				<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
-					<div class="uk-first-column">${lineItem.getCupcake().getTopping()}</div>
-					<div>${lineItem.getCupcake().getBottom()}</div>
+					<div class="uk-first-column">${lineItem.getCupcake().getTopping().getName()}</div>
+					<div>${lineItem.getCupcake().getBottom().getName()}</div>
 					<div>$${lineItem.getCupcake().getPrice()}</div>
 					<div>${lineItem.getQuantity()}</div>
 					<div>$${lineItem.getPrice()}</div>
@@ -48,41 +46,6 @@
 					</div>
 				</div>
 			</c:forEach>
-
-			<%--Placeholders--%>
-			<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
-				<div class="uk-first-column">Some Topping</div>
-				<div>Some Topping</div>
-				<div>$Cupcake Price</div>
-				<div>Quantity</div>
-				<div>$Line price</div>
-				<div class="uk-width-auto">
-					<div style="width: 20px;">
-						<a href="${pageContext.request.contextPath}/cart?&action=remove&id=${lineItem.getCupcake().getId()}">
-							<span uk-icon="minus-circle" class="uk-icon"></span>
-						</a>
-					</div>
-				</div>
-			</div>
-			<hr>
-
-			<div class="uk-grid-small uk-child-width-expand uk-grid" uk-grid>
-				<div class="uk-first-column">Some Topping</div>
-				<div>Some Topping</div>
-				<div>$Cupcake Price</div>
-				<div>Quantity</div>
-				<div>$Line price</div>
-				<div class="uk-width-auto">
-					<div style="width: 20px;">
-						<a href="${pageContext.request.contextPath}/cart?&action=remove&id=${lineItem.getCupcake().getId()}">
-							<span uk-icon="minus-circle" class="uk-icon"></span>
-						</a>
-					</div>
-				</div>
-			</div>
-			<hr>
-			<%--Placeholders end--%>
-
 		</div>
 	</div>
 </body>

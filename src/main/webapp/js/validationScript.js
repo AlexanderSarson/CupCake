@@ -46,7 +46,7 @@ function validateAccountCreation() {
     }
 
     /** Validates that name only contains letters and spaces */
-    if(!name.value.match(/^[a-zA-Z]+$/)) {
+    if(!name.value.match(/^([a-zA-Z]+\s)*[a-zA-Z]+$/)) {
         name.classList.add("uk-form-danger");
         name.focus();
         errorContainer.innerHTML = "Name can only contain letters and spaces";
@@ -129,7 +129,7 @@ function validateAccountEdit() {
     }
 
     /** Validates that name only contains letters and spaces */
-    if(!name.value.match(/^[a-zA-Z]+$/)) {
+    if(!name.value.match(/^([a-zA-Z]+\s)*[a-zA-Z]+$/)) {
         name.classList.add("uk-form-danger");
         name.focus();
         errorContainer.innerHTML = "Name can only contain letters and spaces";
@@ -193,7 +193,7 @@ function validateAccountEdit() {
     }
 
     /** Validates that password and confirm password matches */
-    if (newPass !== confirmPass.value) {
+    if (newPass.value !== confirmPass.value) {
         newPass.classList.add("uk-form-danger");
         confirmPass.classList.add("uk-form-danger");
         newPass.focus();
@@ -201,5 +201,5 @@ function validateAccountEdit() {
         return false;
     }
 
-    document.forms['createAccountForm'].submit();
+    document.forms['editAccountForm'].submit();
 }

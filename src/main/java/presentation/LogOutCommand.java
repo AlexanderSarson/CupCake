@@ -19,10 +19,11 @@ import javax.servlet.http.HttpSession;
 public class LogOutCommand extends Command{
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        session.setAttribute("user",null);
         session.invalidate();
-        String page = "index";
+        String page = "index.jsp";
         forwardToPage(request, response, page);
     }
 }

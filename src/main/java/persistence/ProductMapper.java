@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ProductMapper {
     protected String table = "", product_id = "", product_name = "", product_price ="";
-    private DataSource dataSource;
+    protected DataSource dataSource;
     public ProductMapper(DataSource dataSource) {this.dataSource = dataSource;}
 
     /**
@@ -44,16 +44,15 @@ public class ProductMapper {
         }
         return cupcakes;
     }
-    //TODO (OSCAR): FIx sql statement & tests
-    public ArrayList<IProduct> getAllProducts() throws ProductException, SQLException {
+
+    public List<IProduct> getAllProducts() throws ProductException {
         ArrayList<IProduct> products = new ArrayList<>();
-        String sql = "";
+        String sql = "select * from "+table;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 products.add(findProductFromResultSet(rs));
-
             }
         }catch(SQLException e){
             throw new ProductException("Error when fetching all products");

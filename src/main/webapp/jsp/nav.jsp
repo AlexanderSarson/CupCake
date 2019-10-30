@@ -19,7 +19,6 @@
 
 <body>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 	<nav class="uk-navbar-container uk-sticky">
 		<div class="uk-container uk-navbar">
 			<div class="nav-overlay uk-navbar-left">
@@ -30,13 +29,7 @@
 						<a href="${contextPath}/FrontController?&command=redirect&target=index.jsp">Home</a>
 					</li>
 					<li>
-						<a href="#">About us</a>
-					</li>
-					<li>
 						<a href="${contextPath}/FrontController?&command=redirect&target=jsp/shop/mainShop.jsp">Shop</a>
-					</li>
-					<li>
-						<a href="#">Contact</a>
 					</li>
 				</ul>
 			</div>
@@ -50,14 +43,18 @@
 								<c:choose>
 									<c:when test="${sessionScope.user != null}">
 										<c:choose>
-											<c:when test="${sessionScope.user.getRole().getName() == 'ADMIN'}">
+											<c:when test="${sessionScope.user.isAdmin()}">
 												<li>
 													<a href="${contextPath}/FrontController?&command=showAdminPanel">Admin Panel</a>
+												</li>
+												<li>
+													<a href="${contextPath}/FrontController?&command=showUser">My
+														Page</a>
 												</li>
 											</c:when>
 											<c:otherwise>
 												<li>
-													<a href="${contextPath}/FrontController?&command=redirect&target=jsp/user/showUser.jsp">My
+													<a href="${contextPath}/FrontController?&command=showUser">My
 														Page</a>
 												</li>
 											</c:otherwise>
@@ -67,7 +64,6 @@
 											<a href="${contextPath}/FrontController?&command=logout">Logout</a>
 										</li>
 									</c:when>
-
 									<c:otherwise>
 										<%@include file="user/loginForm.jsp"%>
 									</c:otherwise>
@@ -108,9 +104,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:set var="orderTotal" value="0" />
+									<c:set var="orderTotal" value="${order.getPrice()}" />
 									<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="item">
-										<c:set var="orderTotal" value="${orderTotal + item.getPrice()}" />
 										<tr>
 											<td>${item.getCupcake().getTopping().getName()}</td>
 											<td>${item.getCupcake().getBottom().getName()}</td>
@@ -124,7 +119,7 @@
 							<div class="uk-button-group">
 								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/showCart.jsp" uk-icon="cart"
 									class="uk-button uk-button-default"> View Cart </a>
-								<a href="${contextPath}/FrontController?&command=redirect&target=jsp/cart/confirmOrder.jsp" uk-icon="cart"
+								<a href="${contextPath}/FrontController?&command=submitOrder" uk-icon="cart"
 									class="uk-button uk-button-primary"> Checkout </a>
 							</div>
 

@@ -21,6 +21,15 @@
 
 <body>
   <%@include file="jsp/nav.jsp"%>
+  <div class="uk-text-small uk-text-center">
+    <p id="errorMessage" style="color: #DC143C"></p>
+    <c:if test="${requestScope.error != null}">
+      <h4><c:out value="${requestScope.error}"/></h4>
+      <%
+        request.setAttribute("error",null);
+      %>
+    </c:if>
+  </div>
 </body>
 
 </html>

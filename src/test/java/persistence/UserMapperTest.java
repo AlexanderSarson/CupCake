@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +54,7 @@ public class UserMapperTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
 
-        ArrayList<User> users = mapper.getAllUser();
+        List<User> users = mapper.getAllUser();
         User user = users.get(0);
         assertEquals(1,user.getID());
         assertEquals("Peter Larsen",user.getName());
@@ -162,7 +163,7 @@ public class UserMapperTest {
     when(statement.executeQuery()).thenReturn(resSet);
     when(statement.executeUpdate()).thenReturn(0);
 
-    mapper.updateUser(user);
+    mapper.updateUser(user,null);
     }
 
     @Test (expected = UserException.class)
@@ -175,7 +176,7 @@ public class UserMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
         when(statement.executeUpdate()).thenReturn(1).thenReturn(0);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
     }
 
     @Test (expected = UserException.class)
@@ -187,7 +188,7 @@ public class UserMapperTest {
         when(connection.prepareStatement(any(String.class))).thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resSet);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
 
     }
 
@@ -201,7 +202,7 @@ public class UserMapperTest {
         when(statement.executeQuery()).thenReturn(resSet);
         when(statement.executeUpdate()).thenReturn(1).thenReturn(1);
 
-        mapper.updateUser(user);
+        mapper.updateUser(user,null);
 
     }
 }

@@ -1,11 +1,9 @@
 package logic;
+
 import persistence.*;
 
-import javax.ejb.Local;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +52,7 @@ public class LogicFacade {
         storageFacade.updateBottom(bottom);
         return bottom;
     }
-    public List<Bottom> getAllBottoms() throws ProductException {
+    public List<IProduct> getAllBottoms() throws ProductException {
         return storageFacade.getAllBottoms();
     }
     public void deleteBottom(Bottom bottom) {
@@ -71,7 +69,7 @@ public class LogicFacade {
         storageFacade.updateTopping(topping);
         return topping;
     }
-    public List<Topping> getAllToppings() throws ProductException {
+    public List<IProduct> getAllToppings() throws ProductException {
         return storageFacade.getAllToppings();
     }
     public void deleteTopping(Topping topping) {
@@ -97,7 +95,7 @@ public class LogicFacade {
     public List<Order> getOrdersForUser(User user) throws OrderException {
         return storageFacade.getAllOrders(user);
     }
-    public List<Order> getallOrders() throws OrderException {
+    public List<Order> getAllOrders() throws OrderException, UserException {
         return storageFacade.getAllOrders();
     }
 
@@ -106,8 +104,18 @@ public class LogicFacade {
         User user = new User(name,email,Role.CUSTOMER,new Account(0));
         return storageFacade.createUser(user,Encryption.encryptPsw(password));
     }
-    public void updateUser(User user) throws UserException {
-        storageFacade.updateUser(user);
+    public void updateUser(User user, String password) throws UserException {
+        storageFacade.updateUser(user, Encryption.encryptPsw(password));
+    }
+    public boolean validatePassword(User user, String password) {
+        try {
+            User storedUser = storageFacade.validateUser(user.getMail(),Encryption.encryptPsw(password));
+            if(storedUser.getId() != user.getId())
+                return false;
+        } catch (UserException e) {
+            return false;
+        }
+        return true;
     }
     public User login(String email, String password) throws UserException {
         return storageFacade.validateUser(email,Encryption.encryptPsw(password));
@@ -122,4 +130,9 @@ public class LogicFacade {
     public List<User> getAllUsers() throws UserException {
         return storageFacade.getAllUsers();
     }
+
+    public void removeFromShoppingCart(Topping topping, Bottom bottom, ShoppingCart cart) {
+        cart.removeCupcakeFromOrder(new Cupcake(bottom,topping));
+    }
 }
+

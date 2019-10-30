@@ -27,13 +27,10 @@
 			<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
 				<div class="uk-width-1-1@m">
 					<div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
-
 						<h3 class="uk-card-title uk-text-center">Create Account</h3>
-
-						<form name="createAccountForm" action="FrontController" method="post"
+						<form name="createAccountForm" action="<c:url value="/FrontController"/>" method="post"
 							  onsubmit="event.preventDefault(); validateAccountCreation();">
 							<input type="hidden" name="command" value="register">
-
 							<div class="uk-margin">
 								<div class="uk-inline uk-width-1-1">
 									<span class="uk-form-icon" uk-icon="icon: user"></span>

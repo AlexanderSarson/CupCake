@@ -31,19 +31,19 @@
 
 							<h3 class="uk-card-title uk-text-center">Edit Account</h3>
 
-							<form name="editAccountForm" action="#" method="post"
+							<form name="editAccountForm" action="${pageContext.request.contextPath}/FrontController" method="post"
 								onsubmit="event.preventDefault(); validateAccountEdit();">
 								<input type="hidden" name="command" value="updateUser">
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: user"></span>
-										<input class="uk-input uk-form-large" id="name" type="text" name="userName" value="John">
+										<input class="uk-input uk-form-large" id="name" type="text" name="userName" value="${sessionScope.user.getName()}">
 									</div>
 								</div>
 								<div class="uk-margin">
 									<div class="uk-inline uk-width-1-1">
 										<span class="uk-form-icon" uk-icon="icon: mail"></span>
-										<input class="uk-input uk-form-large" id="email" type="text" name="text" value="john@john.com">
+										<input class="uk-input uk-form-large" id="email" type="text" name="mail" value="${sessionScope.user.getMail()}">
 									</div>
 								</div>
 								<div class="uk-margin">

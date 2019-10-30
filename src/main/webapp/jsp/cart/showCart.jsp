@@ -22,9 +22,7 @@
 	<div class="uk-container">
 		<div class="uk-text-center" uk-grid>
 			<div class="uk-width-2-3@m">
-
 				<%@include file="cartProductList.jsp"%>
-
 			</div>
 			<div class="uk-width-1-3@m">
 				<div class="uk-card uk-card-default">
@@ -35,12 +33,11 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="uk-card-body">
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m">Subtotal</div>
 							<div class="uk-width-1-2@m"> $
-								<c:out value="${orderTotal}" />
+								<c:out value="${sessionScope.shoppingCart.getPrice()}" />
 							</div>
 						</div>
 						<div class="uk-grid-small uk-grid">
@@ -53,10 +50,10 @@
 						<div class="uk-grid-small uk-grid">
 							<div class="uk-width-1-2@m">Total</div>
 							<div class="uk-width-1-2@m"> $
-								<c:out value="${orderTotal}" />
+								<c:out value="${sessionScope.shoppingCart.getPrice()}" />
 							</div>
 							<div class="uk-width-expand@m">
-								<a href="${pageContext.request.contextPath}/FrontController?&command=redirect&target=confirmOrder"
+								<a href="${pageContext.request.contextPath}/FrontController?&command=submitOrder"
 									class="uk-button uk-button-primary uk-button-large uk-margin-medium-top">Checkout
 								</a>
 							</div>

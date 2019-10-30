@@ -1,6 +1,7 @@
 package persistence;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
  *
  * @author rando
  */
+@Ignore
 public class DataSourceTest {
 
     private ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");

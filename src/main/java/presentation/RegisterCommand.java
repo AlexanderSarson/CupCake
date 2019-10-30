@@ -14,14 +14,14 @@ public class RegisterCommand extends Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String name = request.getParameter("name");
+        String name = request.getParameter("userName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         LogicFacade logicFacade = getLogicFacade();
         User user = logicFacade.newUser(name, email, password);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        String page = "index";
+        String page = "index.jsp";
         forwardToPage(request, response, page);
     }
 }

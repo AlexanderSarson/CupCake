@@ -25,6 +25,51 @@
     <div class="uk-container">
         <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
             <thead>
+                <h1 class="uk-h1"> Custom Cupcakes </h1>
+                <tr>
+                    <th>Topping</th>
+                    <th>Bottom</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form name="customCupcakeForm" action="${pageContext.request.contextPath}/FrontController" method="post">
+                    <input type="hidden" name="command" value="addToCart">
+                    <tr>
+                         <td>
+                            <div class="uk-margin">
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" name="customTopping">
+                                        <c:forEach items="${applicationScope.toppings}" var="topping">
+                                            <option name="toppingSelect" value="${topping}">${topping.getName()} - $${topping.getPrice()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="uk-margin">
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" name="customBottom">
+                                        <c:forEach items="${applicationScope.bottoms}" var="bottom">
+                                            <option name="bottomSelect" value="${bottom}">${bottom.getName()} - $${bottom.getPrice()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="uk-table-middle">
+                            <div class="uk-margin">
+                                <button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Add to cart</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+
+        </table>
+        <table class="uk-table uk-table-middle uk-table-striped uk-table-hover">
+            <thead> <h1 class="uk-h1">Premade Cupcakes</h1>
                 <tr>
                     <th>Topping</th>
                     <th>Bottom</th>
@@ -35,8 +80,8 @@
             <tbody>
                 <c:forEach items="${applicationScope.cupcakes}" var="cupcake">
                     <tr>
-                        <td>${cupcake.getTopping()}</td>
-                        <td>${cupcake.getBottom()}</td>
+                        <td>${cupcake.getTopping().getName()}</td>
+                        <td>${cupcake.getBottom().getName()}</td>
                         <td>$${cupcake.getPrice()}</td>
                         <td class="uk-table-middle">
                             <a class="uk-button uk-button-default"
@@ -47,35 +92,6 @@
                         </td>
                     </tr>
                 </c:forEach>
-
-                <%-- TODO Placeholders --%>
-                <tr>
-                    <td>Topping</td>
-                    <td>Bottom</td>
-                    <td>$5</td>
-                    <td class="uk-table-middle">
-                        <a class="uk-button uk-button-default"
-                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                            <span uk-icon="plus-circle" class="uk-icon"></span>
-                            <span>Add to Cart</span>
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Topping</td>
-                    <td>Bottom</td>
-                    <td>$5</td>
-                    <td class="uk-table-middle">
-                        <a class="uk-button uk-button-default"
-                            href="${pageContext.request.contextPath}/cart?&action=buy&id=${book.getId()}">
-                            <span uk-icon="plus-circle" class="uk-icon"></span>
-                            <span>Add to Cart</span>
-                        </a>
-                    </td>
-                </tr>
-
-                <%-- Placeholders end --%>
             </tbody>
         </table>
     </div>

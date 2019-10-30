@@ -28,6 +28,10 @@ public  class Command {
         commands.put("redirect", new RedirectCommand());
         commands.put("removeFromCart", new RemoveFromCartCommand());
         commands.put("showAdminPanel", new ShowAdminPanelCommand());
+        commands.put("logout", new LogOutCommand());
+        commands.put("showUser", new ShowUserCommand());
+        commands.put("addFundsCommand", new AddFundsCommand());
+        commands.put("updateUser", new UpdateUserCommand());
     }
 
     public Command from(HttpServletRequest request) {
@@ -50,7 +54,7 @@ public  class Command {
         }
     }
 
-    public LogicFacade getLogicFacade() {
+    public logic.LogicFacade getLogicFacade() {
         return new LogicFacade();
     }
 }

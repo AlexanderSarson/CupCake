@@ -34,6 +34,10 @@ public class LineItem extends BaseEntity {
         return totalPrice;
     }
 
+    public int getCupcakePrice() {
+        return cupcake.getPrice();
+    }
+
     /**
      * Gets the quantity
      * @return the quantity
@@ -53,6 +57,8 @@ public class LineItem extends BaseEntity {
     public void incrementQuantity() {
         quantity++;
     }
+
+
 
     /**
      * Gets the cupcake of a given lineitem

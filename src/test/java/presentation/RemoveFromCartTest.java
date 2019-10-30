@@ -59,7 +59,7 @@ public class RemoveFromCartTest {
         when(spyRemoveFromCartCommand.getLogicFacade()).thenReturn(mockLogicFacade);
         when(mockRequest.getRequestDispatcher(anyString())).thenReturn(mockRequestDispatcher);
         spyRemoveFromCartCommand.execute(mockRequest, mockResponse);
-        verify(spyRemoveFromCartCommand).forwardToPage(mockRequest, mockResponse, "showCart");
+        verify(spyRemoveFromCartCommand).forwardToPage(mockRequest, mockResponse, "jsp/showCart");
         //verify(mockLogicFacade).removeFromShoppingcart(mockTopping, mockBottom, mockShoppingCart);
 
     }

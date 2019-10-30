@@ -13,5 +13,4 @@ class ToppingMapper extends ProductMapper {
         product_name = "topping_name";
         product_price = "topping_price";
     }
-
 }
