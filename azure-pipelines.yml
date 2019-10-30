@@ -1,0 +1,105 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'Tomcat'
+    sourceFolder: '/home/vsts/work/_temp'
+    contents: '*.properties'
+    targetFolder: '/opt/tomcat/webapps'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/AzurePipeline'
+    Contents: '*.properties'
+    TargetFolder: '$(Build.SourcesDirectory)'
+    
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.12.1-ce'
+
+- task: CmdLine@2
+  inputs:
+    script: 'docker run --rm -d --name mysql -v $(Build.SourcesDirectory)/Scripts:/docker-entrypoint-initdb.d -e MYSQL_ROOT_PASSWORD=password123 mysql:8.0.17'
+
+- task: CmdLine@2
+  inputs:
+    script: 'docker run --rm --name maven --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn install'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    failTaskOnFailedTests: true
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+    additionalCodeCoverageFiles: '$(System.DefaultWorkingDirectory)/target/jacoco.exec'
+
+- task: TomcatDeployment@0
+  inputs:
+    TomcatUrl: 'http://206.189.52.109'
+    Username: '$(username)'
+    Password: '$(pwd)'
+    Warfile: '$(System.DefaultWorkingDirectory)/target/CupCake.war'
+    Context: '/CupCakeDev'
+    ServerVersion: '7OrAbove'
+
+- task: DownloadSecureFile@1
+  name: properties
+  inputs:
+    secureFile: 'db.properties'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'Tomcat'
+    sourceFolder: '$(Agent.TempDirectory)'
+    contents: '*.properties'
+    targetFolder: '/home'
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'Tomcat'
+    runOptions: 'commands'
+    commands: '/home/moveFileDev.sh'
+
+- task: CmdLine@2
+  inputs:
+    script: 'docker network create selenium'
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'DockerHub'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'up -d'
+
+- task: CmdLine@2
+  inputs:
+    script: 'docker run --rm --network=selenium --name maven --link selenium-hub --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn test -Pui-test'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'target'
+    Contents: '*.war'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'CupCake'
+    publishLocation: 'Container'
