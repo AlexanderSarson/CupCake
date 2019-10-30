@@ -192,6 +192,7 @@ public class StorageFacadeTest {
         userMapper.deleteUser(user);
     }
     @Test
+    @Ignore
     public void testValidateUser() throws UserException {
         User user = userMapper.login("lognValidation@example.com","73941847d9611927275d93139981ee78316de50bc51bf398f8ccdd778c7723f370cb252c5293c085ec3c6a3d185246837ed71d651a679cb680793581ad77ac24");
         assertNotNull(user);
