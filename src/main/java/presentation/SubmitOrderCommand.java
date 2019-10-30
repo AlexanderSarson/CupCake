@@ -38,7 +38,7 @@ public class SubmitOrderCommand extends Command{
             page = "jsp/cart/invoice.jsp";
             session.setAttribute("shoppingCart", null);
         } catch (OrderException e) {
-            page = "jsp/cart/showCart.jsp";
+            page = "jsp/shop/mainshop.jsp";
         }
         forwardToPage(request, response, page);
     }
