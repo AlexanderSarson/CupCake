@@ -48,18 +48,12 @@
 												<a href="${contextPath}/FrontController?&command=showAdminPanel">Admin
 													Panel</a>
 											</li>
-											<li>
-												<a href="${contextPath}/FrontController?&command=showUser">My
-													Page</a>
-											</li>
 										</c:when>
-										<c:otherwise>
-											<li>
-												<a href="${contextPath}/FrontController?&command=showUser">My
-													Page</a>
-											</li>
-										</c:otherwise>
 									</c:choose>
+									<li>
+										<a href="${contextPath}/FrontController?&command=showUser">My
+											Page</a>
+									</li>
 									<li class="uk-nav-divider"></li>
 									<li>
 										<a href="${contextPath}/FrontController?&command=logout">Logout</a>
@@ -122,7 +116,7 @@
 								<tbody>
 								<c:forEach items="${sessionScope.shoppingCart.getLineItems()}" var="lineItem">
 									<c:set var="cartQty" value="${cartQty + lineItem.getQuantity()}"/>
-									<c:set var="cartTotal" value="${cartQty + lineItem.getPrice()}"/>
+									<c:set var="cartTotal" value="${cartTotal + lineItem.getPrice()}"/>
 
 									<tr>
 										<td>${lineItem.getCupcake().getTopping().getName()}</td>
