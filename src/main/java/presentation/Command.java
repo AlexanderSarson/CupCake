@@ -42,7 +42,7 @@ public  class Command {
         return commands.getOrDefault(commandName, new UnknownCommand());
     }
 
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception { //TODO make custom exception
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     }
 
     public void forwardToPage(HttpServletRequest request, HttpServletResponse response, String page) {
