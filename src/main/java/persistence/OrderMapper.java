@@ -1,10 +1,15 @@
 package persistence;
 
 import logic.*;
+import org.apache.xpath.operations.Or;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Mapping of orders from the database to java objects
@@ -22,8 +27,8 @@ class OrderMapper {
      * @return the users orders
      * @throws OrderException if the user don't have any orders in the database
      */
-    public ArrayList<Order> getAllOrders(User user) throws OrderException {
-        ArrayList<Order> orders = new ArrayList<>();
+    public List<Order> getAllOrders(User user) throws OrderException {
+        List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM Orders where Orders.user_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

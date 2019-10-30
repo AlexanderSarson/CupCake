@@ -1,11 +1,5 @@
 package persistence;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import logic.Bottom;
-
 class BottomMapper extends ProductMapper {
     public BottomMapper(DataSource dataSource) {
         super(dataSource);

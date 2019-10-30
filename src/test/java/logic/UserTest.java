@@ -59,25 +59,25 @@ public class UserTest {
     }
 
     @Test
-    public void getRole() {
+    public void test_GetRole() {
         Role role = Role.CUSTOMER;
         assertEquals(role,user.getRole());
     }
 
     @Test
-    public void setRole() {
+    public void test_SetRole() {
         Role role = Role.ADMIN;
         user.setRole(role);
         assertEquals(role,user.getRole());
     }
 
     @Test
-    public void getAccount() {
+    public void test_GetAccount() {
         assertEquals(account, user.getAccount());
     }
 
     @Test
-    public void setAccount() {
+    public void test_SetAccount() {
         Account newAccount = new Account(200);
         user.setAccount(newAccount);
         assertEquals(newAccount,user.getAccount());

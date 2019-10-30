@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The purpose of the class is to map user objects to dabase information, and database information back to User Objects.
@@ -35,12 +36,15 @@ class UserMapper {
             ps.setString(1,mail);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                int id = rs.getInt("user_id");
-
+            int id;
+            if(rs.next()){
+                id = rs.getInt("user_id");
+            } else {
+                throw new UserException("Login failed");
             }
-            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
+            sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id WHERE Users.user_id = ?";
             ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             while(rs.next()){
                 user = findUserFromResultSet(rs);
@@ -59,8 +63,8 @@ class UserMapper {
      * @return A list of all Users, as user objects.
      * @throws UserException if an error occurs when fetching all users.
      */
-    public ArrayList<User> getAllUser() throws UserException {
-        ArrayList<User> users = new ArrayList<>();
+    public List<User> getAllUser() throws UserException {
+        List<User> users = new ArrayList<>();
         String sql = "select * from Users join Accounts on Users.user_id = Accounts.user_id join Logins on Users.user_id = Logins.user_id";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){

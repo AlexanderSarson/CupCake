@@ -1,7 +1,7 @@
 
 # Created by https://www.gitignore.io/api/linux,macos,windows,eclipse,intellij,netbeans
 # Edit at https://www.gitignore.io/?templates=linux,macos,windows,eclipse,intellij,netbeans
-db.properties
+src/main/resources/db.properties
 cupcake.iml
 nb-configuration.xml
 

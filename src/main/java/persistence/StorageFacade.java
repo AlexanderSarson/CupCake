@@ -37,7 +37,7 @@ public class StorageFacade {
     }
 
     // ------ USER ------
-    public ArrayList<User> getAllUsers() throws UserException {
+    public List<User> getAllUsers() throws UserException {
         return userMapper.getAllUser();
     }
     public User createUser(User user, String password) throws UserException {
@@ -49,6 +49,14 @@ public class StorageFacade {
 
     // ------ ORDER ------
     public List<Order> getAllOrders(User user) throws OrderException { return orderMapper.getAllOrders(user); }
+    public List<Order> getAllOrders() throws OrderException, UserException {
+        List<User> users = getAllUsers();
+        List<Order> orders = new ArrayList<>();
+        for (User user: users) {
+            orders.addAll(getAllOrders(user));
+        }
+        return orders;
+    }
     public Order createOrder(Order order, User user) throws OrderException, UserBalanceException { return orderMapper.createOrder(order, user); }
     public void deleteOrder(Order order) throws SQLException, OrderException { orderMapper.deleteOrder(order);}
 

@@ -1,13 +1,15 @@
 package persistence;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
