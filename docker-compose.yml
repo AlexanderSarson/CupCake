@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    selenium-hub:
+        image: selenium/hub:3.141.59-bismuth
+        container_name: selenium-hub
+        ports:
+            - "4444:4444"
+    chrome:
+        image: selenium/node-chrome:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        shm_size: 2G
+    firefox:
+        image: selenium/node-firefox:3.141.59-bismuth
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+        shm_size: 2G
+networks:
+ default:
+  external:
+   name: selenium
