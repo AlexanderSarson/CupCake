@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
  *
  * @author rando
  */
-@Ignore
 public class DataSourceTest {
 
     private ArrayList<String> DBsetUp = scanFromFile("CupCake_Setup.sql");

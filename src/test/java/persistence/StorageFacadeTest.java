@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-@Ignore
 public class StorageFacadeTest {
     private static DataSource dataSource;
     static {
@@ -193,6 +192,7 @@ public class StorageFacadeTest {
         userMapper.deleteUser(user);
     }
     @Test
+    @Ignore
     public void testValidateUser() throws UserException {
         User user = userMapper.login("loginMailTest","loginPasswordTest");
         assertNotNull(user);
