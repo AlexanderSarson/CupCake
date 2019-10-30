@@ -19,22 +19,21 @@ import java.util.Collection;
 @RunWith(ParallelParameterized.class)
 public abstract class TestBase {
 
+    public DesiredCapabilities capabilities;
     protected static ThreadLocal<RemoteWebDriver> driver = new ThreadLocal<>();
 
+    public TestBase(DesiredCapabilities capabilities) {
+        this.capabilities = capabilities;
+    }
+    
     public WebDriver getDriver() {
         return driver.get();
     }
 
-    public DesiredCapabilities capabilities;
-
     @Parameterized.Parameters
     public static Collection<Object[]> getBrowserCapabilities() {
-         Object[][] data = new Object[][] { { DesiredCapabilities.chrome()}, { DesiredCapabilities.firefox()}, {DesiredCapabilities.internetExplorer()}};
+         Object[][] data = new Object[][] { { DesiredCapabilities.chrome()}, { DesiredCapabilities.firefox()}};
     return Arrays.asList(data);
-    }
-
-    public TestBase(DesiredCapabilities capabilities) {
-        this.capabilities = capabilities;
     }
 
     @Before

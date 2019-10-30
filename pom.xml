@@ -189,7 +189,7 @@
             </activation>
             <properties>
                 <sonar.host.url>
-                    http://sonarqube:9000
+                    http://167.71.67.60:9001
                 </sonar.host.url>
             </properties>
         </profile>
