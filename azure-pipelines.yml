@@ -1,8 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
 - master
 
@@ -11,12 +6,16 @@ pool:
 
 steps:
 
-- task: CopyFilesOverSSH@0
+- task: DownloadSecureFile@1
+  name: properties
   inputs:
-    sshEndpoint: 'Tomcat'
-    sourceFolder: '/home/vsts/work/_temp'
-    contents: '*.properties'
-    targetFolder: '/opt/tomcat/webapps'
+    secureFile: 'db.properties'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: '*.properties'
+    TargetFolder: '$(Build.SourcesDirectory)/src/main/resources'
 
 - task: CopyFiles@2
   inputs:
@@ -57,24 +56,6 @@ steps:
     Warfile: '$(System.DefaultWorkingDirectory)/target/CupCake.war'
     Context: '/CupCakeDev'
     ServerVersion: '7OrAbove'
-
-- task: DownloadSecureFile@1
-  name: properties
-  inputs:
-    secureFile: 'db.properties'
-
-- task: CopyFilesOverSSH@0
-  inputs:
-    sshEndpoint: 'Tomcat'
-    sourceFolder: '$(Agent.TempDirectory)'
-    contents: '*.properties'
-    targetFolder: '/home'
-
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'Tomcat'
-    runOptions: 'commands'
-    commands: '/home/moveFileDev.sh'
 
 - task: CmdLine@2
   inputs:
