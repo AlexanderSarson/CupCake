@@ -79,10 +79,13 @@ FOREIGN KEY (bottom_id)
 
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest', 'CUSTOMER'); 
 INSERT INTO Users (user_name, user_role) VALUES ('userNameTest2', 'ADMIN');
+INSERT INTO Users (user_name, user_role) VALUES ('asdf', 'CUSTOMER');
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (1, 'loginMailTest@example.com', 'loginPasswordTest', '2384');
 INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (2, 'loginMailTest2@example.com', 'loginPasswordTest2', '2384');
+INSERT INTO Logins (user_id, login_mail, login_password, login_salt) VALUES (3, 'lognValidation@example.com', '73941847d9611927275d93139981ee78316de50bc51bf398f8ccdd778c7723f370cb252c5293c085ec3c6a3d185246837ed71d651a679cb680793581ad77ac24', '2384');
 INSERT INTO Accounts (user_id, user_balance) VALUES (1, 1000);
 INSERT INTO Accounts (user_id, user_balance) VALUES (2, 1000);
+INSERT INTO Accounts (user_id, user_balance) VALUES (3, 1000);
 INSERT INTO Orders (user_id, order_date) VALUES (1, '2019-05-05');
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Chocolate', 5.0, 'PictureStringHere');
 INSERT INTO Toppings (topping_name, topping_price, topping_picture) VALUES ('Blueberry', 5.0, 'PictureStringHere');
