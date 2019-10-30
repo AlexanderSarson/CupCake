@@ -84,8 +84,8 @@ public class StorageFacade {
     public void deleteBottom(Bottom bottom) {
         //bottomMapper.deleteProduct(bottom);
     }
-    public List<Bottom> getAllBottoms() throws ProductException {
-        return bottomMapper.getAllBottoms();
+    public List<IProduct> getAllBottoms() throws ProductException {
+        return bottomMapper.getAllProducts();
     }
 
     // ------ TOPPING ------
@@ -98,7 +98,7 @@ public class StorageFacade {
     public void deleteTopping(Topping topping) {
         //toppingMapper.deleteProduct(topping);
     }
-    public List<Topping> getAllToppings() throws ProductException {
-        return toppingMapper.getAllToppings();
+    public List<IProduct> getAllToppings() throws ProductException {
+        return toppingMapper.getAllProducts();
     }
 }

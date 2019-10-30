@@ -52,7 +52,7 @@ public class LogicFacade {
         storageFacade.updateBottom(bottom);
         return bottom;
     }
-    public List<Bottom> getAllBottoms() throws ProductException {
+    public List<IProduct> getAllBottoms() throws ProductException {
         return storageFacade.getAllBottoms();
     }
     public void deleteBottom(Bottom bottom) {
@@ -69,7 +69,7 @@ public class LogicFacade {
         storageFacade.updateTopping(topping);
         return topping;
     }
-    public List<Topping> getAllToppings() throws ProductException {
+    public List<IProduct> getAllToppings() throws ProductException {
         return storageFacade.getAllToppings();
     }
     public void deleteTopping(Topping topping) {

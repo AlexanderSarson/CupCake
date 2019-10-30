@@ -37,8 +37,8 @@ public class ApplicationListener implements ServletContextListener,
          You can initialize servlet context related data here.
       */
         List<Cupcake> cupcakes = null;
-        List<Topping> toppings = null;
-        List<Bottom> bottoms = null;
+        List<IProduct> toppings = null;
+        List<IProduct> bottoms = null;
         try {
             InputStream inputStream = ApplicationListener.class.getResourceAsStream("/db.properties");
             if(inputStream != null) {

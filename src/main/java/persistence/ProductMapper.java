@@ -44,8 +44,8 @@ public class ProductMapper {
         }
         return cupcakes;
     }
-    //TODO (OSCAR): FIx sql statement & tests
-    public ArrayList<IProduct> getAllProducts() throws ProductException {
+
+    public List<IProduct> getAllProducts() throws ProductException {
         ArrayList<IProduct> products = new ArrayList<>();
         String sql = "select * from "+table;
         try (Connection connection = dataSource.getConnection();
