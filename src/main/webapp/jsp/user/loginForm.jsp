@@ -21,18 +21,18 @@
 
 <body>
 
-	<form name="loginForm" action="${pageContext.request.contextPath}/FrontController" method="post" onsubmit="event.preventDefault(); validateLogin();">
+	<form name="loginForm" action="${pageContext.request.contextPath}/FrontController" method="post">
 		<input type="hidden" name="command" value="login">
 		<div class="uk-margin">
 			<div class="uk-inline uk-width-1-1">
 				<span class="uk-form-icon" uk-icon="icon: mail"></span>
-				<input class="uk-input uk-form-large" id="loginEmail" type="email" name="email" placeholder="Email" required>
+				<input class="uk-input uk-form-large" type="email" name="email" placeholder="Email" required>
 			</div>
 		</div>
 		<div class="uk-margin">
 			<div class="uk-inline uk-width-1-1">
 				<span class="uk-form-icon" uk-icon="icon: lock"></span>
-				<input class="uk-input uk-form-large" id="loginPassword" type="password" name="password" minlength="8"
+				<input class="uk-input uk-form-large" type="password" name="password" minlength="8"
 					placeholder="Password" required>
 			</div>
 		</div>
