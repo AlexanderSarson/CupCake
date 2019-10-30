@@ -48,7 +48,7 @@ steps:
 
 - task: TomcatDeployment@0
   inputs:
-    TomcatUrl: 'http://206.189.52.109'
+    TomcatUrl: 'http://134.209.233.32'
     Username: '$(username)'
     Password: '$(pwd)'
     Warfile: '$(System.DefaultWorkingDirectory)/target/CupCake.war'
