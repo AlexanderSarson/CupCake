@@ -5,9 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-
 - task: DownloadSecureFile@1
-  name: properties
   inputs:
     secureFile: 'db.properties'
 
