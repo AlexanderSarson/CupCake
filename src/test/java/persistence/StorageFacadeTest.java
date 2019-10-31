@@ -77,7 +77,7 @@ public class StorageFacadeTest {
         rebuildDB();
     }
 
-    // ----- PRODUCT -----
+    // ----- CUPCAKE -----
     @Test
     public void testGetAllCupcakes() throws ProductException {
         ArrayList<Cupcake> cupcakes = productMapper.getAllCupcakes();
@@ -122,7 +122,7 @@ public class StorageFacadeTest {
         Order lastOrder = orders.get(orders.size()-1);
 
         assertEquals(order.getId(),lastOrder.getId());
-        //assertEquals(order.getDate(),lastOrder.getDate());
+        assertEquals(order.getDate(),lastOrder.getDate());
         assertEquals(order.getTotalQuantity(),lastOrder.getTotalQuantity());
     }
     @Test
@@ -237,15 +237,25 @@ public class StorageFacadeTest {
         bottomMapper.updateProduct(bot);
     }
 
-@Test
-        public void testGetBottomFromID() throws ProductException, SQLException{
+        @Test
+        public void test_get_bottom_from_ID() throws ProductException{
         Bottom bottom = new Bottom(12,"Brick");
         bottomMapper.createProduct(bottom);
-        IProduct bottom2;
-       //bottom2 = bottomMapper.getProductFromID(6);
         assertEquals(bottom.getName(),bottomMapper.getProductFromID(6).getName());
         assertEquals(bottom.getPrice(),bottomMapper.getProductFromID(6).getPrice());
     }
+        @Test (expected = ProductException.class)
+        public void test_get_bottom_from_non_existing_ID() throws ProductException, SQLException{
+            Bottom bottom = new Bottom(12,"Brick");
+            bottomMapper.createProduct(bottom);
+            bottomMapper.getProductFromID(7);
+        }
+        @Test
+        public void get_all_bottoms() throws ProductException{
+        ArrayList<IProduct> allBottoms;
+        allBottoms = bottomMapper.getAllProducts();
+        assertEquals(5,allBottoms.size());
+        }
 
 
     // ----- TOPPING -----
@@ -287,10 +297,22 @@ public class StorageFacadeTest {
     }
 
     @Test
-    public void testGetToppingFromID() throws ProductException, SQLException{
+    public void test_get_topping_from_ID() throws ProductException{
         Topping topping = new Topping(12,"Brick");
         toppingMapper.createProduct(topping);
         assertEquals(topping.getName(),toppingMapper.getProductFromID(11).getName());
         assertEquals(topping.getPrice(),toppingMapper.getProductFromID(11).getPrice());
+    }
+    @Test (expected = ProductException.class)
+        public void test_get_topping_from_non_existing_ID() throws ProductException, SQLException{
+        Topping topping = new Topping (12,"Space Cake");
+        toppingMapper.createProduct(topping);
+        toppingMapper.getProductFromID(12);
+        }
+    @Test
+    public void get_all_Toppings() throws ProductException{
+        ArrayList<IProduct> allToppings;
+        allToppings = toppingMapper.getAllProducts();
+        assertEquals(10,allToppings.size());
     }
     }

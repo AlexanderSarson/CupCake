@@ -4,12 +4,14 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
- *
+ * Encryption of password, using SHA-512.
  * @author rando
  */
 public class Encryption {
+
     public static String encryptPsw(String password) {
         try {
             byte[] messageDirect = getSHA(password);
@@ -30,7 +32,15 @@ public class Encryption {
         Digest() method is called to calculate the message digest of our string 
         input, and return it as a array of byte
         */
+        //md.update(generateSalt());
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static byte[] generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[20];
+        random.nextBytes(bytes);
+        return bytes;
     }
 
     public static String toHexString(byte[] hash) {
