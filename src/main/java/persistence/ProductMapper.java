@@ -48,7 +48,7 @@ public class ProductMapper {
     }
 
 
-    
+
     /**
      *Gets all products, either topping or bottom
      * @return an ArrayList of the product
