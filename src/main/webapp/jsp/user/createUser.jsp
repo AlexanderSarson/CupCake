@@ -28,6 +28,7 @@
 				<div class="uk-width-1-1@m">
 					<div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
 						<h3 class="uk-card-title uk-text-center">Create Account</h3>
+
 						<form name="createAccountForm" action="<c:url value="/FrontController"/>" method="post"
 							  onsubmit="event.preventDefault(); validateAccountCreation();">
 							<input type="hidden" name="command" value="register">

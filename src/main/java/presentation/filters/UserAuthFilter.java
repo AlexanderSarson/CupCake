@@ -30,7 +30,6 @@ public class UserAuthFilter implements Filter {
 
         boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
 
-        // TODO
         String loginURI = httpRequest.getContextPath() + "/FrontController?&command=login";
         boolean isLoginRequest = httpRequest.getRequestURI().equals(loginURI);
 
