@@ -5,17 +5,15 @@
  */
 package presentation;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import logic.Bottom;
 import logic.LogicFacade;
 import logic.Order;
 import logic.ShoppingCart;
-import logic.Topping;
 import logic.User;
 import persistence.OrderException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 /**
@@ -32,14 +30,20 @@ public class SubmitOrderCommand extends Command{
         cart.setDate(LocalDate.now());
         LogicFacade logicFacade = getLogicFacade();
         String page;
-        try {
-            Order order = logicFacade.submitOrder(user, cart);
-            session.setAttribute("order", order);
-            page = "jsp/cart/invoice.jsp";
-            session.setAttribute("shoppingCart", null);
-        } catch (OrderException e) {
-            page = "jsp/shop/mainshop.jsp";
+
+        if (user != null) {
+            try {
+                Order order = logicFacade.submitOrder(user, cart);
+                session.setAttribute("order", order);
+                page = "jsp/cart/invoice.jsp";
+                session.setAttribute("shoppingCart", null);
+            } catch (OrderException e) {
+                page = "jsp/shop/mainshop.jsp";
+            }
+        } else {
+            page = "jsp/user/login.jsp";
         }
+
         forwardToPage(request, response, page);
     }
 }
