@@ -51,7 +51,6 @@ public class ApplicationListener implements ServletContextListener,
             toppings = logicFacade.getAllToppings();
             bottoms = logicFacade.getAllBottoms();
         } catch (ProductException | IOException e) {
-            // TODO(Benjamin) Handle me!
             e.printStackTrace();
         }
         sce.getServletContext().setAttribute("cupcakes", cupcakes);

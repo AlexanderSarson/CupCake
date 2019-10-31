@@ -37,7 +37,6 @@ public class LogicFacade {
             product = new Topping(price,name);
             product.setId(id);
         } else {
-            // TODO(Benjamin): Throw an exception here!?
         }
         return product;
     }
