@@ -18,6 +18,7 @@ import java.util.List;
  * can be collected through this class. Data regarding Bottoms or Toppings, make use of {@link logic.Bottom} and {@link logic.Topping}
  * @author rando
  * @author Benjamin Paepke
+ * @author Oscar
  * @version 1.01
  */
 public class ProductMapper {
@@ -30,6 +31,7 @@ public class ProductMapper {
      * @return an ArrayList of cupcakes
      * @throws ProductException if cupcakes cannot be fetched from database
      */
+
     public ArrayList<Cupcake> getAllCupcakes() throws ProductException {
         ArrayList<Cupcake> cupcakes = new ArrayList<>();
         String sql = "select * from Cupcakes join Toppings on Cupcakes.topping_id = Toppings.topping_id join Bottoms on Cupcakes.bottom_id = Bottoms.bottom_id";
@@ -45,9 +47,16 @@ public class ProductMapper {
         return cupcakes;
     }
 
-    public List<IProduct> getAllProducts() throws ProductException {
+
+    
+    /**
+     *Gets all products, either topping or bottom
+     * @return an ArrayList of the product
+     * @throws ProductException if anything goes wrong while trying to get all products
+     */
+    public ArrayList<IProduct> getAllProducts() throws ProductException{
         ArrayList<IProduct> products = new ArrayList<>();
-        String sql = "select * from "+table;
+        String sql = "SELECT * FROM "+table;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -82,9 +91,15 @@ public class ProductMapper {
         return cupcake;
     }
 
-    //getProductFromID(int id) for både topping og bottom.
+    /**
+     * Gets a product from the database from the ID
+     * @param id the ID of the product you want to get
+     * @return the product containing the id
+     * @throws ProductException if anything goes wrong while trying to get the product
+     */
 
-    public IProduct getProductFromID (int id) throws ProductException, SQLException{
+
+    public IProduct getProductFromID (int id) throws ProductException{
         String sql = "SELECT * FROM "+table+" where "+product_id+" = ?";
         IProduct product = null;
         try(Connection connection = dataSource.getConnection();
@@ -104,7 +119,12 @@ public class ProductMapper {
         return product;
     }
 
-
+    /**
+     * Finds a product from a given resultset
+     * @param rs the resultset you want to find the product from
+     * @return the product containing the ID
+     * @throws SQLException if anything goes wrong while trying to get the product
+     */
 
     private IProduct findProductFromResultSet(ResultSet rs) throws SQLException {
         IProduct product = null;
@@ -218,6 +238,11 @@ public class ProductMapper {
         }
     }
 
+    /**
+     * Gets all premade cupcakes from the database
+     * @return an arraylist of all premade cupcakes
+     * @throws ProductException if anything goes wrong while trying to get all cupcakes
+     */
     public List<Cupcake> getPremadeCucpakes() throws ProductException {
         List<Cupcake> premade = new ArrayList<>();
         String sql = "select * from PreMadeCupcakes join Toppings on PreMadeCupcakes.topping_id = Toppings.topping_id join Bottoms on PreMadeCupcakes.bottom_id = Bottoms.bottom_id;";
