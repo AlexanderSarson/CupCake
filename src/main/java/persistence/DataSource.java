@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class DataSource {
     private static Properties properties;
-    private BasicDataSource basicDataSource;
+    private BasicDataSource basicDataSource; //Apache comns
 
     public DataSource() throws IOException {
         if(properties == null) {
