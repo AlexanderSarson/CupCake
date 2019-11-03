@@ -23,11 +23,20 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'docker run --rm -d --name mysql -v $(Build.SourcesDirectory)/Scripts:/docker-entrypoint-initdb.d -e MYSQL_ROOT_PASSWORD=password123 mysql:8.0.17'
+    script: 'mysql -u root -proot < $(Build.SourcesDirectory)/Scripts/CupCake_Setup.sql'
 
-- task: CmdLine@2
+- task: Maven@3
   inputs:
-    script: 'docker run --rm --name maven --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn install'
+    mavenPomFile: 'pom.xml'
+    goals: 'install'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    jdkArchitectureOption: 'x64'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 
 - task: PublishTestResults@2
   inputs:
