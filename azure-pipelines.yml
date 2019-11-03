@@ -76,9 +76,18 @@ steps:
   inputs:
     script: 'docker run --rm --network=selenium --name maven --link selenium-hub --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn test -Pui-test'
 
-- task: CmdLine@2
+- task: Maven@3
   inputs:
-    script: 'docker run --rm --name maven --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn sonar:sonar'
+    mavenPomFile: 'pom.xml'
+    goals: 'sonar:sonar'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    jdkArchitectureOption: 'x64'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 
 - task: CopyFiles@2
   inputs:
