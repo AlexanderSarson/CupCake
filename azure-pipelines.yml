@@ -28,7 +28,7 @@ steps:
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'install'
+    goals: 'clean install'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
@@ -74,7 +74,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'docker run --rm --network=selenium --name maven --link selenium-hub --link mysql -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn test -Pui-test'
+    script: 'docker run --rm --network=selenium --name maven -v $(System.DefaultWorkingDirectory):/usr/src/mymaven -w /usr/src/mymaven maven:3.6.2-jdk-11 mvn test -Pui-test'
 
 - task: Maven@3
   inputs:
