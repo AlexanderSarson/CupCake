@@ -20,10 +20,6 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)/AzurePipeline'
     Contents: '*.properties'
     TargetFolder: '$(Build.SourcesDirectory)'
-    
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '17.12.1-ce'
 
 - task: CmdLine@2
   inputs:
